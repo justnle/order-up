@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/twopcz/project-three#readme",
   "dependencies": {
+    "bootstrap": "^4.4.1",
     "express": "^4.17.1",
+    "react-bootstrap": "^1.0.1"
     "if-env": "^1.0.4",
     "mongoose": "^5.9.10"
   },
