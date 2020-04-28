@@ -2,12 +2,12 @@ const router = require(`express`).Router();
 const inventoryController = require("../../controllers/inventoryController");
 
 router
-  .route("/")
+  .route("/inventory")
   .get(inventoryController.findAll)
   .post(inventoryController.create);
 
 router
-  .route("/:id")
+  .route("/inventory/:id")
   .get(inventoryController.findById)
   .put(inventoryController.update)
   .delete(inventoryController.remove);
