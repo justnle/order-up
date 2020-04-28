@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require(`express`);
 const mongoose = require(`mongoose`);
 const routes = require(`./routes`);
@@ -16,9 +18,8 @@ app.use(routes);
 mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/orderup`, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  useCreateIndex: true,
+  useCreateIndex: true
 });
 
 app.listen(PORT, () =>
-  console.log(`API Server up on http://localhost:${PORT}`)
-);
+  console.log(`API Server up on http://localhost:${PORT}`));
