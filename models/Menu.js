@@ -29,6 +29,8 @@ const MenuSchema = new Schema({
     type: Number,
     required: true
   }
+}, {
+  collection: `menu`
 });
 
 module.exports = mongoose.model(`Menu`, MenuSchema);
