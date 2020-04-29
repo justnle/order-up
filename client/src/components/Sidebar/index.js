@@ -9,6 +9,7 @@ function Sidebar() {
   const navItems = [
     {
       page: 'Menu',
+
       icon: <i class="fas fa-utensils fa-2x"></i>
     },
     {

@@ -2,12 +2,12 @@ const router = require(`express`).Router();
 const employeesController = require("../../controllers/employeesController");
 
 router
-  .route("/employees")
+  .route("/")
   .get(employeesController.findAll)
   .post(employeesController.create);
 
 router
-  .route("/employees/:id")
+  .route("/:id")
   .get(employeesController.findById)
   .put(employeesController.update)
   .delete(employeesController.remove);
