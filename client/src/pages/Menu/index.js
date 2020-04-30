@@ -7,22 +7,14 @@ class Menu extends React.Component {
   render() {
     return (
       <div>
-        <Container>
-          <SearchBar
-            placeholder="Search menu items"
-            style={{
-              display: "flex",
-              alignSelf: " center",
-            }}
-          />
+        <Container className="d-flex justify-content-center">
+          <SearchBar className="flex-row " placeholder="Search menu items" />
         </Container>
-        <DropDownInput style={{ display: "flex", justifyContent: "center" }}>
+        <DropDownInput className="d-flex justify-content-center">
           Sort by category
         </DropDownInput>
-        <Container
-          style={{ display: "flex", justifyContent: "center", marginTop: "5%" }}
-        >
-          <TableComponent style={{ width: "75%", color: "white" }}>
+        <Container className="d-flex justify-content-center mt-5">
+          <TableComponent className="text-white w-75 ">
             <thead>
               <TableComponent.TR>
                 <TableComponent.TH>Placeholder Item</TableComponent.TH>

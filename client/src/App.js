@@ -1,11 +1,11 @@
 import React from "react";
 import Sidebar from "./components/Sidebar";
-import Employees from "./pages/Employees/index";
+import Menu from "./pages/Menu/index";
 function App() {
   return (
     <div className="App">
       <Sidebar />
-      <Employees />
+      <Menu />
     </div>
   );
 }
