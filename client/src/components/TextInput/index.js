@@ -1,1 +1,2 @@
-export * from './PIN';
+export * from './EmployeeName';
+export * from './InputForm';
