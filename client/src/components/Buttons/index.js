@@ -23,7 +23,9 @@ export function LogoutButton() {
 export function CloseButton() {
   return <Button variant="danger">X</Button>;
 }
-// 6. Close button
+export function OrderSold() {
+  return <Button variant="danger">Mark Order Sold</Button>;
+}
 // 7. Mark order as sold button
 // 8. Clock in button
 // 9. Clock out button
