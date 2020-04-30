@@ -22,7 +22,7 @@ const InventorySchema = new Schema({
     required: true
   },
   vendorPhoneNumber: {
-    type: Number,
+    type: String,
     required: true
   },
   vendorEmail: {

@@ -9,27 +9,28 @@ function Sidebar() {
   const navItems = [
     {
       page: 'Menu',
-      icon: <i class="fas fa-ad"></i>
+
+      icon: <i class="fas fa-utensils fa-2x"></i>
     },
     {
       page: 'Inventory',
-      icon: <i class="fas fa-ad"></i>
+      icon: <i class="fas fa-cubes fa-2x"></i>
     },
     {
       page: 'Employees',
-      icon: <i class="fas fa-ad"></i>
+      icon: <i class="fas fa-user-friends fa-2x"></i>
     },
     {
       page: 'Payroll',
-      icon: <i class="fas fa-ad"></i>
+      icon: <i class="fas fa-dollar-sign fa-2x"></i>
     },
     {
       page: 'FOH',
-      icon: <i class="fas fa-ad"></i>
+      icon: <i class="fas fa-user-tie fa-2x"></i>
     },
     {
       page: 'BOH',
-      icon: <i class="fas fa-ad"></i>
+      icon: <i class="fas fa-ad fa-2x"></i>
     }
   ];
 
