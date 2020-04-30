@@ -7,10 +7,13 @@ class Menu extends React.Component {
   render() {
     return (
       <div>
-        <Container style={{ display: "flex", justifyContent: "center" }}>
+        <Container>
           <SearchBar
             placeholder="Search menu items"
-            style={{ alignSelf: "center" }}
+            style={{
+              display: "flex",
+              alignSelf: " center",
+            }}
           />
         </Container>
         <DropDownInput style={{ display: "flex", justifyContent: "center" }}>
