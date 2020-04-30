@@ -26,7 +26,9 @@ export function CloseButton() {
 export function OrderSold() {
   return <Button variant="danger">Mark Order Sold</Button>;
 }
-// 7. Mark order as sold button
+export function ClockInButton() {
+  return <Button variant="primary">Clock In</Button>;
+}
 // 8. Clock in button
 // 9. Clock out button
 // 10. Menu Item button
