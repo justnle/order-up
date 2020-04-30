@@ -8,33 +8,19 @@ class Employees extends React.Component {
   render() {
     return (
       <div>
-        <Container>
-          <SearchBar
-            placeholder="Search employees"
-            style={{
-              display: "flex",
-              alignSelf: " center"
-            }}
-          />
+        <Container className="d-flex justify-content-center">
+          <SearchBar placeholder="Search employees" className="flex-row " />
         </Container>
-        <div
-          className="row"
-          style={{
-            display: "flex",
-            justifyContent: "center"
-          }}
-        >
-          <div style={{ margin: "1%" }}>
+        <div className=" d-flex row justify-content-center">
+          <div className="m-1">
             <DropDownInput>Sort by role</DropDownInput>
           </div>
-          <div style={{ margin: "1%" }}>
+          <div className="m-1">
             <AddButton />
           </div>
         </div>
-        <Container
-          style={{ display: "flex", justifyContent: "center", marginTop: "5%" }}
-        >
-          <TableComponent style={{ width: "75%", color: "white" }}>
+        <Container className="d-flex justify-content-center mt-5">
+          <TableComponent className="text-white w-75 ">
             <thead>
               <TableComponent.TR>
                 <TableComponent.TH>Employee Name</TableComponent.TH>
