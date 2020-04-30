@@ -7,18 +7,19 @@ class TimeManagement extends React.Component {
   render() {
     return (
       <div>
-        <Container className="d-flex justify-content-center ">
+        <Container className="d-flex justify-content-center">
           <SearchBar
-            className="flex-row"
+            className="flex-row "
             placeholder="Search by Employee Name"
           />
         </Container>
-        <Calendar />
-        <Calendar />
-        <Container
-          style={{ display: "flex", justifyContent: "center", marginTop: "5%" }}
-        >
-          <TableComponent style={{ width: "75%", color: "white" }}>
+        <Container className="d-flex justify-content-center ">
+          <span className="text-white mr-5">Filter by date</span>
+          <Calendar />
+          <Calendar />
+        </Container>
+        <Container className="d-flex justify-content-center mt-5">
+          <TableComponent className="text-white w-75 ">
             <thead>
               <TableComponent.TR>
                 <TableComponent.TH>Employee Name</TableComponent.TH>
