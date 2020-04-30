@@ -10,7 +10,7 @@ function Sidebar() {
     {
       page: 'Menu',
 
-      icon: <i class="fas fa-utensils fa-2x"></i>
+      icon: <i class="fas fa-book-open fa-2x"></i>
     },
     {
       page: 'Inventory',
@@ -30,7 +30,7 @@ function Sidebar() {
     },
     {
       page: 'BOH',
-      icon: <i class="fas fa-ad fa-2x"></i>
+      icon: <i class="fas fa-utensils fa-2x"></i>
     }
   ];
 

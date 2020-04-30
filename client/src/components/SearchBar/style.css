@@ -1,0 +1,8 @@
+#searchicon {
+  color: white !important;
+  padding: 5%;
+}
+#searchbar {
+  display: flex;
+  flex-direction: row;
+}

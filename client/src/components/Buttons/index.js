@@ -1,11 +1,48 @@
-import React from 'react';
-import Button from 'react-bootstrap/Button';
+import React from "react";
+import Button from "react-bootstrap/Button";
 
-function Buttons() {
+function AddButton() {
+  return <Button variant="success">Add</Button>;
+}
+function SubmitButton() {
   return (
-    <Button variant="outline-dark">Food</Button>
-
+    <Button variant="primary" type="Submit">
+      Submit
+    </Button>
   );
 }
-
-export default Buttons;
+function SelectButton() {
+  return <Button variant="success">Select</Button>;
+}
+function ViewButton() {
+  return <Button variant="info">View</Button>;
+}
+function LogoutButton() {
+  return <Button variant="danger">Logout</Button>;
+}
+function CloseButton() {
+  return <Button variant="danger">X</Button>;
+}
+function OrderSoldButton() {
+  return <Button variant="danger">Mark Order Sold</Button>;
+}
+function ClockInButton() {
+  return <Button variant="primary">Clock In</Button>;
+}
+function ClockOutButton() {
+  return <Button variant="danger">Clock Out</Button>;
+}
+function MenuItemButton({ children }) {
+  return <Button variant="dark">{children}</Button>;
+}
+export {
+  AddButton,
+  SubmitButton,
+  ViewButton,
+  LogoutButton,
+  CloseButton,
+  OrderSoldButton,
+  ClockInButton,
+  ClockOutButton,
+  MenuItemButton
+};
