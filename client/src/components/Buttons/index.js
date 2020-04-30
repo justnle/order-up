@@ -14,9 +14,10 @@ export function SubmitButton() {
 export function SelectButton() {
   return <Button variant="success">Select</Button>;
 }
+export function ViewButton() {
+  return <Button variant="info">View</Button>;
+}
 
-// 3. Select button
-// 4. View button
 // 5. Logout button
 // 6. Close button
 // 7. Mark order as sold button
