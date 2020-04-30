@@ -19,10 +19,9 @@ const ArchivedOrderSchema = new Schema({
       }
     }
   ],
-  orderTime: {
+  orderPrepareTime: {
     type: String,
-    required: true,
-    default: Date.now()
+    required: true
   }
 });
 module.exports = mongoose.model(`ArchivedOrder`, ArchivedOrderSchema);
