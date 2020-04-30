@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 function SearchBar(props) {
   return (
@@ -9,4 +9,4 @@ function SearchBar(props) {
   );
 }
 
-export default SearchBar();
+export default SearchBar;
