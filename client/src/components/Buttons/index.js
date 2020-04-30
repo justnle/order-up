@@ -11,6 +11,9 @@ export function SubmitButton() {
     </Button>
   );
 }
+export function SelectButton() {
+  return <Button variant="success">Select</Button>;
+}
 
 // 3. Select button
 // 4. View button
