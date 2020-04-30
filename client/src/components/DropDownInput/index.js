@@ -1,18 +1,22 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-function DropDownInput() {
+function DropDownInput(props) {
   return (
-    <Dropdown>
-      <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-        Dropdown
+    <Dropdown {...props}>
+      <Dropdown.Toggle variant="secondary">
+        {props.children}
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">action 1</Dropdown.Item>
+        <Dropdown.Item>{props.children}</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
 }
+
+DropDownInput.propTypes = {
+  children: PropTypes.node
+};
 
 export default DropDownInput;
