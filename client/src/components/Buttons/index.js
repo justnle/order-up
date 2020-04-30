@@ -20,7 +20,9 @@ export function ViewButton() {
 export function LogoutButton() {
   return <Button variant="danger">Logout</Button>;
 }
-// 5. Logout button
+export function CloseButton() {
+  return <Button variant="danger">X</Button>;
+}
 // 6. Close button
 // 7. Mark order as sold button
 // 8. Clock in button
