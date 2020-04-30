@@ -32,5 +32,6 @@ export function ClockInButton() {
 export function ClockOutButton() {
   return <Button variant="danger">Clock Out</Button>;
 }
-
-// 10. Menu Item button
+export function MenuItemButton({ children }) {
+  return <Button variant="dark">{children}</Button>;
+}
