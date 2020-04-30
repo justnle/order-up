@@ -17,7 +17,9 @@ export function SelectButton() {
 export function ViewButton() {
   return <Button variant="info">View</Button>;
 }
-
+export function LogoutButton() {
+  return <Button variant="danger">Logout</Button>;
+}
 // 5. Logout button
 // 6. Close button
 // 7. Mark order as sold button
