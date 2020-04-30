@@ -7,19 +7,16 @@ function BohTable() {
   const tables = [
     {
       table: `12`,
-      colSize: `3`,
       order: [`Burger`, `Three Bean Platter`, `Cheese Fries`],
       time: `1205`,
     },
     {
       table: `29`,
-      colSize: `6`,
       order: [`Spaghetti Bolognese`, `Bruschetta`, `Caprese Salad`, `Ricotta Ravioli`],
       time: `1230`,
     },
     {
       table: `4`,
-      colSize: `3`,
       order: [`Dumplings`, `Vegetable Fried Rice`],
       time: `1300`,
     },
