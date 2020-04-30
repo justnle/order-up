@@ -32,8 +32,8 @@ function BohBody() {
   return (
     <div>
       {tables.map((columns, index) => (
-        <Row className='py-2' key={`table-row-${index + 1}`}>
-          <Col md={4} key={`table-col`}>
+        <Row className='py-2 border' key={`table-row-${index + 1}`}>
+          <Col md={4} className='my-auto' key={`table-col`}>
             <h6>Table #{columns.table}</h6>
           </Col>
           <Col md={4} className='d-flex flex-row' key={`order-col`}>
@@ -48,7 +48,7 @@ function BohBody() {
               ))}
             </Col>
           </Col>
-          <Col md={2} className='text-center' key={`time-col`}>
+          <Col md={2} className='text-center my-auto' key={`time-col`}>
             {columns.time}
           </Col>
           <Col md={2} key={`sold-col`}>
