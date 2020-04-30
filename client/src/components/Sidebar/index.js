@@ -8,27 +8,27 @@ function Sidebar() {
     {
       page: 'Menu',
 
-      icon: <i className='fas fa-book-open fa-2x'></i>,
+      icon: <i className='fas fa-book-open fa-2x fa-fw'></i>,
     },
     {
       page: 'Inventory',
-      icon: <i className='fas fa-cubes fa-2x'></i>,
+      icon: <i className='fas fa-cubes fa-2x fa-fw'></i>,
     },
     {
       page: 'Employees',
-      icon: <i className='fas fa-user-friends fa-2x'></i>,
+      icon: <i className='fas fa-user-friends fa-2x fa-fw'></i>,
     },
     {
       page: 'Payroll',
-      icon: <i className='fas fa-dollar-sign fa-2x'></i>,
+      icon: <i className='fas fa-dollar-sign fa-2x fa-fw'></i>,
     },
     {
       page: 'FOH',
-      icon: <i className='fas fa-user-tie fa-2x'></i>,
+      icon: <i className='fas fa-user-tie fa-2x fa-fw'></i>,
     },
     {
       page: 'BOH',
-      icon: <i className='fas fa-utensils fa-2x'></i>,
+      icon: <i className='fas fa-utensils fa-2x fa-fw'></i>,
     },
   ];
 
