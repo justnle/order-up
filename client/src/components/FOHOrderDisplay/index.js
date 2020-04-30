@@ -2,14 +2,14 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 
-function FOHOrderDisplay() {
+function FOHOrderDisplay(props) {
   return (
     <Container>
-      <Card>
+      <Card {...props}>
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
+          <Card.Title>{props.children}</Card.Title>
           <Card.Text>
-            Text
+            {props.children}
           </Card.Text>
         </Card.Body>
       </Card>
@@ -17,5 +17,9 @@ function FOHOrderDisplay() {
     </Container>
   );
 }
+
+FOHOrderDisplay.propTypes = {
+  children: PropTypes.node
+};
 
 export default FOHOrderDisplay;
