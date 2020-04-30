@@ -28,3 +28,12 @@
   border-color: darkslategray;
   width: 80%;
 }
+
+.nav-link{
+  color:#D2D45B ;
+}
+
+.navbar-brand.m-0{
+  color: #DAF7A6 ;
+  font-size: 30px;
+}
