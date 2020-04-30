@@ -5,7 +5,7 @@ function BohHeader() {
     const titles = [
         {
             name: `Ticket Info`,
-            size: 3
+            size: 2
         },
         {
             name: `Items`,
@@ -13,8 +13,12 @@ function BohHeader() {
         },
         {
             name: `Time`,
-            size: 3
+            size: 2
         },
+        {
+            name: ``,
+            size: 2
+        }
     ];
 
   return (
