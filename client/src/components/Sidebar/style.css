@@ -15,9 +15,9 @@
   margin: 0;
 }
 
-/* .sidebar .nav .fas {
-  margin-right: 10px;
-} */
+a > i {
+  margin-right: 5px;
+}
 
 .sidebar-divider {
   margin-top: 0.5em;
@@ -29,11 +29,11 @@
   width: 80%;
 }
 
-.nav-link{
-  color:#D2D45B ;
+.nav-link {
+  color: #d2d45b;
 }
 
-.navbar-brand.m-0{
-  color: #DAF7A6 ;
+.navbar-brand.m-0 {
+  color: #daf7a6;
   font-size: 30px;
 }
