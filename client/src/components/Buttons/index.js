@@ -29,6 +29,8 @@ export function OrderSold() {
 export function ClockInButton() {
   return <Button variant="primary">Clock In</Button>;
 }
-// 8. Clock in button
-// 9. Clock out button
+export function ClockOutButton() {
+  return <Button variant="danger">Clock Out</Button>;
+}
+
 // 10. Menu Item button
