@@ -3,6 +3,7 @@
 const { inventorySeed } = require(`./inventorySeed`);
 const { employeeSeed } = require(`./employeeSeed`);
 const { menuSeed } = require(`./menuSeed`);
+const { orderSeed } = require(`./orderSeed`);
 
 const mongoose = require(`mongoose`);
 const db = require(`../models`);
@@ -22,6 +23,9 @@ async function seedDB() {
     },
     {
       modelName: db.Menu, data: menuSeed
+    },
+    {
+      modelName: db.ActiveOrder, data: orderSeed
     }
   ];
   for (const model of models) {
