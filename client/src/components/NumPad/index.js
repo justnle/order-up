@@ -48,6 +48,7 @@ export default function NumPad() {
       <Form>
         <Form.Group controlId='formPIN'>
           <Form.Control
+            autoFocus
             name='pin'
             type='password'
             placeholder='Enter PIN'
