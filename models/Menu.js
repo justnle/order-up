@@ -33,6 +33,8 @@ const MenuSchema = new Schema({
     type: Number,
     default: null
   }
+}, {
+  collection: `menu`
 });
 
 module.exports = mongoose.model(`Menu`, MenuSchema);
