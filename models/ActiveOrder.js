@@ -24,7 +24,7 @@ const ActiveOrderSchema = new Schema({
     }
   ],
   orderInTime: {
-    type: String,
+    type: Date,
     required: true,
     default: Date.now()
   }
