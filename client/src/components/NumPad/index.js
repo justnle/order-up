@@ -12,14 +12,8 @@ export default function NumPad() {
     setPin([...pin, value]);
   };
 
-  const handleTxtInput = (event) => {
-    event.preventDefault();
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    const { value } = event.target;
-    console.log(value);
   };
 
   const handleDelete = () => {
@@ -99,7 +93,7 @@ export default function NumPad() {
             type='password'
             placeholder='Enter PIN'
             value={pin.join('')}
-            onChange={handleTxtInput}
+            onChange={handleSubmit}
           />
         </Form.Group>
       </Form>
