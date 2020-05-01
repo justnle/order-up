@@ -18,10 +18,10 @@ const TimeSchema = new Schema({
     default: Date.now()
   },
   clockOut: {
-    type: Date,
-    required: true,
-    default: Date.now()
+    type: Date
   }
+}, {
+  collection: `Time`
 });
 
 module.exports = mongoose.model(`Time`, TimeSchema);
