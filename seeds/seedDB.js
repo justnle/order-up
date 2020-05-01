@@ -12,35 +12,27 @@ mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/orderup`, {
   useNewUrlParser: true
 });
 
-db.Inventory.deleteMany({})
-  .then(() => db.Inventory.collection.insertMany(inventorySeed))
-  .then(res => {
-    console.log(`${res.result.n} records inserted!`);
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+async function seedDB() {
+  const models = [
+    {
+      modelName: db.Inventory, data: inventorySeed
+    },
+    {
+      modelName: db.Employee, data: employeeSeed
+    },
+    {
+      modelName: db.Menu, data: menuSeed
+    }
+  ];
+  for (const model of models) {
+    await model.modelName.collection.deleteMany({})
+      .then(() => model.modelName.collection.insertMany(model.data)
+        .then(res => console.log(`${res.result.n} ${model.modelName.collection.name} records inserted!`)))
+      .catch(err => {
+        console.error(err);
+      });
+  }
+  process.exit(0);
+}
 
-db.Employee.deleteMany({})
-  .then(() => db.Employee.collection.insertMany(employeeSeed))
-  .then(res => {
-    console.log(`${res.result.n} records inserted!`);
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
-
-db.Menu.deleteMany({})
-  .then(() => db.Menu.collection.insertMany(menuSeed))
-  .then(res => {
-    console.log(`${res.result.n} records inserted!`);
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+seedDB();
