@@ -31,16 +31,7 @@ function Menu() {
           itemCount: item.itemCount
         };
       });
-      const filteredMenu = res.data.map((item) => {
-        return {
-          id: item._id,
-          name: item.name,
-          category: item.category,
-          price: item.price,
-          itemPairing: item.pairing,
-          itemCount: item.itemCount
-        };
-      });
+      const filteredMenu = [...menu];
       setMenu(menu);
       setFilteredMenu(filteredMenu);
     })
