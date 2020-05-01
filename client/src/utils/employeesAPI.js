@@ -2,22 +2,22 @@ import axios from 'axios';
 
 export default {
   getEmployees: function () {
-    return axios.get(`/api/employees`);
+    return axios.get(`/api/employee`);
   },
 
   getEmployee: function (id) {
-    return axios.get(`/api/employees/${id}`);
+    return axios.get(`/api/employee/${id}`);
   },
 
   addEmployee: function (employeeData) {
-    return axios.post(`/api/employees`, employeeData);
+    return axios.post(`/api/employee`, employeeData);
   },
 
   updateEmployee: function (id, data) {
-    return axios.put(`/api/employees/${id}`, data);
+    return axios.put(`/api/employee/${id}`, data);
   },
 
   deleteEmployee: function (id) {
-    return axios.delete(`/api/employees/${id}`);
+    return axios.delete(`/api/employee/${id}`);
   }
 };

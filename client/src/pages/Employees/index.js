@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
@@ -6,8 +6,55 @@ import TableComponent from '../../components/Table/index';
 import { AddButton, SubmitButton } from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
+import API from '../../utils/employeesAPI';
+
 function Employees() {
   const [open, setOpen] = useState(false);
+  const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+
+  useEffect(() => {
+    loadEmployees();
+  }, []);
+
+  function loadEmployees() {
+    API.getEmployees()
+    .then((res) => {
+      console.log(res);
+      const employees = res.data.map((employee) => {
+        return {
+          id: employee.id,
+          name: employee.name,
+          position: employee.position,
+          permission: employee.permission
+        };
+      });
+      const filteredEmployees = [...employees];
+      setEmployees(employees);
+      setFilteredEmployees(filteredEmployees);
+    })
+    .catch((err) => console.error(err));
+  }
+
+  function handleInputChange(event) {
+    const inputText = event.target.value;
+    setFilteredEmployees(
+      employees.filter((employee) => {
+        const words = employee.name.split(' ');
+        let isMatch = false;
+
+        words.forEach((word) => {
+          if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
+            isMatch = true;
+          }
+        });
+
+        return isMatch;
+      })
+    );
+  }
+
+
 
   return (
     <div>
@@ -15,6 +62,7 @@ function Employees() {
         <SearchBar
           placeholder='Search employees'
           className='flex-row rounded-sm'
+          onChange={handleInputChange}
         />
       </Container>
       <div className=' d-flex row justify-content-center '>
@@ -55,12 +103,14 @@ function Employees() {
             </TableComponent.TR>
           </thead>
           <tbody>
-            <TableComponent.TR>
-              <TableComponent.TD>Fake Name</TableComponent.TD>
-              <TableComponent.TD>Server</TableComponent.TD>
+            {filteredEmployees.map((employee) => (
+            <TableComponent.TR key={employee.id}>
+              <TableComponent.TD>{employee.name}</TableComponent.TD>
+              <TableComponent.TD>{employee.position}</TableComponent.TD>
               <TableComponent.TD>$15.00</TableComponent.TD>
-              <TableComponent.TD>123456</TableComponent.TD>
+              <TableComponent.TD>{employee.id}</TableComponent.TD>
             </TableComponent.TR>
+             ))}
           </tbody>
         </TableComponent>
       </Container>

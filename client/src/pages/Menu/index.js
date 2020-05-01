@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
@@ -6,8 +6,55 @@ import TableComponent from '../../components/Table/index';
 import { AddButton, SubmitButton } from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
+import API from '../../utils/menuAPI';
+
 function Menu() {
   const [open, setOpen] = useState(false);
+  const [menu, setMenu] = useState([]);
+  const [filteredMenu, setFilteredMenu] = useState([]);
+
+  useEffect(() => {
+    loadMenu();
+  }, []);
+
+  function loadMenu() {
+    API.getMenu()
+    .then((res) => {
+      console.log(res);
+      const menu = res.data.map((item) => {
+        return {
+          id: item._id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          itemPairing: item.pairing,
+          itemCount: item.itemCount
+        };
+      });
+      const filteredMenu = [...menu];
+      setMenu(menu);
+      setFilteredMenu(filteredMenu);
+    })
+    .catch((err) => console.error(err));
+  }
+
+  function handleInputChange(event) {
+    const inputText = event.target.value;
+    setFilteredMenu(
+      menu.filter((item) => {
+        const words = item.name.split(' ');
+        let isMatch = false;
+
+        words.forEach((word) => {
+          if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
+            isMatch = true;
+          }
+        });
+
+        return isMatch;
+      })
+    );
+  }
 
   return (
     <div>
@@ -15,6 +62,7 @@ function Menu() {
         <SearchBar
           className='flex-row rounded-sm'
           placeholder='Search menu items'
+          onChange={handleInputChange}
         />
       </Container>
       <div className=' d-flex row justify-content-center '>
@@ -58,13 +106,15 @@ function Menu() {
             </TableComponent.TR>
           </thead>
           <tbody>
-            <TableComponent.TR>
-              <TableComponent.TD>Burger</TableComponent.TD>
-              <TableComponent.TD>Food</TableComponent.TD>
-              <TableComponent.TD>$20</TableComponent.TD>
-              <TableComponent.TD>Amber Ale</TableComponent.TD>
-              <TableComponent.TD>Item Count</TableComponent.TD>
+            {filteredMenu.map((item) => ( 
+            <TableComponent.TR key={item.id}>
+              <TableComponent.TD>{item.name}</TableComponent.TD>
+              <TableComponent.TD>{item.category}</TableComponent.TD>
+              <TableComponent.TD>{item.price}</TableComponent.TD>
+              <TableComponent.TD>{item.itemPairing}</TableComponent.TD>
+              <TableComponent.TD>{item.itemCount}</TableComponent.TD>
             </TableComponent.TR>
+            ))}
           </tbody>
         </TableComponent>
       </Container>
