@@ -7,32 +7,34 @@ const Schema = mongoose.Schema;
 const MenuSchema = new Schema({
   category: {
     type: String,
-    required: true,
+    required: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   price: {
     type: Number,
-    required: true,
+    required: true
   },
   description: {
     type: String,
-    required: true,
+    required: true
   },
   pairing: {
     type: String,
-    required: true,
+    required: true
   },
   prepareTime: {
     type: Number,
-    required: true,
+    required: true
   },
   itemCount: {
     type: Number,
-    default: null,
-  },
+    default: null
+  }
+}, {
+  collection: `menu`
 });
 
 module.exports = mongoose.model(`Menu`, MenuSchema);

@@ -1,55 +1,61 @@
 import React from 'react';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
 import './style.css';
+import { Link } from 'react-router-dom';
 
 function Sidebar() {
-  const navItems = [
-    {
-      page: 'Menu',
-
-      icon: <i className='fas fa-book-open fa-2x fa-fw'></i>,
-    },
-    {
-      page: 'Inventory',
-      icon: <i className='fas fa-cubes fa-2x fa-fw'></i>,
-    },
-    {
-      page: 'Employees',
-      icon: <i className='fas fa-user-friends fa-2x fa-fw'></i>,
-    },
-    {
-      page: 'Payroll',
-      icon: <i className='fas fa-dollar-sign fa-2x fa-fw'></i>,
-    },
-    {
-      page: 'FOH',
-      icon: <i className='fas fa-user-tie fa-2x fa-fw'></i>,
-    },
-    {
-      page: 'BOH',
-      icon: <i className='fas fa-utensils fa-2x fa-fw'></i>,
-    },
-  ];
-
   return (
-    <Navbar as='ul'>
-      <div className='sidebar sidebar-sticky bg-dark'>
-        <h4 className='px-3'>
-          <a href='/home' className='navbar-brand m-0'>
-            Order Up
-          </a>
-        </h4>
+    <div>
+      <nav className='sidebar bg-dark'>
+        <a className='active'>
+          <Link to='/home'>
+            <h3>Order Up</h3>
+          </Link>
+        </a>
         <hr className='sidebar-divider'></hr>
-        {navItems.map((pages, index) => (
-          <Nav.Item as='li' key={`list-${index}`}>
-            <Nav.Link href={`/${pages.page.toLowerCase()}`}>
-              {pages.icon} {pages.page}
-            </Nav.Link>
-          </Nav.Item>
-        ))}
-      </div>
-    </Navbar>
+        <a>
+          <Link to='/menu'>
+            <i className='fas fa-book-open fa-2x fa-fw'></i>
+            <span>Menu</span>
+          </Link>
+        </a>
+        <a>
+          <Link to='/manager'>
+            <i className='fas fa-chalkboard-teacher fa-2x fa-fw'></i>
+            <span>Manager</span>
+          </Link>
+        </a>
+        <a>
+          <Link to='/inventory'>
+            <i className='fas fa-cubes fa-2x fa-fw'></i>
+            <span>Inventory</span>
+          </Link>
+        </a>
+        <a>
+          <Link to='/employees'>
+            <i className='fas fa-user-friends fa-2x fa-fw'></i>
+            <span>Employees</span>
+          </Link>
+        </a>
+        <a>
+          <Link to='/shifts'>
+            <i class='fas fa-clock fa-2x fa-fw'></i>
+            <span>Shifts</span>
+          </Link>
+        </a>
+        <a>
+          <Link to='/FOH'>
+            <i className='fas fa-user-tie fa-2x fa-fw'></i>
+            <span>FOH</span>
+          </Link>
+        </a>
+        <a>
+          <Link to='/BOH'>
+            <i className='fas fa-utensils fa-2x fa-fw'></i>
+            <span>BOH</span>
+          </Link>
+        </a>
+      </nav>
+    </div>
   );
 }
 

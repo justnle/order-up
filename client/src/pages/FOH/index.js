@@ -1,11 +1,11 @@
 import React from 'react';
 
-function Manager(){
+function FOH(){
     return(
         <div>
 
         </div>
     )
-}
+};
 
-export default Manager;
+export default FOH;

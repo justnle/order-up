@@ -1,25 +1,22 @@
-import React from "react";
-import SearchBar from "../../components/SearchBar/index";
-import Container from "react-bootstrap/Container";
-import TableComponent from "../../components/Table/index";
-import Calendar from "../../components/Calendar/index";
+import React from 'react';
+import SearchBar from '../../components/SearchBar/index';
+import Container from 'react-bootstrap/Container';
+import TableComponent from '../../components/Table/index';
+import Calendar from '../../components/Calendar/index';
 class TimeManagement extends React.Component {
   render() {
     return (
       <div>
-        <Container className="d-flex justify-content-center">
-          <SearchBar
-            className="flex-row "
-            placeholder="Search by Employee Name"
-          />
+        <Container className='d-flex justify-content-center'>
+          <SearchBar className='mt-5' placeholder='Search by Employee Name' />
         </Container>
-        <Container className="d-flex justify-content-center ">
-          <span className="text-white mr-5">Filter by date</span>
-          <Calendar />
-          <Calendar />
+        <Container className='d-flex justify-content-center '>
+          <span className='text-white mr-5'>Filter by date</span>
+          <Calendar className='mt-5 ' />
+          <Calendar className='mt-5 ' />
         </Container>
-        <Container className="d-flex justify-content-center mt-5">
-          <TableComponent className="text-white w-75 ">
+        <Container className='d-flex justify-content-center mt-5'>
+          <TableComponent className='text-white w-75 '>
             <thead>
               <TableComponent.TR>
                 <TableComponent.TH>Employee Name</TableComponent.TH>

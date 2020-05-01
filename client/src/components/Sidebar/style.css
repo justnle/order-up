@@ -1,39 +1,60 @@
+h3 {
+  color: #37cfc8;
+  text-align: center;
+}
+
 .sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  padding: 48px 0 0;
-  height: 100vh;
-}
-
-.sidebar-sticky {
-  padding-top: 0.5rem;
-  overflow-x: hidden;
-  /* overflow-y: hidden; */
   margin: 0;
+  padding: 0;
+  width: 200px;
+  top: 0;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
 }
 
-a > i {
-  margin-right: 5px;
+.sidebar a {
+  display: block;
+  color: #d2d45b;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.sidebar a.active {
+  color: white;
+}
+
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+@media screen and (max-width: 700px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {
+    float: left;
+  }
+  div.content {
+    margin-left: 0;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
 }
 
 .sidebar-divider {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
   margin-left: auto;
   margin-right: auto;
-  border-width: 1px;
+  border-width: 1%;
   border-color: darkslategray;
   width: 80%;
-}
-
-.nav-link {
-  color: #d2d45b;
-}
-
-.navbar-brand.m-0 {
-  color: #daf7a6;
-  font-size: 30px;
 }
