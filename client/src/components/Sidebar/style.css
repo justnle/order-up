@@ -1,5 +1,5 @@
-h3{
-  color:#37CFC8;
+h3 {
+  color: #37cfc8;
   text-align: center;
 }
 
@@ -7,6 +7,7 @@ h3{
   margin: 0;
   padding: 0;
   width: 200px;
+  top: 0;
   background-color: #f1f1f1;
   position: fixed;
   height: 100%;
@@ -19,7 +20,7 @@ h3{
   padding: 10px;
   text-decoration: none;
 }
- 
+
 .sidebar a.active {
   color: white;
 }
@@ -35,8 +36,12 @@ h3{
     height: auto;
     position: relative;
   }
-  .sidebar a {float: left;}
-  div.content {margin-left: 0;}
+  .sidebar a {
+    float: left;
+  }
+  div.content {
+    margin-left: 0;
+  }
 }
 
 @media screen and (max-width: 400px) {

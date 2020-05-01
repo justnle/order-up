@@ -7,6 +7,7 @@ import Menu from './pages/Menu';
 import Employees from './pages/Employees';
 import FOH from './pages/FOH';
 import BOH from './pages/BOH';
+import Inventory from './pages/Inventory/index';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route exact path='/manager' component={Manager} />
           <Route exact path='/menu' component={Menu} />
           <Route exact path='/employees' component={Employees} />
+          <Route exact path='/inventory' component={Inventory} />
           <Route exact path='/FOH' component={FOH} />
           <Route exact path='/BOH' component={BOH} />
         </Switch>
