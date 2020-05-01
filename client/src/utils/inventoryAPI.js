@@ -9,6 +9,10 @@ export default {
     return axios.get(`/api/inventory/${id}`);
   },
 
+  addInventoryItem: function (inventoryData) {
+    return axios.post(`/api/inventory`, inventoryData);
+  },
+
   updateInventoryItem: function (id, data) {
     return axios.put(`/api/inventory/${id}`, data);
   },

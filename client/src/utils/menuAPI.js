@@ -9,6 +9,10 @@ export default {
     return axios.get(`/api/menu/${id}`);
   },
 
+  addMenuItem: function (menuData) {
+      return axios.post(`/api/menu`, menuData);
+  },
+
   updateMenuItem: function (id, data) {
     return axios.put(`/api/menu/${id}`, data);
   },
