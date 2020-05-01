@@ -15,7 +15,7 @@ function Login() {
         <Col>
           <NumPad />
         </Col>
-        <Col className='my-auto'>
+        <Col className='my-auto clock-btns'>
           <Row className='justify-content-center py-1'>
             <ClockInButton />
           </Row>
