@@ -26,17 +26,10 @@ function Inventory() {
             id: item._id,
             productName: item.productName,
             vendorName: item.vendorName,
-            quantity: item.quantity,
+            quantity: item.quantity
           };
         });
-        const filteredInventory = res.data.map((item) => {
-          return {
-            id: item._id,
-            productName: item.productName,
-            vendorName: item.vendorName,
-            quantity: item.quantity,
-          };
-        });
+        const filteredInventory = [...inventory];
         setInventory(inventory);
         setFilteredInventory(filteredInventory);
       })
@@ -105,7 +98,7 @@ function Inventory() {
           <thead>
             <TableComponent.TR>
               <TableComponent.TH>Item</TableComponent.TH>
-              <TableComponent.TH>vendorName Name</TableComponent.TH>
+              <TableComponent.TH>Vendor</TableComponent.TH>
               <TableComponent.TH>Quantity in Stock</TableComponent.TH>
             </TableComponent.TR>
           </thead>
@@ -113,7 +106,7 @@ function Inventory() {
             {filteredInventory.map((item) => (
               <TableComponent.TR key={item.id}>
                 <TableComponent.TD>{item.productName}</TableComponent.TD>
-                <TableComponent.TD>{item.VendorName}</TableComponent.TD>
+                <TableComponent.TD>{item.vendorName}</TableComponent.TD>
                 <TableComponent.TD>{item.quantity}</TableComponent.TD>
               </TableComponent.TR>
             ))}
