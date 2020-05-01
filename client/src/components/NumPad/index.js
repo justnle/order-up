@@ -9,15 +9,27 @@ export default function NumPad() {
   const handleInput = (event) => {
     event.preventDefault();
     const { value } = event.target;
-    setPin([...pin, value]);
+
+    if (value !== undefined && value !== '[object Object]') {
+      setPin([...pin, value]);
+    } else {
+      handleDelete();
+    }
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+  };
 
   const handleDelete = () => {
-      const pinArr = [...pin];
-      pinArr.pop();
-      setPin(pin, pinArr);
+    const pinArr = pin;
+    console.log(`current pin: ${pinArr}`);
+    if (pinArr.length !== 0) {
+      pinArr.splice(-1, 1);
+      console.log(`new pin: ${pinArr}`);
+      setPin([...pinArr]);
+    }
   };
 
   const buttons = [
@@ -35,7 +47,13 @@ export default function NumPad() {
     <ButtonGroup vertical>
       <Form>
         <Form.Group controlId='formPIN'>
-          <Form.Control name='pin' type='password' placeholder='Enter PIN' onChange={handleInput} value={pin.join('')} />
+          <Form.Control
+            name='pin'
+            type='password'
+            placeholder='Enter PIN'
+            onChange={handleInput}
+            value={pin.join('')}
+          />
         </Form.Group>
       </Form>
       {buttons.map((rows, index) => (
