@@ -11,7 +11,10 @@ function Inventory() {
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
-        <FControl className='flex-row ' placeholder='Search menu items' />
+        <SearchBar
+          className='flex-row rounded-sm'
+          placeholder='Search menu items'
+        />
       </Container>
       <div className=' d-flex row justify-content-center '>
         <div className='m-1'>

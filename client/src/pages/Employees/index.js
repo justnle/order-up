@@ -12,7 +12,10 @@ function Employees() {
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5'>
-        <SearchBar placeholder='Search employees' className='flex-row ' />
+        <SearchBar
+          placeholder='Search employees'
+          className='flex-row rounded-sm'
+        />
       </Container>
       <div className=' d-flex row justify-content-center '>
         <div className='m-1'>
