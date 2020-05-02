@@ -3,13 +3,21 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton } from '../../components/Buttons/index';
+import {
+  AddButton,
+  SubmitButton,
+  // ViewButton,
+  CloseButton,
+} from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/menuAPI';
 
 function Menu() {
-  const [open, setOpen] = useState(false);
+  const [uiSettings, setUiSettings] = useState({
+    open: false,
+    formStatusMessage: null,
+  });
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
   const [addItem, setAddItem] = useState({});
@@ -31,7 +39,7 @@ function Menu() {
             description: item.description,
             pairing: item.pairing,
             prepareTime: item.prepareTime,
-            itemCount: item.itemCount
+            itemCount: item.itemCount,
           };
         });
         const filteredMenu = [...menu];
@@ -69,24 +77,25 @@ function Menu() {
     if (
       addItem.category &&
       addItem.name &&
-      addItem.price &&
+      !isNaN(addItem.price) &&
       addItem.description &&
       addItem.pairing &&
-      addItem.prepareTime &&
-      addItem.itemCount
+      !isNaN(addItem.prepareTime)
     ) {
       API.addMenuItem(addItem).then(loadMenu());
-      setOpen(!open);
-      var p = document.createElement('p');
-      p.innerHTML = 'Item successfully added';
-      document.getElementById('buttonsDiv').appendChild(p);
+      setUiSettings({
+        ...uiSettings,
+        open: !uiSettings.open,
+        formStatusMessage: 'Item successfully added',
+      });
     } else {
-      var p = document.createElement('p');
-      p.innerHTML = 'Please fill all fields with appropriate input to submit menu item';
-      document.getElementById('buttonsDiv').appendChild(p);
+      setUiSettings({
+        ...uiSettings,
+        formStatusMessage:
+          'Please fill in all fields with appropriate data to submit a menu item',
+      });
     }
   }
-
 
   return (
     <div>
@@ -97,7 +106,7 @@ function Menu() {
           onChange={handleInputChange}
         />
       </Container>
-      <div id='buttonsDiv'className='d-flex row justify-content-center'>
+      <div id='buttonsDiv' className='d-flex row justify-content-center'>
         <div className='m-1'>
           <DropDownInput className='d-flex justify-content-center'>
             Sort by category
@@ -105,42 +114,74 @@ function Menu() {
         </div>
         <div className='m-1'>
           <AddButton
-            onClick={() => setOpen(!open)}
+            onClick={() =>
+              setUiSettings({
+                ...uiSettings,
+                open: !uiSettings.open,
+              })
+            }
             aria-controls='example-collapse-text'
-            aria-expanded={open}
+            aria-expanded={uiSettings.open}
           />
         </div>
       </div>
       <div className='d-flex justify-content-center mt-5'>
-        <Collapse in={open}>
+        <Collapse in={uiSettings.open}>
           <div className='w-50'>
             <FControl
-              onChange={(event) => { updateItemState({ category: event.target.value }) }}
-              placeholder='Food or Beverage' className='m-2' />
+              onChange={(event) => {
+                updateItemState({ category: event.target.value });
+              }}
+              placeholder='Food or Beverage'
+              className='m-2'
+            />
             <FControl
-            onChange={(event) => { updateItemState({ name: event.target.value }) }} 
-            placeholder='Item Name' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ price: event.target.value }) }}
-            placeholder='Item Price' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ description: event.target.value }) }}
-            placeholder='Item Description' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ pairing: event.target.value }) }}
-            placeholder='Item Pairings' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ prepareTime: event.target.value }) }}
-            placeholder='Item Prepare Time' className='m-2' />
-            
+              onChange={(event) => {
+                updateItemState({ name: event.target.value });
+              }}
+              placeholder='Item Name'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ price: event.target.value });
+              }}
+              placeholder='Item Price'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ description: event.target.value });
+              }}
+              placeholder='Item Description'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ pairing: event.target.value });
+              }}
+              placeholder='Item Pairings'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ prepareTime: event.target.value });
+              }}
+              placeholder='Item Prepare Time'
+              className='m-2'
+            />
 
             <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton 
-              onClick={handleAddItemSubmit}
-              className='d-flex align-self-center' />
+              <SubmitButton
+                onClick={handleAddItemSubmit}
+                className='d-flex align-self-center'
+              />
             </div>
           </div>
         </Collapse>
+      </div>
+      <div className='d-flex justify-content-center mt-5 text-white'>
+        {uiSettings.formStatusMessage && <p>{uiSettings.formStatusMessage}</p>}
       </div>
       <Container className='d-flex justify-content-center mt-5'>
         <TableComponent className='text-white w-100 '>
@@ -163,6 +204,16 @@ function Menu() {
                 <TableComponent.TD>{item.pairing}</TableComponent.TD>
                 <TableComponent.TD>{item.prepareTime}</TableComponent.TD>
                 <TableComponent.TD>{item.itemCount}</TableComponent.TD>
+                <div className='d-flex row justify-content-centr'>
+                  <CloseButton
+                    className='m-1'
+                    id={item.id}
+                    onClick={(event) => {
+                      console.log(event.target.id);
+                      API.deleteMenuItem(event.target.id).then(loadMenu());
+                    }}
+                  />
+                </div>
               </TableComponent.TR>
             ))}
           </tbody>
