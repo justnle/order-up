@@ -5,7 +5,7 @@ import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
 import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
-import EmployeeModal from '../../components/EmployeeModal';
+import InputModal from '../../components/InputModal';
 
 function Employees2() {
   const [employees, setEmployees] = useState([]);
@@ -22,17 +22,17 @@ function Employees2() {
 
   function loadEmployees() {
     API.getEmployees()
-      .then((res) => {
+      .then(res => {
         setEmployees(res.data);
         setFilteredEmployees(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
   function handleInputChange(event) {
     const inputText = event.target.value;
     setFilteredEmployees(
-      employees.filter((employee) => {
+      employees.filter(employee => {
         const words = employee.name.split(' ');
         let isMatch = false;
         words.forEach((word) => {
@@ -45,10 +45,54 @@ function Employees2() {
     );
   }
 
-  const updateNewEmployee = (event) => {
+  const updateNewEmployee = event => {
     const { name, value } = event.target;
-    setNewEmployee((newEmployee) => ({ ...newEmployee, [name]: value }));
+    setNewEmployee(newEmployee => ({ ...newEmployee, [name]: value }));
+    console.log(newEmployee)
   };
+
+  const newEmployeeInput = [
+    {
+      name: `name`,
+      label: `Employee Name`,
+      type: `text`,
+      text: `Required`,
+      placeholder: `Enter name`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `id`,
+      label: `PIN`,
+      type: `number`,
+      text: `Enter 6 digits (e.g. 000000)`,
+      placeholder: `Enter PIN`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `position`,
+      label: `Position`,
+      type: `text`,
+      text: `Required (e.g. server)`,
+      placeholder: `Enter position`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `rate`,
+      label: `Hourly Rate`,
+      type: `number`,
+      text: `Required (format: 0.00)`,
+      placeholder: `Enter hourly rate`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `permission`,
+      label: `Permission`,
+      type: `number`,
+      text: `Required (from 0 to 5)`,
+      placeholder: `Set permission level`,
+      onChange: updateNewEmployee
+    }
+  ]
 
   function submitButtonPressed(event) {
     event.preventDefault();
@@ -58,6 +102,7 @@ function Employees2() {
       newEmployee.position &&
       newEmployee.permission
     ) {
+      console.log(`making call`)
       API.addEmployee(newEmployee).then((res) => {
         console.log(`status code: ${res.status}`);
         loadEmployees();
@@ -97,12 +142,14 @@ function Employees2() {
         </div>
       </div>
 
-      <EmployeeModal
-        show={showModal}
-        cancel={closeNewEmployeeModal}
-        updateNewEmployee={updateNewEmployee}
+      <InputModal
+        show={showModal} // bool
+        cancel={closeNewEmployeeModal} // bool
+        title={`Add a new employee`} // title string for your modal
         submit={submitButtonPressed}
+        inputs={newEmployeeInput} // array of input objs
       />
+
       <Container className='d-flex justify-content-center mt-5'>
         <TableComponent className='text-white w-75'>
           <thead>

@@ -19,7 +19,7 @@ const EmployeeSchema = new Schema({
   },
   permission: {
     type: Number,
-    min: 1
+    min: 0
   },
   rate: {
     type: Number,
