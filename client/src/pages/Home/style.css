@@ -1,0 +1,13 @@
+.btn-group-vertical button {
+  width: 100%;
+}
+
+.clock-btns .row .btn {
+  width: 10vw;
+  margin: 5px 0px;
+}
+
+#home-container {
+  padding: 10px 0px;
+  background: black;
+}
