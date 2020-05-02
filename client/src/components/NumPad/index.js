@@ -27,60 +27,50 @@ export default function NumPad() {
   const buttons = [
     [
       {
-        name: `1`,
-        value: `1`,
+        name: `1`
       },
       {
-        name: `2`,
-        value: `2`,
+        name: `2`
       },
       {
-        name: `3`,
-        value: `3`,
-      },
+        name: `3`
+      }
     ],
     [
       {
-        name: `4`,
-        value: `4`,
+        name: `4`
       },
       {
-        name: `5`,
-        value: `5`,
+        name: `5`
       },
       {
-        name: `6`,
-        value: `6`,
-      },
+        name: `6`
+      }
     ],
     [
       {
-        name: `7`,
-        value: `7`,
+        name: `7`
       },
       {
-        name: `8`,
-        value: `8`,
+        name: `8`
       },
       {
-        name: `9`,
-        value: `9`,
-      },
+        name: `9`
+      }
     ],
     [
       {
         name: <i className='fas fa-backspace del-btn'></i>,
-        value: `del`,
+        value: `del`
       },
       {
-        name: `0`,
-        value: `0`,
+        name: `0`
       },
       {
         name: <i className='fas fa-sign-in-alt submit-btn'></i>,
-        value: `login`,
-      },
-    ],
+        value: `login`
+      }
+    ]
   ];
 
   return (
@@ -103,7 +93,7 @@ export default function NumPad() {
             <Button
               variant='outline-secondary'
               key={`button-index-${buttonIndex}`}
-              value={button.value}
+              value={!button.value ? button.name : button.value}
               onClick={
                 button.value === `del`
                   ? handleDelete
