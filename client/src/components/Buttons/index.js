@@ -8,9 +8,9 @@ function AddButton(props) {
     </Button>
   );
 }
-function SubmitButton() {
+function SubmitButton(props) {
   return (
-    <Button variant='primary' type='Submit'>
+    <Button variant='primary' type='Submit' {...props}>
       Submit
     </Button>
   );
