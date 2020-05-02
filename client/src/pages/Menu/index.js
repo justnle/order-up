@@ -90,10 +90,13 @@ function Menu() {
 
   return (
     <div>
-      <Container className='d-flex justify-content-center mt-5'>
+      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+        Menu
+      </h1>
+      <Container className='mb-3 mt-5'>
         <SearchBar
-          className='flex-row rounded-sm'
-          placeholder='Search menu items'
+          placeholder='Search employees'
+          className='col-12 rounded-sm'
           onChange={handleInputChange}
         />
       </Container>
@@ -166,10 +169,7 @@ function Menu() {
           </div>
         </Collapse>
       </div>
-      <h1 className='d-flex justify-content-center display-4 text-white'>
-        Menu
-      </h1>
-      <Container className='d-flex justify-content-center'>
+      <Container className='d-flex justify-content-center mt-5'>
         <TableComponent className='text-white'>
           <thead>
             <TableComponent.TR>

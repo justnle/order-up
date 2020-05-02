@@ -72,10 +72,13 @@ function Employees2() {
 
   return (
     <div>
-      <Container className='d-flex justify-content-center mt-5'>
+      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+        Employees
+      </h1>
+      <Container className='mb-3 mt-5'>
         <SearchBar
           placeholder='Search employees'
-          className='flex-row rounded-sm'
+          className='col-12 rounded-sm'
           onChange={handleInputChange}
         />
       </Container>
@@ -100,10 +103,7 @@ function Employees2() {
         updateNewEmployee={updateNewEmployee}
         submit={submitButtonPressed}
       />
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
-        Employees
-      </h1>
-      <Container className='d-flex justify-content-center'>
+      <Container className='d-flex justify-content-center mt-5'>
         <TableComponent className='text-white w-75'>
           <thead>
             <TableComponent.TR>
