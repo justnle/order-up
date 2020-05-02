@@ -18,14 +18,22 @@ function SubmitButton(props) {
 function SelectButton() {
   return <Button variant='success'>Select</Button>;
 }
-function ViewButton() {
-  return <Button variant='info'>View</Button>;
+function ViewButton(props) {
+  return (
+    <Button variant='outline-info' {...props}>
+      View
+    </Button>
+  );
 }
 function LogoutButton() {
   return <Button variant='danger'>Logout</Button>;
 }
-function CloseButton() {
-  return <Button variant='danger'>X</Button>;
+function CloseButton(props) {
+  return (
+    <Button variant='outline-danger' {...props}>
+      X
+    </Button>
+  );
 }
 function OrderSoldButton() {
   return <Button variant='danger'>Mark Order Sold</Button>;

@@ -3,7 +3,12 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton } from '../../components/Buttons/index';
+import {
+  AddButton,
+  SubmitButton,
+  ViewButton,
+  CloseButton
+} from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/inventoryAPI';
@@ -167,7 +172,7 @@ function Inventory() {
             <div className='d-flex justify-content-center mt-5'>
               <SubmitButton
                 onClick={handleAddProductSubmit}
-                className='d-flex align-self-center'
+                className='d-flex align-self-center m-3'
               />
             </div>
           </div>
@@ -180,6 +185,7 @@ function Inventory() {
               <TableComponent.TH>Item</TableComponent.TH>
               <TableComponent.TH>Vendor</TableComponent.TH>
               <TableComponent.TH>Quantity in Stock</TableComponent.TH>
+              <TableComponent.TH>Modify</TableComponent.TH>
             </TableComponent.TR>
           </thead>
           <tbody>
@@ -188,6 +194,20 @@ function Inventory() {
                 <TableComponent.TD>{item.productName}</TableComponent.TD>
                 <TableComponent.TD>{item.vendorName}</TableComponent.TD>
                 <TableComponent.TD>{item.quantity}</TableComponent.TD>
+                <TableComponent.TD>
+                  <div className='d-flex row justify-content-centr'>
+                    <ViewButton className='m-1' />
+                    <CloseButton
+                      className='m-1'
+                      id={item.id}
+                      onClick={(event) => {
+                        API.deleteInventoryItem(event.target.id).then(
+                          loadInventory()
+                        );
+                      }}
+                    />
+                  </div>
+                </TableComponent.TD>
               </TableComponent.TR>
             ))}
           </tbody>
