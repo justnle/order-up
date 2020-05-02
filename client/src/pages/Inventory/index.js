@@ -12,6 +12,7 @@ function Inventory() {
   const [open, setOpen] = useState(false);
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
+  const [addInventory, setAddInventory] = useState({});
 
   useEffect(() => {
     loadInventory();
@@ -54,47 +55,125 @@ function Inventory() {
       })
     );
   }
+  function addToInventory(newProduct) {
+    setAddInventory({
+      ...addInventory,
+      ...newProduct
+    });
+  }
+  function handleAddProductSubmit(event) {
+    event.preventDefault();
+    if (
+      addInventory.productName &&
+      addInventory.quantity &&
+      addInventory.vendorName &&
+      addInventory.vendorContactName &&
+      addInventory.vendorPhoneNumber &&
+      addInventory.vendorEmail &&
+      addInventory.productCost
+    ) {
+      API.addInventoryItem(addInventory).then(loadInventory());
+      setOpen(!open);
+      var p = document.createElement('p');
+      p.innerHTML = 'Product successfully added';
+      document.getElementById('buttonsDiv').appendChild(p);
+    } else {
+      var p = document.createElement('p');
+      p.innerHTML = 'Please fill all fields to submit a product';
+      document.getElementById('productSubmit').appendChild(p);
+    }
+  }
 
   return (
     <div>
-      <Container className="d-flex justify-content-center mt-5 mb-3">
+      <Container className='d-flex justify-content-center mt-5 mb-3'>
         <SearchBar
-          className="flex-row rounded-sm"
-          placeholder="Search inventory items"
+          className='flex-row rounded-sm'
+          placeholder='Search inventory items'
           onChange={handleInputChange}
         />
       </Container>
-      <div className=" d-flex row justify-content-center ">
-        <div className="m-1">
-          <DropDownInput className="d-flex justify-content-center">
+      <div
+        className=' d-flex row justify-content-center align-items-center text-white'
+        id='buttonsDiv'
+      >
+        <div className='m-1'>
+          <DropDownInput className='d-flex justify-content-center'>
             Sort by vendor
           </DropDownInput>
         </div>
-        <div className="m-1">
+        <div className='m-1'>
           <AddButton
             onClick={() => setOpen(!open)}
-            aria-controls="example-collapse-text"
+            aria-controls='example-collapse-text'
             aria-expanded={open}
           />
         </div>
       </div>
-      <div className="d-flex justify-content-center mt-5">
-        <Collapse in={open}>
-          <div className="w-50 ">
-            <FControl placeholder="Item Name" className="m-2" />
-            <FControl placeholder="Vendor Name" className="m-2" />
-            <FControl placeholder="Vendor Contact Name" className="m-2" />
-            <FControl placeholder="Vendor Email Address" className="m-2" />
-            <FControl placeholder="Vendor Product Cost" className="m-2" />
+      <div className='d-flex justify-content-center mt-5'>
+        <Collapse in={open} id='productSubmit' className='text-danger'>
+          <div className='w-50 '>
+            <FControl
+              onChange={(event) => {
+                addToInventory({ productName: event.target.value });
+              }}
+              placeholder='Product Name'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                addToInventory({ quantity: event.target.value });
+              }}
+              placeholder='Quantity'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                addToInventory({ vendorName: event.target.value });
+              }}
+              placeholder='Vendor Name'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                addToInventory({ vendorContactName: event.target.value });
+              }}
+              placeholder='Vendor Contact Name'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                addToInventory({ vendorPhoneNumber: event.target.value });
+              }}
+              placeholder='Vendor Phone Number'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                addToInventory({ vendorEmail: event.target.value });
+              }}
+              placeholder='Vendor Email Address'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                addToInventory({ productCost: event.target.value });
+              }}
+              placeholder='Vendor Product Cost'
+              className='m-2'
+            />
 
-            <div className="d-flex justify-content-center mt-5">
-              <SubmitButton className="d-flex align-self-center" />
+            <div className='d-flex justify-content-center mt-5'>
+              <SubmitButton
+                onClick={handleAddProductSubmit}
+                className='d-flex align-self-center'
+              />
             </div>
           </div>
         </Collapse>
       </div>
-      <Container className="d-flex justify-content-center mt-5">
-        <TableComponent className="text-white w-100 ">
+      <Container className='d-flex justify-content-center mt-5'>
+        <TableComponent className='text-white w-100 '>
           <thead>
             <TableComponent.TR>
               <TableComponent.TH>Item</TableComponent.TH>
