@@ -3,7 +3,7 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton } from '../../components/Buttons/index';
+import { AddButton, SubmitButton, CloseButton } from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/menuAPI';
@@ -18,10 +18,10 @@ function Menu() {
     loadMenu();
   }, []);
 
+
   function loadMenu() {
     API.getMenu()
       .then((res) => {
-        console.log(res);
         const menu = res.data.map((item) => {
           return {
             id: item._id,
@@ -61,7 +61,7 @@ function Menu() {
   function updateItemState(newItem) {
     setAddItem({
       ...addItem,
-      ...newItem
+      ...newItem,
     });
   }
   function handleAddItemSubmit(event) {
@@ -72,8 +72,8 @@ function Menu() {
       addItem.price &&
       addItem.description &&
       addItem.pairing &&
-      addItem.prepareTime &&
-      addItem.itemCount
+      addItem.prepareTime 
+      // addItem.itemCount
     ) {
       API.addMenuItem(addItem).then(loadMenu());
       setOpen(!open);
@@ -82,21 +82,19 @@ function Menu() {
       document.getElementById('buttonsDiv').appendChild(p);
     } else {
       var p = document.createElement('p');
-      p.innerHTML =
-        'Please fill all fields with appropriate input to submit menu item';
-      document.getElementById('buttonsDiv').appendChild(p);
+      p.innerHTML = 'Please fill all fields with appropriate input to submit menu item';
+      document.getElementById('itemSubmit').appendChild(p);
     }
   }
 
+
+
   return (
     <div>
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
-        Menu
-      </h1>
-      <Container className='mb-3 mt-5'>
+      <Container className='d-flex justify-content-center mt-5'>
         <SearchBar
-          placeholder='Search employees'
-          className='col-12 rounded-sm'
+          className='flex-row rounded-sm'
+          placeholder='Search menu items'
           onChange={handleInputChange}
         />
       </Container>
@@ -107,7 +105,7 @@ function Menu() {
           </DropDownInput>
         </div>
         <div className='m-1'>
-          <AddButton
+          <AddButton 
             onClick={() => setOpen(!open)}
             aria-controls='example-collapse-text'
             aria-expanded={open}
@@ -115,70 +113,47 @@ function Menu() {
         </div>
       </div>
       <div className='d-flex justify-content-center mt-5'>
-        <Collapse in={open}>
+        <Collapse id='itemSubmit' className='text-danger' in={open}>
           <div className='w-50'>
             <FControl
-              onChange={(event) => {
-                updateItemState({ category: event.target.value });
-              }}
-              placeholder='Food or Beverage'
-              className='m-2'
-            />
+              onChange={(event) => { updateItemState({ category: event.target.value }) }}
+              placeholder='Food or Beverage' className='m-2' />
             <FControl
-              onChange={(event) => {
-                updateItemState({ name: event.target.value });
-              }}
-              placeholder='Item Name'
-              className='m-2'
-            />
+              onChange={(event) => { updateItemState({ name: event.target.value }) }}
+              placeholder='Item Name' className='m-2' />
             <FControl
-              onChange={(event) => {
-                updateItemState({ price: event.target.value });
-              }}
-              placeholder='Item Price'
-              className='m-2'
-            />
+              onChange={(event) => { updateItemState({ price: event.target.value }) }}
+              placeholder='Item Price' className='m-2' />
             <FControl
-              onChange={(event) => {
-                updateItemState({ description: event.target.value });
-              }}
-              placeholder='Item Description'
-              className='m-2'
-            />
+              onChange={(event) => { updateItemState({ description: event.target.value }) }}
+              placeholder='Item Description' className='m-2' />
             <FControl
-              onChange={(event) => {
-                updateItemState({ pairing: event.target.value });
-              }}
-              placeholder='Item Pairings'
-              className='m-2'
-            />
+              onChange={(event) => { updateItemState({ pairing: event.target.value }) }}
+              placeholder='Item Pairings' className='m-2' />
             <FControl
-              onChange={(event) => {
-                updateItemState({ prepareTime: event.target.value });
-              }}
-              placeholder='Item Prepare Time'
-              className='m-2'
-            />
+              onChange={(event) => { updateItemState({ prepareTime: event.target.value }) }}
+              placeholder='Item Prepare Time' className='m-2' />
+
 
             <div className='d-flex justify-content-center mt-5'>
               <SubmitButton
                 onClick={handleAddItemSubmit}
-                className='d-flex align-self-center'
-              />
+                className='d-flex align-self-center' />
             </div>
           </div>
         </Collapse>
       </div>
       <Container className='d-flex justify-content-center mt-5'>
-        <TableComponent className='text-white'>
+        <TableComponent className='text-white w-100 '>
           <thead>
             <TableComponent.TR>
               <TableComponent.TH>Item</TableComponent.TH>
               <TableComponent.TH>Category</TableComponent.TH>
               <TableComponent.TH>Price</TableComponent.TH>
               <TableComponent.TH>Item Pairing</TableComponent.TH>
-              <TableComponent.TH>Prep Time</TableComponent.TH>
+              <TableComponent.TH>Prepare Time</TableComponent.TH>
               <TableComponent.TH>Item Count</TableComponent.TH>
+              <TableComponent.TH>Modify</TableComponent.TH>
             </TableComponent.TR>
           </thead>
           <tbody>
@@ -190,6 +165,17 @@ function Menu() {
                 <TableComponent.TD>{item.pairing}</TableComponent.TD>
                 <TableComponent.TD>{item.prepareTime}</TableComponent.TD>
                 <TableComponent.TD>{item.itemCount}</TableComponent.TD>
+                <TableComponent.TD>
+                  <CloseButton
+                    className='m-1'
+                    id={item.id}
+                    onClick={(event) => {
+                      API.deleteMenuItem(event.target.id).then(
+                        loadMenu
+                      );
+                    }}
+                  />
+                </TableComponent.TD>
               </TableComponent.TR>
             ))}
           </tbody>
