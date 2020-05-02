@@ -58,3 +58,7 @@ h3 {
   border-color: darkslategray;
   width: 80%;
 }
+
+.sidebar .fas {
+  margin-right: 5px;
+}
