@@ -199,11 +199,11 @@ function Inventory() {
         </div>
       </div>
       <InputModal
-        show={showNewProductModal} // bool
+        show={showNewProductModal}
         cancel={() => {
           setShowNewProductModal(!showNewProductModal);
         }}
-        title={`Add a new employee`} // title string for your modal
+        title={`Add a new Product`}
         submit={handleAddProductSubmit}
         inputs={newInventoryProductInput}
       />
