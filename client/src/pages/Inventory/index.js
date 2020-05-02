@@ -72,8 +72,11 @@ function Inventory() {
       addInventory.vendorEmail &&
       addInventory.productCost
     ) {
-      API.addInventoryItem(addInventory);
-      loadInventory();
+      API.addInventoryItem(addInventory).then(loadInventory());
+      setOpen(!open);
+      var p = document.createElement('p');
+      p.innerHTML = 'Product successfully added';
+      document.getElementById('buttonsDiv').appendChild(p);
     } else {
       var p = document.createElement('p');
       p.innerHTML = 'Please fill all fields to submit a product';
@@ -90,7 +93,10 @@ function Inventory() {
           onChange={handleInputChange}
         />
       </Container>
-      <div className=' d-flex row justify-content-center '>
+      <div
+        className=' d-flex row justify-content-center align-items-center text-white'
+        id='buttonsDiv'
+      >
         <div className='m-1'>
           <DropDownInput className='d-flex justify-content-center'>
             Sort by vendor
