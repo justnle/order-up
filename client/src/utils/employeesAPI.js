@@ -10,6 +10,7 @@ export default {
   },
 
   addEmployee: function (employeeData) {
+    console.log(employeeData);
     return axios.post(`/api/employee`, employeeData);
   },
 
