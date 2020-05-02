@@ -99,7 +99,7 @@ function Inventory() {
     const id = event.target.id;
     API.getInventoryItem(id)
       .then((res) => {
-        setModalData(res.data);
+        setModalData([...modalData, res.data]);
       })
       .then(handleModalShow());
   }
@@ -232,11 +232,17 @@ function Inventory() {
         {modalData.map((data) => (
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
-              <Modal.Title>data.productName</Modal.Title>
+              <Modal.Title key={data._id}>
+                {data.productName.toUpperCase()}
+              </Modal.Title>
             </Modal.Header>
-
             <Modal.Body>
-              Woohoo, you're reading this text in a modal!
+              <p className='lead'>Product Quantity: {data.quantity}</p>
+              <p className='lead'>Vendor Name: {data.vendorName}</p>
+              <p className='lead'>Vendor Contact: {data.vendorContactName}</p>
+              <p className='lead'>Phone: {data.vendorPhoneNumber}</p>
+              <p className='lead'>Email: {data.vendorEmail}</p>
+              <p className='lead'>Cost: {data.productCost}</p>
             </Modal.Body>
             <Modal.Footer>
               <Button variant='secondary' onClick={handleModalClose}>
