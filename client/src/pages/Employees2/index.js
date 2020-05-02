@@ -5,7 +5,7 @@ import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
 import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
-import InputModal from '../../components/EmployeeModal';
+import InputModal from '../../components/InputModal';
 
 function Employees2() {
   const [employees, setEmployees] = useState([]);
