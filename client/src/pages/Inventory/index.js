@@ -3,6 +3,8 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import {
   AddButton,
   SubmitButton,
@@ -18,6 +20,10 @@ function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [addInventory, setAddInventory] = useState({});
+  const [showModal, setModalShow] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const handleModalClose = () => setModalShow(false);
+  const handleModalShow = () => setModalShow(true);
 
   useEffect(() => {
     loadInventory();
@@ -89,7 +95,14 @@ function Inventory() {
       document.getElementById('productSubmit').appendChild(p);
     }
   }
-
+  function handleModalData(event) {
+    const id = event.target.id;
+    API.getInventoryItem(id)
+      .then((res) => {
+        setModalData(res.data);
+      })
+      .then(handleModalShow());
+  }
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
@@ -196,7 +209,11 @@ function Inventory() {
                 <TableComponent.TD>{item.quantity}</TableComponent.TD>
                 <TableComponent.TD>
                   <div className='d-flex row justify-content-centr'>
-                    <ViewButton className='m-1' />
+                    <ViewButton
+                      id={item.id}
+                      onClick={handleModalData}
+                      className='m-1'
+                    />
                     <CloseButton
                       className='m-1'
                       id={item.id}
@@ -212,6 +229,25 @@ function Inventory() {
             ))}
           </tbody>
         </TableComponent>
+        {modalData.map((data) => (
+          <Modal show={showModal} onHide={handleModalClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>data.productName</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              Woohoo, you're reading this text in a modal!
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='secondary' onClick={handleModalClose}>
+                Close
+              </Button>
+              <Button variant='primary' onClick={handleModalClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ))}
       </Container>
     </div>
   );
