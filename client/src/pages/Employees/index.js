@@ -7,7 +7,6 @@ import { AddButton, SubmitButton } from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/employeesAPI';
-import Button from 'react-bootstrap/Button';
 
 function Employees() {
   const [open, setOpen] = useState(false);
