@@ -4,23 +4,27 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 
 export default function NumPad() {
-  const [pin, setPin] = useState([]);
+  const [pin, setPin] = useState(``);
 
   const handleBtnInput = (event) => {
     event.preventDefault();
     const { value } = event.target;
-    setPin([...pin, value]);
+    setPin(pin + value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const userData = {
+      pin: pin
+    };
+    console.log(userData);
   };
 
   const handleDelete = () => {
-    const pinArr = pin;
-    if (pinArr.length !== 0) {
-      pinArr.splice(-1, 1);
-      setPin([...pinArr]);
+    if (pin.length > 0) {
+      let pinStr = pin;
+      pinStr = pinStr.slice(0, -1);
+      setPin(pinStr);
     }
   };
 
@@ -82,8 +86,10 @@ export default function NumPad() {
             name='pin'
             type='password'
             placeholder='Enter PIN'
-            value={pin.join('')}
-            onChange={handleSubmit}
+            value={pin}
+            onChange={(e) => {
+              setPin(e.target.value);
+            }}
           />
         </Form.Group>
       </Form>
