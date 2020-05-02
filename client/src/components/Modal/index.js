@@ -14,8 +14,8 @@ function Modals() {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary">Cancel</Button>
-        <Button variant="primary">OK</Button>
+        <Button variant='secondary'>Cancel</Button>
+        <Button variant='primary'>OK</Button>
       </Modal.Footer>
     </Modal.Dialog>
   );

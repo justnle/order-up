@@ -3,7 +3,14 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton } from '../../components/Buttons/index';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import {
+  AddButton,
+  SubmitButton,
+  ViewButton,
+  CloseButton
+} from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/inventoryAPI';
@@ -13,6 +20,10 @@ function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [addInventory, setAddInventory] = useState({});
+  const [showModal, setModalShow] = useState(false);
+  const [modalData, setModalData] = useState([]);
+  const handleModalClose = () => setModalShow(false);
+  const handleModalShow = () => setModalShow(true);
 
   useEffect(() => {
     loadInventory();
@@ -84,7 +95,27 @@ function Inventory() {
       document.getElementById('productSubmit').appendChild(p);
     }
   }
-
+  function handleModalData(event) {
+    const id = event.target.id;
+    API.getInventoryItem(id)
+      .then((res) => {
+        setModalData([...modalData, res.data]);
+      })
+      .then(handleModalShow());
+  }
+  function handleUpdate() {
+    const item = document.querySelector('#button');
+    const itemID = item.dataset.id;
+    const updateValues = {
+      quantity: document.getElementById('quantity').textContent,
+      vendorName: document.getElementById('vendorName').textContent,
+      vendorContactName: document.getElementById('contact').textContent,
+      vendorPhoneNumber: document.getElementById('phone').textContent,
+      vendorEmail: document.getElementById('email').textContent,
+      productCost: document.getElementById('cost').textContent
+    };
+    API.updateInventoryItem(itemID, updateValues).then(handleModalClose);
+  }
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
@@ -167,7 +198,7 @@ function Inventory() {
             <div className='d-flex justify-content-center mt-5'>
               <SubmitButton
                 onClick={handleAddProductSubmit}
-                className='d-flex align-self-center'
+                className='d-flex align-self-center m-3'
               />
             </div>
           </div>
@@ -180,6 +211,7 @@ function Inventory() {
               <TableComponent.TH>Item</TableComponent.TH>
               <TableComponent.TH>Vendor</TableComponent.TH>
               <TableComponent.TH>Quantity in Stock</TableComponent.TH>
+              <TableComponent.TH>Modify</TableComponent.TH>
             </TableComponent.TR>
           </thead>
           <tbody>
@@ -188,10 +220,68 @@ function Inventory() {
                 <TableComponent.TD>{item.productName}</TableComponent.TD>
                 <TableComponent.TD>{item.vendorName}</TableComponent.TD>
                 <TableComponent.TD>{item.quantity}</TableComponent.TD>
+                <TableComponent.TD>
+                  <div className='d-flex row justify-content-centr'>
+                    <ViewButton
+                      id={item.id}
+                      onClick={handleModalData}
+                      className='m-1'
+                    />
+                    <CloseButton
+                      className='m-1'
+                      id={item.id}
+                      onClick={(event) => {
+                        API.deleteInventoryItem(event.target.id).then(
+                          loadInventory
+                        );
+                      }}
+                    />
+                  </div>
+                </TableComponent.TD>
               </TableComponent.TR>
             ))}
           </tbody>
         </TableComponent>
+        {modalData.map((data) => (
+          <Modal show={showModal} onHide={handleModalClose}>
+            <Modal.Header closeButton>
+              <Modal.Title key={data._id} data-id={data._id} id='button'>
+                {data.productName.toUpperCase()}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <h4>Product Quantity:</h4>
+              <p className='lead' id='quantity' contenteditable='true'>
+                {data.quantity}
+              </p>
+              <h4>Vendor Name:</h4>
+              <p className='lead' id='vendorName' contenteditable='true'>
+                {data.vendorName}
+              </p>
+              <h4>Vendor Contact:</h4>
+              <p className='lead' id='contact' contenteditable='true'>
+                {data.vendorContactName}
+              </p>
+              <h4>Phone:</h4>
+              <p className='lead' id='phone' contenteditable='true'>
+                {data.vendorPhoneNumber}
+              </p>
+              <h4>Email:</h4>
+              <p className='lead' id='email' contenteditable='true'>
+                {data.vendorEmail}
+              </p>
+              <h4>Cost:</h4>
+              <p className='lead' id='cost' contenteditable='true'>
+                {data.productCost}
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant='primary' onClick={handleUpdate}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        ))}
       </Container>
     </div>
   );
