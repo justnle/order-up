@@ -7,7 +7,7 @@ import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
 import EmployeeModal from '../../components/EmployeeModal';
 
-function Employees() {
+function Employees2() {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -126,4 +126,4 @@ function Employees() {
   );
 }
 
-export default Employees;
+export default Employees2;

@@ -9,6 +9,7 @@ import FOH from './pages/FOH';
 import BOH from './pages/BOH';
 import Inventory from './pages/Inventory/index';
 import TimeManagement from './pages/TimeManagement/index';
+import Employees2 from './pages/Employees2';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route exact path='/manager' component={Manager} />
           <Route exact path='/menu' component={Menu} />
           <Route exact path='/employees' component={Employees} />
+          <Route exact path='/employees2' component={Employees2} />
           <Route exact path='/inventory' component={Inventory} />
           <Route exact path='/shifts' component={TimeManagement} />
           <Route exact path='/FOH' component={FOH} />
