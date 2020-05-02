@@ -7,11 +7,13 @@ import { AddButton, SubmitButton } from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/employeesAPI';
+import Button from 'react-bootstrap/Button';
 
 function Employees() {
   const [open, setOpen] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [employee, setEmployee] = useState({});
 
   useEffect(() => {
     loadEmployees();
@@ -19,21 +21,22 @@ function Employees() {
 
   function loadEmployees() {
     API.getEmployees()
-    .then((res) => {
-      console.log(res);
-      const employees = res.data.map((employee) => {
-        return {
-          id: employee.id,
-          name: employee.name,
-          position: employee.position,
-          permission: employee.permission
-        };
-      });
-      const filteredEmployees = [...employees];
-      setEmployees(employees);
-      setFilteredEmployees(filteredEmployees);
-    })
-    .catch((err) => console.error(err));
+      .then((res) => {
+        console.log(res);
+        const employees = res.data.map((employee) => {
+          return {
+            id: employee.id,
+            name: employee.name,
+            position: employee.position,
+            permission: employee.permission,
+            rate: employee.rate,
+          };
+        });
+        const filteredEmployees = [...employees];
+        setEmployees(employees);
+        setFilteredEmployees(filteredEmployees);
+      })
+      .catch((err) => console.error(err));
   }
 
   function handleInputChange(event) {
@@ -54,46 +57,92 @@ function Employees() {
     );
   }
 
-
+  function updateEmployeeState(newFields) {
+    setEmployee({
+      ...employee,
+      ...newFields,
+    });
+  }
 
   return (
     <div>
-      <Container className='d-flex justify-content-center mt-5'>
+      <Container className="d-flex justify-content-center mt-5">
         <SearchBar
-          placeholder='Search employees'
-          className='flex-row rounded-sm'
+          placeholder="Search employees"
+          className="flex-row rounded-sm"
           onChange={handleInputChange}
         />
       </Container>
-      <div className=' d-flex row justify-content-center '>
-        <div className='m-1'>
+      <div className=" d-flex row justify-content-center ">
+        <div className="m-1">
           <DropDownInput>Sort by role</DropDownInput>
         </div>
-        <div className='m-1'>
+        <div className="m-1">
           <AddButton
             onClick={() => setOpen(!open)}
-            aria-controls='example-collapse-text'
+            aria-controls="example-collapse-text"
             aria-expanded={open}
           />
         </div>
       </div>
-      <div className='d-flex justify-content-center mt-5'>
+      <div className="d-flex justify-content-center mt-5">
         <Collapse in={open}>
-          <div className='w-50 '>
-            <FControl placeholder='Employee Name' className='m-2' />
-            <FControl placeholder='Employee Pin' className='m-2' />
-            <FControl placeholder='Employee Rate' className='m-2' />
-            <FControl placeholder='Employee Role' className='m-2' />
-            <FControl placeholder='Employee Permissions' className='m-2' />
-            <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton className='d-flex align-self-center' />
+          <div className="w-50 ">
+            <FControl
+              onChange={(event) => {
+                updateEmployeeState({ name: event.target.value });
+              }}
+              placeholder="Employee Name"
+              className="m-2"
+            />
+            <FControl
+              onChange={(event) => {
+                updateEmployeeState({ id: event.target.value });
+              }}
+              placeholder="Employee Pin"
+              className="m-2"
+            />
+            <FControl
+              onChange={(event) => {
+                updateEmployeeState({ rate: event.target.value });
+              }}
+              placeholder="Employee Rate"
+              className="m-2"
+            />
+            <FControl
+              onChange={(event) => {
+                updateEmployeeState({ position: event.target.value });
+              }}
+              placeholder="Employee Role"
+              className="m-2"
+            />
+            <FControl
+              onChange={(event) => {
+                updateEmployeeState({ permission: event.target.value });
+              }}
+              placeholder="Employee Permissions"
+              className="m-2"
+            />
+            <div className="d-flex justify-content-center mt-5">
+              <Button
+                className="d-flex align-self-center"
+                onClick={() => {
+                  // Validate employee
+                  API.addEmployee(employee);
+                  loadEmployees();
+                }}
+                variant="primary"
+                type="Submit"
+              >
+                Submit
+              </Button>
             </div>
           </div>
         </Collapse>
       </div>
 
-      <Container className='d-flex justify-content-center mt-5'>
-        <TableComponent className='text-white w-75'>
+      <Container className="d-flex justify-content-center mt-5">
+        <TableComponent className="text-white w-75">
           <thead>
             <TableComponent.TR>
               <TableComponent.TH>Employee Name</TableComponent.TH>
@@ -104,13 +153,13 @@ function Employees() {
           </thead>
           <tbody>
             {filteredEmployees.map((employee) => (
-            <TableComponent.TR key={employee.id}>
-              <TableComponent.TD>{employee.name}</TableComponent.TD>
-              <TableComponent.TD>{employee.position}</TableComponent.TD>
-              <TableComponent.TD>$15.00</TableComponent.TD>
-              <TableComponent.TD>{employee.id}</TableComponent.TD>
-            </TableComponent.TR>
-             ))}
+              <TableComponent.TR key={employee.id}>
+                <TableComponent.TD>{employee.name}</TableComponent.TD>
+                <TableComponent.TD>{employee.position}</TableComponent.TD>
+                <TableComponent.TD>{employee.rate}</TableComponent.TD>
+                <TableComponent.TD>{employee.id}</TableComponent.TD>
+              </TableComponent.TR>
+            ))}
           </tbody>
         </TableComponent>
       </Container>
