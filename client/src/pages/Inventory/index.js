@@ -118,9 +118,12 @@ function Inventory() {
   }
   return (
     <div>
-      <Container className='d-flex justify-content-center mt-5 mb-3'>
+      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+        Inventory
+      </h1>
+      <Container className='mt-5 mb-3'>
         <SearchBar
-          className='flex-row rounded-sm'
+          className='col-12 rounded-sm'
           placeholder='Search inventory items'
           onChange={handleInputChange}
         />

@@ -3,14 +3,14 @@ import Button from 'react-bootstrap/Button';
 
 function AddButton(props) {
   return (
-    <Button variant='success' {...props}>
+    <Button variant='outline-success' {...props}>
       Add
     </Button>
   );
 }
 function SubmitButton(props) {
   return (
-    <Button variant='primary' type='Submit' {...props}>
+    <Button variant='outline-info' type='Submit' {...props}>
       Submit
     </Button>
   );
