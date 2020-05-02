@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
-import TableComponent from '../../components/Table/index';
+import DataTable from '../../components/DataTable';
 import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
@@ -94,6 +94,14 @@ function Employees2() {
     }
   ]
 
+  const headingArr = [
+    { key: `name`, heading: `Employee Name` },
+    { key: `id`, heading: `Employee PIN` },
+    { key: `position`, heading: `Position` },
+    { key: `rate`, heading: `Hourly Rate` },
+    { key: `permission`, heading: `Permission Level` }
+  ];
+
   function submitButtonPressed(event) {
     event.preventDefault();
     if (
@@ -151,27 +159,10 @@ function Employees2() {
       />
 
       <Container className='d-flex justify-content-center mt-5'>
-        <TableComponent className='text-white w-75'>
-          <thead>
-            <TableComponent.TR>
-              <TableComponent.TH>Employee Name</TableComponent.TH>
-              <TableComponent.TH>Employee Role</TableComponent.TH>
-              <TableComponent.TH>Employee Rate</TableComponent.TH>
-              <TableComponent.TH>Employee Pin</TableComponent.TH>
-            </TableComponent.TR>
-          </thead>
-          <tbody>
-            {filteredEmployees.map((employee) => (
-              <TableComponent.TR key={employee._id}>
-                <TableComponent.TD>{employee.name}</TableComponent.TD>
-                <TableComponent.TD>{employee.position}</TableComponent.TD>
-                <TableComponent.TD>{employee.rate}</TableComponent.TD>
-                <TableComponent.TD>{employee.id}</TableComponent.TD>
-              </TableComponent.TR>
-            ))}
-          </tbody>
-        </TableComponent>
+        <DataTable headingArr={headingArr} dataArr={filteredEmployees} />
       </Container>
+
+
     </div>
   );
 }
