@@ -103,6 +103,10 @@ function Inventory() {
       })
       .then(handleModalShow());
   }
+  function handleEdit() {
+    let elements = document.getElementById('quantity').innerHTML;
+    console.log(elements);
+  }
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
@@ -237,16 +241,22 @@ function Inventory() {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <p className='lead'>Product Quantity: {data.quantity}</p>
-              <p className='lead'>Vendor Name: {data.vendorName}</p>
-              <p className='lead'>Vendor Contact: {data.vendorContactName}</p>
-              <p className='lead'>Phone: {data.vendorPhoneNumber}</p>
-              <p className='lead'>Email: {data.vendorEmail}</p>
-              <p className='lead'>Cost: {data.productCost}</p>
+              <h4>Product Quantity:</h4>
+              <p className='lead'>{data.quantity}</p>
+              <h4>Vendor Name:</h4>
+              <p className='lead'>{data.vendorName}</p>
+              <h4>Vendor Contact:</h4>
+              <p className='lead'>{data.vendorContactName}</p>
+              <h4>Phone:</h4>
+              <p className='lead'>{data.vendorPhoneNumber}</p>
+              <h4>Email:</h4>
+              <p className='lead'>{data.vendorEmail}</p>
+              <h4>Cost:</h4>
+              <p className='lead'>{data.productCost}</p>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='secondary' onClick={handleModalClose}>
-                Close
+              <Button variant='success' onClick={handleEdit}>
+                Edit
               </Button>
               <Button variant='primary' onClick={handleModalClose}>
                 Save Changes
