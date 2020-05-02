@@ -3,7 +3,7 @@ import Table from "react-bootstrap/Table";
 
 const DataTable = props => {
   return (
-    <Table responsive className='text-white'>
+    <Table responsive className='text-white' hover>
       <thead>
         <tr>
           {props.headingArr.map(heading => {
