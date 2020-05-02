@@ -20,7 +20,7 @@ function Employees2() {
     loadEmployees();
   }, []);
 
-  function loadEmployees() {
+  const loadEmployees = () => {
     API.getEmployees()
       .then(res => {
         setEmployees(res.data);

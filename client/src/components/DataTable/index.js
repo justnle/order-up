@@ -1,14 +1,16 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
+import Checkbox from 'react-bootstrap/InputGroup';
 
 const DataTable = props => {
   return (
-    <Table responsive className='text-white' hover>
+    <Table responsive className='text-white'>
       <thead>
         <tr>
+          <th>Select</th>
           {props.headingArr.map(heading => {
             return (
-              <th>{heading.heading}</th>
+              <th key={heading.key}>{heading.heading}</th>
             )
           })}
         </tr>
@@ -16,10 +18,9 @@ const DataTable = props => {
       <tbody>
         {props.dataArr.map(data => {
           return (
-            <tr>
-              {
-                props.headingArr.map(heading => <td>{data[heading.key]}</td>)
-              }
+            <tr key={data._id}>
+              <td><Checkbox /></td>
+              {props.headingArr.map(heading => <td key={`${data._id}${heading.key}`}>{data[heading.key]}</td>)}
             </tr>
           )
         })}
