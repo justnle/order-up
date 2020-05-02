@@ -22,7 +22,6 @@ function Inventory() {
   const [addInventory, setAddInventory] = useState({});
   const [showModal, setModalShow] = useState(false);
   const [modalData, setModalData] = useState([]);
-  const [updateInventory, setInventoryUpdate] = useState([]);
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
 
@@ -104,7 +103,19 @@ function Inventory() {
       })
       .then(handleModalShow());
   }
-  function handleEdit() {}
+  function handleUpdate() {
+    const item = document.querySelector('#button');
+    const itemID = item.dataset.id;
+    const updateValues = {
+      quantity: document.getElementById('quantity').textContent,
+      vendorName: document.getElementById('vendorName').textContent,
+      vendorContactName: document.getElementById('contact').textContent,
+      vendorPhoneNumber: document.getElementById('phone').textContent,
+      vendorEmail: document.getElementById('email').textContent,
+      productCost: document.getElementById('cost').textContent
+    };
+    API.updateInventoryItem(itemID, updateValues).then(handleModalClose);
+  }
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
@@ -234,7 +245,7 @@ function Inventory() {
         {modalData.map((data) => (
           <Modal show={showModal} onHide={handleModalClose}>
             <Modal.Header closeButton>
-              <Modal.Title key={data._id}>
+              <Modal.Title key={data._id} data-id={data._id} id='button'>
                 {data.productName.toUpperCase()}
               </Modal.Title>
             </Modal.Header>
@@ -265,7 +276,9 @@ function Inventory() {
               </p>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='primary'>Save Changes</Button>
+              <Button variant='primary' onClick={handleUpdate}>
+                Save Changes
+              </Button>
             </Modal.Footer>
           </Modal>
         ))}
