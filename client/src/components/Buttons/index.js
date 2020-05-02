@@ -24,8 +24,8 @@ function ViewButton() {
 function LogoutButton() {
   return <Button variant='danger'>Logout</Button>;
 }
-function CloseButton() {
-  return <Button variant='danger'>X</Button>;
+function CloseButton(props) {
+  return <Button variant='danger' {...props} >X</Button>;
 }
 function OrderSoldButton() {
   return <Button variant='danger'>Mark Order Sold</Button>;
