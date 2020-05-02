@@ -51,7 +51,9 @@ function TimeManagement() {
               <TableComponent.TR key={shift._id}>
                 <TableComponent.TD>{shift.employeeName}</TableComponent.TD>
                 <TableComponent.TD>{shift.clockIn}</TableComponent.TD>
-                <TableComponent.TD>{shift.clockOut}</TableComponent.TD>
+                <TableComponent.TD>
+                  {shift.clockOut === null ? `On the clock` : shift.clockOut}
+                </TableComponent.TD>
                 <TableComponent.TD>
                   <ViewButton className='m-1' />
                   <CloseButton
