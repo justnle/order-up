@@ -13,7 +13,7 @@ function Employees() {
   const [open, setOpen] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [employee, setEmployee] = useState({});
+  const [addEmployee, setAddEmployee] = useState({});
 
   useEffect(() => {
     loadEmployees();
@@ -57,11 +57,32 @@ function Employees() {
     );
   }
 
-  function updateEmployeeState(newFields) {
-    setEmployee({
-      ...employee,
-      ...newFields,
+  function updateEmployeeState(newEmployee) {
+    setAddEmployee({
+      ...addEmployee,
+      ...newEmployee,
     });
+  }
+
+  function handleAddEmployeeSubmit(event) {
+    event.preventDefault();
+    if (
+      addEmployee.name &&
+      addEmployee.id &&
+      addEmployee.position &&
+      !isNaN(addEmployee.rate) &&
+      addEmployee.permission
+    ) {
+      API.addEmployee(addEmployee).then(loadEmployees());
+      setOpen(!open);
+      var p = document.createElement('p');
+      p.innerHTML = 'Employee successfully added';
+      document.getElementById('buttonsDiv').appendChild(p);
+    } else {
+      var p = document.createElement('p');
+      p.innerHTML = 'Please fill all fields with appropriate input to submit an employee';
+      document.getElementById('employeeSubmit').appendChild(p);
+    }
   }
 
   return (
@@ -73,9 +94,14 @@ function Employees() {
           onChange={handleInputChange}
         />
       </Container>
-      <div className=" d-flex row justify-content-center ">
+      <div
+        className=" d-flex row justify-content-center align-items-center text-white"
+        id="buttonsDiv"
+      >
         <div className="m-1">
-          <DropDownInput>Sort by role</DropDownInput>
+          <DropDownInput className="d-flex justify-content-center">
+            Sort by vendor
+          </DropDownInput>
         </div>
         <div className="m-1">
           <AddButton
@@ -124,18 +150,10 @@ function Employees() {
               className="m-2"
             />
             <div className="d-flex justify-content-center mt-5">
-              <Button
+              <SubmitButton
+                onClick={handleAddEmployeeSubmit}
                 className="d-flex align-self-center"
-                onClick={() => {
-                  // Validate employee
-                  API.addEmployee(employee);
-                  loadEmployees();
-                }}
-                variant="primary"
-                type="Submit"
-              >
-                Submit
-              </Button>
+              />
             </div>
           </div>
         </Collapse>
