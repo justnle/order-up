@@ -26,6 +26,10 @@ function Sidebar() {
           <i className='fas fa-user-friends fa-2x fa-fw'></i>
           <span>Employees</span>
         </Link>
+        <Link to='/employees2'>
+          <i className='fas fa-user-friends fa-2x fa-fw'></i>
+          <span>Employees2</span>
+        </Link>
         <Link to='/shifts'>
           <i className='fas fa-clock fa-2x fa-fw'></i>
           <span>Shifts</span>
