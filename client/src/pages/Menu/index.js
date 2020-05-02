@@ -83,7 +83,7 @@ function Menu() {
     } else {
       var p = document.createElement('p');
       p.innerHTML = 'Please fill all fields with appropriate input to submit menu item';
-      document.getElementById('ItemSubmit').appendChild(p);
+      document.getElementById('buttonsDiv').appendChild(p);
     }
   }
 
