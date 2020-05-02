@@ -12,6 +12,7 @@ function Menu() {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
+  const [addItem, setAddItem] = useState({});
 
   useEffect(() => {
     loadMenu();
@@ -19,23 +20,25 @@ function Menu() {
 
   function loadMenu() {
     API.getMenu()
-    .then((res) => {
-      console.log(res);
-      const menu = res.data.map((item) => {
-        return {
-          id: item._id,
-          name: item.name,
-          category: item.category,
-          price: item.price,
-          itemPairing: item.pairing,
-          itemCount: item.itemCount
-        };
-      });
-      const filteredMenu = [...menu];
-      setMenu(menu);
-      setFilteredMenu(filteredMenu);
-    })
-    .catch((err) => console.error(err));
+      .then((res) => {
+        console.log(res);
+        const menu = res.data.map((item) => {
+          return {
+            id: item._id,
+            category: item.category,
+            name: item.name,
+            price: item.price,
+            description: item.description,
+            pairing: item.pairing,
+            prepareTime: item.prepareTime,
+            itemCount: item.itemCount
+          };
+        });
+        const filteredMenu = [...menu];
+        setMenu(menu);
+        setFilteredMenu(filteredMenu);
+      })
+      .catch((err) => console.error(err));
   }
 
   function handleInputChange(event) {
@@ -55,6 +58,35 @@ function Menu() {
       })
     );
   }
+  function updateItemState(newItem) {
+    setAddItem({
+      ...addItem,
+      ...newItem,
+    });
+  }
+  function handleAddItemSubmit(event) {
+    event.preventDefault();
+    if (
+      addItem.category &&
+      addItem.name &&
+      addItem.price &&
+      addItem.description &&
+      addItem.pairing &&
+      addItem.prepareTime &&
+      addItem.itemCount
+    ) {
+      API.addMenuItem(addItem).then(loadMenu());
+      setOpen(!open);
+      var p = document.createElement('p');
+      p.innerHTML = 'Item successfully added';
+      document.getElementById('buttonsDiv').appendChild(p);
+    } else {
+      var p = document.createElement('p');
+      p.innerHTML = 'Please fill all fields with appropriate input to submit menu item';
+      document.getElementById('ItemSubmit').appendChild(p);
+    }
+  }
+
 
   return (
     <div>
@@ -65,7 +97,7 @@ function Menu() {
           onChange={handleInputChange}
         />
       </Container>
-      <div className=' d-flex row justify-content-center '>
+      <div id='buttonsDiv'className='d-flex row justify-content-center'>
         <div className='m-1'>
           <DropDownInput className='d-flex justify-content-center'>
             Sort by category
@@ -81,15 +113,31 @@ function Menu() {
       </div>
       <div className='d-flex justify-content-center mt-5'>
         <Collapse in={open}>
-          <div className='w-50 '>
-            <FControl placeholder='Food or Beverage' className='m-2' />
-            <FControl placeholder='Item Name' className='m-2' />
-            <FControl placeholder='Item Price' className='m-2' />
-            <FControl placeholder='Item Description' className='m-2' />
-            <FControl placeholder='Item Pairings' className='m-2' />
+          <div className='w-50'>
+            <FControl
+              onChange={(event) => { updateItemState({ category: event.target.value }) }}
+              placeholder='Food or Beverage' className='m-2' />
+            <FControl
+            onChange={(event) => { updateItemState({ name: event.target.value }) }} 
+            placeholder='Item Name' className='m-2' />
+            <FControl 
+            onChange={(event) => { updateItemState({ price: event.target.value }) }}
+            placeholder='Item Price' className='m-2' />
+            <FControl 
+            onChange={(event) => { updateItemState({ description: event.target.value }) }}
+            placeholder='Item Description' className='m-2' />
+            <FControl 
+            onChange={(event) => { updateItemState({ pairing: event.target.value }) }}
+            placeholder='Item Pairings' className='m-2' />
+            <FControl 
+            onChange={(event) => { updateItemState({ prepareTime: event.target.value }) }}
+            placeholder='Item Prepare Time' className='m-2' />
+            
 
             <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton className='d-flex align-self-center' />
+              <SubmitButton 
+              onClick={handleAddItemSubmit}
+              className='d-flex align-self-center' />
             </div>
           </div>
         </Collapse>
@@ -102,18 +150,20 @@ function Menu() {
               <TableComponent.TH>Category</TableComponent.TH>
               <TableComponent.TH>Price</TableComponent.TH>
               <TableComponent.TH>Item Pairing</TableComponent.TH>
+              <TableComponent.TH>Prepare Time</TableComponent.TH>
               <TableComponent.TH>Item Count</TableComponent.TH>
             </TableComponent.TR>
           </thead>
           <tbody>
-            {filteredMenu.map((item) => ( 
-            <TableComponent.TR key={item.id}>
-              <TableComponent.TD>{item.name}</TableComponent.TD>
-              <TableComponent.TD>{item.category}</TableComponent.TD>
-              <TableComponent.TD>{item.price}</TableComponent.TD>
-              <TableComponent.TD>{item.itemPairing}</TableComponent.TD>
-              <TableComponent.TD>{item.itemCount}</TableComponent.TD>
-            </TableComponent.TR>
+            {filteredMenu.map((item) => (
+              <TableComponent.TR key={item.id}>
+                <TableComponent.TD>{item.name}</TableComponent.TD>
+                <TableComponent.TD>{item.category}</TableComponent.TD>
+                <TableComponent.TD>{item.price}</TableComponent.TD>
+                <TableComponent.TD>{item.pairing}</TableComponent.TD>
+                <TableComponent.TD>{item.prepareTime}</TableComponent.TD>
+                <TableComponent.TD>{item.itemCount}</TableComponent.TD>
+              </TableComponent.TR>
             ))}
           </tbody>
         </TableComponent>
