@@ -27,7 +27,7 @@ function Sidebar() {
           <span>Employees</span>
         </Link>
         <Link to='/shifts'>
-          <i class='fas fa-clock fa-2x fa-fw'></i>
+          <i className='fas fa-clock fa-2x fa-fw'></i>
           <span>Shifts</span>
         </Link>
         <Link to='/FOH'>
