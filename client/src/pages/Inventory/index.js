@@ -202,7 +202,7 @@ function Inventory() {
                       id={item.id}
                       onClick={(event) => {
                         API.deleteInventoryItem(event.target.id).then(
-                          loadInventory()
+                          loadInventory
                         );
                       }}
                     />
