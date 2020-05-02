@@ -140,8 +140,8 @@ function Inventory() {
     ) {
       API.addInventoryItem(addInventory).then((res) => {
         console.log(`status code: ${res.status}`);
-        alert('Product successfully added');
         loadInventory();
+        setShowNewProductModal(false);
       });
     } else {
       alert(
