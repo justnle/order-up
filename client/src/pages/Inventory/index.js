@@ -204,7 +204,10 @@ function Inventory() {
           </div>
         </Collapse>
       </div>
-      <Container className='d-flex justify-content-center mt-5'>
+      <h1 className='d-flex justify-content-center display-4 text-white'>
+        Inventory
+      </h1>
+      <Container className='d-flex justify-content-center'>
         <TableComponent className='text-white w-100 '>
           <thead>
             <TableComponent.TR>

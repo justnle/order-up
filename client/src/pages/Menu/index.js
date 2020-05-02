@@ -61,7 +61,7 @@ function Menu() {
   function updateItemState(newItem) {
     setAddItem({
       ...addItem,
-      ...newItem,
+      ...newItem
     });
   }
   function handleAddItemSubmit(event) {
@@ -82,11 +82,11 @@ function Menu() {
       document.getElementById('buttonsDiv').appendChild(p);
     } else {
       var p = document.createElement('p');
-      p.innerHTML = 'Please fill all fields with appropriate input to submit menu item';
+      p.innerHTML =
+        'Please fill all fields with appropriate input to submit menu item';
       document.getElementById('buttonsDiv').appendChild(p);
     }
   }
-
 
   return (
     <div>
@@ -97,7 +97,7 @@ function Menu() {
           onChange={handleInputChange}
         />
       </Container>
-      <div id='buttonsDiv'className='d-flex row justify-content-center'>
+      <div id='buttonsDiv' className='d-flex row justify-content-center'>
         <div className='m-1'>
           <DropDownInput className='d-flex justify-content-center'>
             Sort by category
@@ -115,42 +115,69 @@ function Menu() {
         <Collapse in={open}>
           <div className='w-50'>
             <FControl
-              onChange={(event) => { updateItemState({ category: event.target.value }) }}
-              placeholder='Food or Beverage' className='m-2' />
+              onChange={(event) => {
+                updateItemState({ category: event.target.value });
+              }}
+              placeholder='Food or Beverage'
+              className='m-2'
+            />
             <FControl
-            onChange={(event) => { updateItemState({ name: event.target.value }) }} 
-            placeholder='Item Name' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ price: event.target.value }) }}
-            placeholder='Item Price' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ description: event.target.value }) }}
-            placeholder='Item Description' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ pairing: event.target.value }) }}
-            placeholder='Item Pairings' className='m-2' />
-            <FControl 
-            onChange={(event) => { updateItemState({ prepareTime: event.target.value }) }}
-            placeholder='Item Prepare Time' className='m-2' />
-            
+              onChange={(event) => {
+                updateItemState({ name: event.target.value });
+              }}
+              placeholder='Item Name'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ price: event.target.value });
+              }}
+              placeholder='Item Price'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ description: event.target.value });
+              }}
+              placeholder='Item Description'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ pairing: event.target.value });
+              }}
+              placeholder='Item Pairings'
+              className='m-2'
+            />
+            <FControl
+              onChange={(event) => {
+                updateItemState({ prepareTime: event.target.value });
+              }}
+              placeholder='Item Prepare Time'
+              className='m-2'
+            />
 
             <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton 
-              onClick={handleAddItemSubmit}
-              className='d-flex align-self-center' />
+              <SubmitButton
+                onClick={handleAddItemSubmit}
+                className='d-flex align-self-center'
+              />
             </div>
           </div>
         </Collapse>
       </div>
-      <Container className='d-flex justify-content-center mt-5'>
-        <TableComponent className='text-white w-100 '>
+      <h1 className='d-flex justify-content-center display-4 text-white'>
+        Menu
+      </h1>
+      <Container className='d-flex justify-content-center'>
+        <TableComponent className='text-white'>
           <thead>
             <TableComponent.TR>
               <TableComponent.TH>Item</TableComponent.TH>
               <TableComponent.TH>Category</TableComponent.TH>
               <TableComponent.TH>Price</TableComponent.TH>
               <TableComponent.TH>Item Pairing</TableComponent.TH>
-              <TableComponent.TH>Prepare Time</TableComponent.TH>
+              <TableComponent.TH>Prep Time</TableComponent.TH>
               <TableComponent.TH>Item Count</TableComponent.TH>
             </TableComponent.TR>
           </thead>
