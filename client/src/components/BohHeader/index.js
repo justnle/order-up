@@ -24,7 +24,7 @@ function BohHeader() {
   return (
       <Row>
           {titles.map((columns, index) => (
-              <Col md={columns.size} key={`col-${index}`} className='text-center py-2 font-weight-bold'>{columns.name}</Col>
+              <Col xs={columns.size} key={`col-${index}`} className='text-center py-2 font-weight-bold'>{columns.name}</Col>
           ))}
       </Row>
   );
