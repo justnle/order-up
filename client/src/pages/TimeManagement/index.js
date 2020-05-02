@@ -16,6 +16,10 @@ function TimeManagement() {
       setShifts(res.data);
     });
   }
+  function handleDelete(event) {
+    const shiftId = event.target.id;
+    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
+  }
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
@@ -50,7 +54,11 @@ function TimeManagement() {
                 <TableComponent.TD>{shift.clockOut}</TableComponent.TD>
                 <TableComponent.TD>
                   <ViewButton className='m-1' />
-                  <CloseButton className='m-1' />
+                  <CloseButton
+                    className='m-1'
+                    id={shift._id}
+                    onClick={handleDelete}
+                  />
                 </TableComponent.TD>
               </TableComponent.TR>
             ))}

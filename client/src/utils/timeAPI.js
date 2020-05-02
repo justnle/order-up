@@ -16,5 +16,8 @@ export default {
   // update individual employee's time clock
   updateEmployeeTimeClock: function (id, data) {
     return axios.put(`/api/time/${id}`, data);
+  },
+  removeEmployeeTimeClock: function (id) {
+    return axios.delete(`/api/time/${id}`);
   }
 };
