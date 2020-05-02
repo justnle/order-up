@@ -1,10 +1,12 @@
-const router = require(`express`).Router();
-const timeController = require("../../controllers/timeController");
+'use strict';
 
-router.route("/").get(timeController.findAll).post(timeController.create);
+const router = require(`express`).Router();
+const timeController = require(`../../controllers/timeController`);
+
+router.route(`/`).get(timeController.findAll).post(timeController.create);
 
 router
-  .route("/:id")
+  .route(`/:id`)
   .get(timeController.findById)
   .put(timeController.update)
   .delete(timeController.remove);

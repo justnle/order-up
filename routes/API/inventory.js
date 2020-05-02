@@ -1,13 +1,15 @@
+'use strict';
+
 const router = require(`express`).Router();
-const inventoryController = require("../../controllers/inventoryController");
+const inventoryController = require(`../../controllers/inventoryController`);
 
 router
-  .route("/")
+  .route(`/`)
   .get(inventoryController.findAll)
   .post(inventoryController.create);
 
 router
-  .route("/:id")
+  .route(`/:id`)
   .get(inventoryController.findById)
   .put(inventoryController.update)
   .delete(inventoryController.remove);
