@@ -61,6 +61,26 @@ function Inventory() {
       ...newProduct
     });
   }
+  function handleAddProductSubmit(event) {
+    event.preventDefault();
+    if (
+      addInventory.productName &&
+      addInventory.quantity &&
+      addInventory.vendorName &&
+      addInventory.vendorContactName &&
+      addInventory.vendorPhoneNumber &&
+      addInventory.vendorEmail &&
+      addInventory.productCost
+    ) {
+      API.addInventoryItem(addInventory);
+      loadInventory();
+    } else {
+      var p = document.createElement('p');
+      p.innerHTML = 'Please fill all fields to submit a product';
+      document.getElementById('productSubmit').appendChild(p);
+    }
+  }
+
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
@@ -85,7 +105,7 @@ function Inventory() {
         </div>
       </div>
       <div className='d-flex justify-content-center mt-5'>
-        <Collapse in={open}>
+        <Collapse in={open} id='productSubmit' className='text-danger'>
           <div className='w-50 '>
             <FControl
               onChange={(event) => {
@@ -139,12 +159,7 @@ function Inventory() {
 
             <div className='d-flex justify-content-center mt-5'>
               <SubmitButton
-                onClick={() => {
-                  // Validate employee
-                  console.log(addInventory);
-                  API.addInventoryItem(addInventory);
-                  loadInventory();
-                }}
+                onClick={handleAddProductSubmit}
                 className='d-flex align-self-center'
               />
             </div>
