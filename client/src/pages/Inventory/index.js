@@ -22,6 +22,7 @@ function Inventory() {
   const [addInventory, setAddInventory] = useState({});
   const [showModal, setModalShow] = useState(false);
   const [modalData, setModalData] = useState([]);
+  const [updateInventory, setInventoryUpdate] = useState([]);
   const handleModalClose = () => setModalShow(false);
   const handleModalShow = () => setModalShow(true);
 
@@ -103,10 +104,7 @@ function Inventory() {
       })
       .then(handleModalShow());
   }
-  function handleEdit() {
-    let elements = document.getElementById('quantity').innerHTML;
-    console.log(elements);
-  }
+  function handleEdit() {}
   return (
     <div>
       <Container className='d-flex justify-content-center mt-5 mb-3'>
@@ -242,25 +240,32 @@ function Inventory() {
             </Modal.Header>
             <Modal.Body>
               <h4>Product Quantity:</h4>
-              <p className='lead'>{data.quantity}</p>
+              <p className='lead' id='quantity' contenteditable='true'>
+                {data.quantity}
+              </p>
               <h4>Vendor Name:</h4>
-              <p className='lead'>{data.vendorName}</p>
+              <p className='lead' id='vendorName' contenteditable='true'>
+                {data.vendorName}
+              </p>
               <h4>Vendor Contact:</h4>
-              <p className='lead'>{data.vendorContactName}</p>
+              <p className='lead' id='contact' contenteditable='true'>
+                {data.vendorContactName}
+              </p>
               <h4>Phone:</h4>
-              <p className='lead'>{data.vendorPhoneNumber}</p>
+              <p className='lead' id='phone' contenteditable='true'>
+                {data.vendorPhoneNumber}
+              </p>
               <h4>Email:</h4>
-              <p className='lead'>{data.vendorEmail}</p>
+              <p className='lead' id='email' contenteditable='true'>
+                {data.vendorEmail}
+              </p>
               <h4>Cost:</h4>
-              <p className='lead'>{data.productCost}</p>
+              <p className='lead' id='cost' contenteditable='true'>
+                {data.productCost}
+              </p>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant='success' onClick={handleEdit}>
-                Edit
-              </Button>
-              <Button variant='primary' onClick={handleModalClose}>
-                Save Changes
-              </Button>
+              <Button variant='primary'>Save Changes</Button>
             </Modal.Footer>
           </Modal>
         ))}
