@@ -9,7 +9,10 @@ import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/employeesAPI';
 
 function Employees() {
-  const [open, setOpen] = useState(false);
+  const [uiSettings, setUiSettings] = useState({
+    open: false,
+    formStatusMessage: null,
+  });
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [addEmployee, setAddEmployee] = useState({});
@@ -73,16 +76,21 @@ function Employees() {
       addEmployee.permission
     ) {
       API.addEmployee(addEmployee).then(loadEmployees());
-      setOpen(!open);
-      var p = document.createElement('p');
-      p.innerHTML = 'Employee successfully added';
-      document.getElementById('buttonsDiv').appendChild(p);
+      setUiSettings({
+        ...uiSettings,
+        open: !uiSettings.open,
+        formStatusMessage: 'Employee successfully added',
+      });
     } else {
-      var p = document.createElement('p');
-      p.innerHTML = 'Please fill all fields with appropriate input to submit an employee';
-      document.getElementById('employeeSubmit').appendChild(p);
+      setUiSettings({
+        ...uiSettings,
+        formStatusMessage:
+          'Please fill in all fields with appropriate input to submit an employee',
+      });
     }
   }
+
+  console.log(uiSettings);
 
   return (
     <div>
@@ -104,14 +112,19 @@ function Employees() {
         </div>
         <div className="m-1">
           <AddButton
-            onClick={() => setOpen(!open)}
+            onClick={() =>
+              setUiSettings({
+                ...uiSettings,
+                open: !uiSettings.open,
+              })
+            }
             aria-controls="example-collapse-text"
-            aria-expanded={open}
+            aria-expanded={uiSettings.open}
           />
         </div>
       </div>
       <div className="d-flex justify-content-center mt-5">
-        <Collapse in={open}>
+        <Collapse in={uiSettings.open}>
           <div className="w-50 ">
             <FControl
               onChange={(event) => {
@@ -156,6 +169,10 @@ function Employees() {
             </div>
           </div>
         </Collapse>
+      </div>
+
+      <div className="d-flex justify-content-center mt-5 text-white">
+        {uiSettings.formStatusMessage && <p>{uiSettings.formStatusMessage}</p>}
       </div>
 
       <Container className="d-flex justify-content-center mt-5">
