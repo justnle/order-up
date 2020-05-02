@@ -65,12 +65,12 @@ function Inventory() {
     event.preventDefault();
     if (
       addInventory.productName &&
-      addInventory.quantity &&
+      !isNaN(addInventory.quantity) &&
       addInventory.vendorName &&
       addInventory.vendorContactName &&
       addInventory.vendorPhoneNumber &&
       addInventory.vendorEmail &&
-      addInventory.productCost
+      !isNaN(addInventory.productCost)
     ) {
       API.addInventoryItem(addInventory).then(loadInventory());
       setOpen(!open);
@@ -79,7 +79,8 @@ function Inventory() {
       document.getElementById('buttonsDiv').appendChild(p);
     } else {
       var p = document.createElement('p');
-      p.innerHTML = 'Please fill all fields to submit a product';
+      p.innerHTML =
+        'Please fill all fields with appropriate input to submit a product';
       document.getElementById('productSubmit').appendChild(p);
     }
   }
