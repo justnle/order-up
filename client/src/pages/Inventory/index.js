@@ -11,15 +11,14 @@ import {
   ViewButton,
   CloseButton
 } from '../../components/Buttons/index';
-import Collapse from 'react-bootstrap/Collapse';
-import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/inventoryAPI';
+import InputModal from '../../components/InputModal';
 
 function Inventory() {
-  const [open, setOpen] = useState(false);
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [addInventory, setAddInventory] = useState({});
+  const [showNewProductModal, setShowNewProductModal] = useState(false);
   const [showModal, setModalShow] = useState(false);
   const [modalData, setModalData] = useState([]);
   const handleModalClose = () => setModalShow(false);
@@ -32,7 +31,6 @@ function Inventory() {
   function loadInventory() {
     API.getInventory()
       .then((res) => {
-        console.log(res);
         const inventory = res.data.map((item) => {
           return {
             id: item._id,
@@ -66,33 +64,89 @@ function Inventory() {
       })
     );
   }
-  function addToInventory(newProduct) {
-    setAddInventory({
-      ...addInventory,
-      ...newProduct
-    });
-  }
+  const addToInventory = (event) => {
+    const { name, value } = event.target;
+    setAddInventory((addInventory) => ({ ...addInventory, [name]: value }));
+    console.log(addInventory);
+  };
+  const newInventoryProductInput = [
+    {
+      name: `productName`,
+      label: `Product Name`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Product Name`,
+      onChange: addToInventory
+    },
+    {
+      name: `quantity`,
+      label: `Quantity`,
+      text: `Required`,
+      type: `number`,
+      placeholder: `Enter Quantity`,
+      onChange: addToInventory
+    },
+    {
+      name: `vendorName`,
+      label: `Vendor Name`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Vendor Name`,
+      onChange: addToInventory
+    },
+    {
+      name: `vendorContactName`,
+      label: `Vendor Contact Name`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Vendor Contact Name`,
+      onChange: addToInventory
+    },
+    {
+      name: `vendorPhoneNumber`,
+      label: `Vendor Phone Number`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Vendor Phone Number`,
+      onChange: addToInventory
+    },
+    {
+      name: `vendorEmail`,
+      label: `Vendor Email Address`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Vendor Email`,
+      onChange: addToInventory
+    },
+    {
+      name: `productCost`,
+      label: `Vendor Product Cost`,
+      text: `Required`,
+      type: `number`,
+      placeholder: `Enter Vendor Product Cost`,
+      onChange: addToInventory
+    }
+  ];
   function handleAddProductSubmit(event) {
     event.preventDefault();
     if (
       addInventory.productName &&
-      !isNaN(addInventory.quantity) &&
+      addInventory.quantity &&
       addInventory.vendorName &&
       addInventory.vendorContactName &&
       addInventory.vendorPhoneNumber &&
       addInventory.vendorEmail &&
-      !isNaN(addInventory.productCost)
+      addInventory.productCost
     ) {
-      API.addInventoryItem(addInventory).then(loadInventory());
-      setOpen(!open);
-      var p = document.createElement('p');
-      p.innerHTML = 'Product successfully added';
-      document.getElementById('buttonsDiv').appendChild(p);
+      API.addInventoryItem(addInventory).then((res) => {
+        console.log(`status code: ${res.status}`);
+        loadInventory();
+        setShowNewProductModal(false);
+      });
     } else {
-      var p = document.createElement('p');
-      p.innerHTML =
-        'Please fill all fields with appropriate input to submit a product';
-      document.getElementById('productSubmit').appendChild(p);
+      alert(
+        'Please fill in all fields with appropriate input to submit an employee'
+      );
     }
   }
   function handleModalData(event) {
@@ -139,74 +193,20 @@ function Inventory() {
         </div>
         <div className='m-1'>
           <AddButton
-            onClick={() => setOpen(!open)}
+            onClick={() => setShowNewProductModal(!showNewProductModal)}
             aria-controls='example-collapse-text'
-            aria-expanded={open}
           />
         </div>
       </div>
-      <div className='d-flex justify-content-center mt-5'>
-        <Collapse in={open} id='productSubmit' className='text-danger'>
-          <div className='w-50 '>
-            <FControl
-              onChange={(event) => {
-                addToInventory({ productName: event.target.value });
-              }}
-              placeholder='Product Name'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                addToInventory({ quantity: event.target.value });
-              }}
-              placeholder='Quantity'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                addToInventory({ vendorName: event.target.value });
-              }}
-              placeholder='Vendor Name'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                addToInventory({ vendorContactName: event.target.value });
-              }}
-              placeholder='Vendor Contact Name'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                addToInventory({ vendorPhoneNumber: event.target.value });
-              }}
-              placeholder='Vendor Phone Number'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                addToInventory({ vendorEmail: event.target.value });
-              }}
-              placeholder='Vendor Email Address'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                addToInventory({ productCost: event.target.value });
-              }}
-              placeholder='Vendor Product Cost'
-              className='m-2'
-            />
-
-            <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton
-                onClick={handleAddProductSubmit}
-                className='d-flex align-self-center m-3'
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
+      <InputModal
+        show={showNewProductModal} // bool
+        cancel={() => {
+          setShowNewProductModal(!showNewProductModal);
+        }}
+        title={`Add a new employee`} // title string for your modal
+        submit={handleAddProductSubmit}
+        inputs={newInventoryProductInput}
+      />
       <Container className='d-flex justify-content-center mt-5'>
         <TableComponent className='text-white w-100 '>
           <thead>
