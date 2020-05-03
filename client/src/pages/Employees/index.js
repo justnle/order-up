@@ -1,96 +1,152 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
+import EditBar from '../../components/EditBar';
+import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
-import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton } from '../../components/Buttons/index';
-import Collapse from 'react-bootstrap/Collapse';
-import FControl from '../../components/TextInput/FormGroup';
+import DataTable from '../../components/DataTable';
+import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
+import InputModal from '../../components/InputModal';
 
 function Employees() {
-  const [uiSettings, setUiSettings] = useState({
-    open: false,
-    formStatusMessage: null
-  });
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [addEmployee, setAddEmployee] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [newEmployee, setNewEmployee] = useState({});
+  const [selectedEmployees, setSelectedEmployees] = useState([])
+
+  const showNewEmployeeModal = () => setShowModal(true);
+  const closeNewEmployeeModal = () => setShowModal(false);
 
   useEffect(() => {
     loadEmployees();
   }, []);
 
-  function loadEmployees() {
+  const loadEmployees = () => {
     API.getEmployees()
-      .then((res) => {
-        console.log(res);
-        const employees = res.data.map((employee) => {
-          return {
-            id: employee.id,
-            name: employee.name,
-            position: employee.position,
-            permission: employee.permission,
-            rate: employee.rate
-          };
-        });
-        const filteredEmployees = [...employees];
-        setEmployees(employees);
-        setFilteredEmployees(filteredEmployees);
+      .then(res => {
+        setEmployees(res.data);
+        setFilteredEmployees(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
-  function handleInputChange(event) {
+  const handleInputChange = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
-      employees.filter((employee) => {
+      employees.filter(employee => {
         const words = employee.name.split(' ');
         let isMatch = false;
-
-        words.forEach((word) => {
+        words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = true;
           }
         });
-
         return isMatch;
       })
     );
   }
 
-  function updateEmployeeState(newEmployee) {
-    setAddEmployee({
-      ...addEmployee,
-      ...newEmployee
-    });
+  const updateNewEmployee = event => {
+    const { name, value } = event.target;
+    setNewEmployee(newEmployee => ({ ...newEmployee, [name]: value }));
+    console.log(newEmployee)
+  };
+
+  const newEmployeeInput = [
+    {
+      name: `name`,
+      label: `Employee Name`,
+      type: `text`,
+      text: `Required`,
+      placeholder: `Enter name`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `id`,
+      label: `PIN`,
+      type: `number`,
+      text: `Enter 6 digits (e.g. 000000)`,
+      placeholder: `Enter PIN`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `position`,
+      label: `Position`,
+      type: `text`,
+      text: `Required (e.g. server)`,
+      placeholder: `Enter position`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `rate`,
+      label: `Hourly Rate`,
+      type: `number`,
+      text: `Required (format: 0.00)`,
+      placeholder: `Enter hourly rate`,
+      onChange: updateNewEmployee
+    },
+    {
+      name: `permission`,
+      label: `Permission`,
+      type: `number`,
+      text: `Required (from 0 to 5)`,
+      placeholder: `Set permission level`,
+      onChange: updateNewEmployee
+    }
+  ]
+
+  const headingArr = [
+    { key: `name`, heading: `Employee Name` },
+    { key: `id`, heading: `Employee PIN` },
+    { key: `position`, heading: `Position` },
+    { key: `rate`, heading: `Hourly Rate` },
+    { key: `permission`, heading: `Permission Level` }
+  ];
+
+  const clickCheckbox = event => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedEmployees([...selectedEmployees, selectedId])
+    } else {
+      setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
+    }
+    console.log(selectedEmployees);
   }
 
-  function handleAddEmployeeSubmit(event) {
+  const submitButtonPressed = event => {
     event.preventDefault();
     if (
-      addEmployee.name &&
-      addEmployee.id &&
-      addEmployee.position &&
-      !isNaN(addEmployee.rate) &&
-      addEmployee.permission
+      newEmployee.name &&
+      newEmployee.id &&
+      newEmployee.position &&
+      newEmployee.permission
     ) {
-      API.addEmployee(addEmployee).then(loadEmployees());
-      setUiSettings({
-        ...uiSettings,
-        open: !uiSettings.open,
-        formStatusMessage: 'Employee successfully added'
+      console.log(`making call`)
+      API.addEmployee(newEmployee).then(res => {
+        console.log(`status code: ${res.status}`);
+        loadEmployees();
+        closeNewEmployeeModal();
       });
     } else {
-      setUiSettings({
-        ...uiSettings,
-        formStatusMessage:
-          'Please fill in all fields with appropriate input to submit an employee'
-      });
+      alert(
+        'Please fill in all fields with appropriate input to submit an employee'
+      );
     }
   }
 
-  console.log(uiSettings);
+  const deleteButtonPressed = event => {
+    console.log(`Delete button clicked`)
+    API.deleteManyEmployee(selectedEmployees)
+      .then(res => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadEmployees();
+        }
+      })
+      .catch(err => console.error(err));
+  }
 
   return (
     <div>
@@ -104,6 +160,7 @@ function Employees() {
           onChange={handleInputChange}
         />
       </Container>
+
       <div
         className=' d-flex row justify-content-center align-items-center text-white'
         id='buttonsDiv'
@@ -114,91 +171,38 @@ function Employees() {
           </DropDownInput>
         </div>
         <div className='m-1'>
-          <AddButton
-            onClick={() =>
-              setUiSettings({
-                ...uiSettings,
-                open: !uiSettings.open
-              })
-            }
-            aria-controls='example-collapse-text'
-            aria-expanded={uiSettings.open}
-          />
+          <AddButton onClick={showNewEmployeeModal} />
         </div>
       </div>
-      <div className='d-flex justify-content-center mt-5'>
-        <Collapse in={uiSettings.open}>
-          <div className='w-50 '>
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ name: event.target.value });
-              }}
-              placeholder='Employee Name'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ id: event.target.value });
-              }}
-              placeholder='Employee Pin'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ rate: event.target.value });
-              }}
-              placeholder='Employee Rate'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ position: event.target.value });
-              }}
-              placeholder='Employee Role'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ permission: event.target.value });
-              }}
-              placeholder='Employee Permissions'
-              className='m-2'
-            />
-            <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton
-                onClick={handleAddEmployeeSubmit}
-                className='d-flex align-self-center'
-              />
-            </div>
-          </div>
-        </Collapse>
-      </div>
 
-      <div className='d-flex justify-content-center mt-5 text-white'>
-        {uiSettings.formStatusMessage && <p>{uiSettings.formStatusMessage}</p>}
-      </div>
-      <Container className='d-flex justify-content-center'>
-        <TableComponent className='text-white w-75'>
-          <thead>
-            <TableComponent.TR>
-              <TableComponent.TH>Employee Name</TableComponent.TH>
-              <TableComponent.TH>Employee Role</TableComponent.TH>
-              <TableComponent.TH>Employee Rate</TableComponent.TH>
-              <TableComponent.TH>Employee Pin</TableComponent.TH>
-            </TableComponent.TR>
-          </thead>
-          <tbody>
-            {filteredEmployees.map((employee) => (
-              <TableComponent.TR key={employee.id}>
-                <TableComponent.TD>{employee.name}</TableComponent.TD>
-                <TableComponent.TD>{employee.position}</TableComponent.TD>
-                <TableComponent.TD>{employee.rate}</TableComponent.TD>
-                <TableComponent.TD>{employee.id}</TableComponent.TD>
-              </TableComponent.TR>
-            ))}
-          </tbody>
-        </TableComponent>
+      <InputModal
+        show={showModal} // bool
+        cancel={closeNewEmployeeModal} // bool
+        title={`Add a new employee`} // title string for your modal
+        submit={submitButtonPressed}
+        inputs={newEmployeeInput} // array of input objs
+      />
+
+      <Container className='d-flex justify-content-center mt-5'>
+        <Col>
+          <Row className='mb-1'>
+            <EditBar noneSelected={selectedEmployees.length ? false : true}
+              add={showNewEmployeeModal}
+              delete={deleteButtonPressed}
+            />
+          </Row>
+          <Row>
+            <DataTable
+              headingArr={headingArr}
+              dataArr={filteredEmployees}
+              hideEdit={false}
+              clickCheckbox={clickCheckbox}
+            />
+          </Row>
+        </Col>
       </Container>
+
+
     </div>
   );
 }
