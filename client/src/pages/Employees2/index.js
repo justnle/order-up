@@ -141,15 +141,8 @@ function Employees2() {
     API.deleteManyEmployee(selectedEmployees)
       .then(res => {
         console.log(`status code: ${res.status}`);
-        console.log(res);
         if (res.data.n > 0) {
-          let employeeArr = employees
-          for (const deletedId of selectedEmployees) {
-            employeeArr.filter(_id => _id !== deletedId);
-            console.log(employeeArr);
-          }
-          setEmployees(employeeArr);
-          setFilteredEmployees(employeeArr);
+          loadEmployees();
         }
       })
       .catch(err => console.error(err));
