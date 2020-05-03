@@ -3,12 +3,7 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
-import {
-  AddButton
-  // SubmitButton,
-  // ViewButton,
-  // CloseButton
-} from '../../components/Buttons/index';
+import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/inventoryAPI';
 import InputModal from '../../components/InputModal';
 

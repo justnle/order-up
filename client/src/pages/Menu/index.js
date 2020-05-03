@@ -2,14 +2,8 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
-import TableComponent from '../../components/Table/index';
-import {
-  AddButton,
-  SubmitButton,
-  CloseButton
-} from '../../components/Buttons/index';
-import Collapse from 'react-bootstrap/Collapse';
-import FControl from '../../components/TextInput/FormGroup';
+import DataTable from '../../components/DataTable';
+import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/menuAPI';
 import InputModal from '../../components/InputModal';
 
@@ -146,13 +140,23 @@ function Menu() {
       onChange: addItemInventory
     }
   ];
-
+  const menuItemsHeadingArr = [
+    { key: `name`, heading: `Item Name` },
+    { key: `category`, heading: `Category` },
+    { key: `price`, heading: `Price` },
+    { key: `pairing`, heading: `Pairing` },
+    { key: `prepareTime`, heading: `Prep Time` },
+    { key: `itemCount`, heading: `Count` }
+  ];
   return (
     <div>
-      <Container className='d-flex justify-content-center mt-5'>
+      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+        Menu
+      </h1>
+      <Container className='mt-5 mb-3'>
         <SearchBar
-          className='flex-row rounded-sm'
-          placeholder='Search menu items'
+          className='col-12 rounded-sm'
+          placeholder='Search inventory items'
           onChange={handleInputChange}
         />
       </Container>
@@ -180,40 +184,7 @@ function Menu() {
         inputs={addItemArr}
       />
       <Container className='d-flex justify-content-center mt-5'>
-        <TableComponent className='text-white w-100 '>
-          <thead>
-            <TableComponent.TR>
-              <TableComponent.TH>Item</TableComponent.TH>
-              <TableComponent.TH>Category</TableComponent.TH>
-              <TableComponent.TH>Price</TableComponent.TH>
-              <TableComponent.TH>Item Pairing</TableComponent.TH>
-              <TableComponent.TH>Prepare Time</TableComponent.TH>
-              <TableComponent.TH>Item Count</TableComponent.TH>
-              <TableComponent.TH>Modify</TableComponent.TH>
-            </TableComponent.TR>
-          </thead>
-          <tbody>
-            {filteredMenu.map((item) => (
-              <TableComponent.TR key={item.id}>
-                <TableComponent.TD>{item.name}</TableComponent.TD>
-                <TableComponent.TD>{item.category}</TableComponent.TD>
-                <TableComponent.TD>{item.price}</TableComponent.TD>
-                <TableComponent.TD>{item.pairing}</TableComponent.TD>
-                <TableComponent.TD>{item.prepareTime}</TableComponent.TD>
-                <TableComponent.TD>{item.itemCount}</TableComponent.TD>
-                <TableComponent.TD>
-                  <CloseButton
-                    className='m-1'
-                    id={item.id}
-                    onClick={(event) => {
-                      API.deleteMenuItem(event.target.id).then(loadMenu);
-                    }}
-                  />
-                </TableComponent.TD>
-              </TableComponent.TR>
-            ))}
-          </tbody>
-        </TableComponent>
+        <DataTable headingArr={menuItemsHeadingArr} dataArr={filteredMenu} />
       </Container>
     </div>
   );
