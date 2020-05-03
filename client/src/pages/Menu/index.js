@@ -8,7 +8,6 @@ import API from '../../utils/menuAPI';
 import InputModal from '../../components/InputModal';
 
 function Menu() {
-  const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
   const [addItem, setAddItem] = useState({});
