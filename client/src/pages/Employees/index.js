@@ -12,8 +12,9 @@ function Employees() {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [mode, setMode] = useState(`add`);
-  const [newEmployee, setNewEmployee] = useState({});
   const [editEmployee, setEditEmployee] = useState({});
+  const [employeeInfo, setEmployeeInfo] = useState({});
+  const [inputs, setInputs] = useState([]);
   const [selectedEmployees, setSelectedEmployees] = useState([])
   const [modalTitle, setModalTitle] = useState();
 
@@ -46,24 +47,24 @@ function Employees() {
     );
   }
 
-  const updateNewEmployeeState = event => {
-    const { name, value } = event.target;
-    setNewEmployee(newEmployee => ({ ...newEmployee, [name]: value }));
-  };
-
   const updateEditEmployeeState = event => {
     const { name, value } = event.target;
     setEditEmployee(editEmployee => ({ ...editEmployee, [name]: value }));
   };
 
-  const newEmployeeInput = [
+  const updateEmployeeInfoState = event => {
+    const { name, value } = event.target;
+    setEmployeeInfo(info => ({ ...info, [name]: value }));
+  }
+
+  const employeeNameInput = [
     {
       name: `name`,
       label: `Employee Name`,
       type: `text`,
-      text: `Required`,
+      text: `Full name (e.g. John Smith)`,
       placeholder: `Enter name`,
-      onChange: updateNewEmployeeState
+      onChange: updateEmployeeInfoState
     },
     {
       name: `id`,
@@ -71,42 +72,18 @@ function Employees() {
       type: `number`,
       text: `Enter 6 digits (e.g. 000000)`,
       placeholder: `Enter PIN`,
-      onChange: updateNewEmployeeState
-    },
-    {
-      name: `position`,
-      label: `Position`,
-      type: `text`,
-      text: `Required (e.g. server)`,
-      placeholder: `Enter position`,
-      onChange: updateNewEmployeeState
-    },
-    {
-      name: `rate`,
-      label: `Hourly Rate`,
-      type: `number`,
-      text: `Required (format: 0.00)`,
-      placeholder: `Enter hourly rate`,
-      onChange: updateNewEmployeeState
-    },
-    {
-      name: `permission`,
-      label: `Permission`,
-      type: `number`,
-      text: `Required (from 0 to 5)`,
-      placeholder: `Set permission level`,
-      onChange: updateNewEmployeeState
+      onChange: updateEmployeeInfoState
     }
   ]
 
-  const editEmployeeInput = [
+  const otherInput = [
     {
       name: `position`,
       label: `Position`,
       type: `text`,
-      text: `Required (e.g. server)`,
+      text: `Required (e.g. Server)`,
       placeholder: `Enter position`,
-      onChange: updateEditEmployeeState
+      onChange: updateEmployeeInfoState
     },
     {
       name: `rate`,
@@ -114,15 +91,15 @@ function Employees() {
       type: `number`,
       text: `Required (format: 0.00)`,
       placeholder: `Enter hourly rate`,
-      onChange: updateEditEmployeeState
+      onChange: updateEmployeeInfoState
     },
     {
       name: `permission`,
       label: `Permission`,
       type: `number`,
-      text: `Required (from 0 to 5)`,
+      text: `Permission level from 0 to 5, where 0 has most access`,
       placeholder: `Set permission level`,
-      onChange: updateEditEmployeeState
+      onChange: updateEmployeeInfoState
     }
   ]
 
@@ -134,8 +111,10 @@ function Employees() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
+  
   const addButtonPressed = () => {
     setMode(`add`);
+    setInputs([...employeeNameInput, ...otherInput]);
     setModalTitle(`Add a new employee`);
     setShowModal(true);
   }
@@ -171,16 +150,17 @@ function Employees() {
   const submitButtonPressed = event => {
     event.preventDefault();
     if (
-      newEmployee.name &&
-      newEmployee.id &&
-      newEmployee.position &&
-      newEmployee.permission
+      employeeInfo.name &&
+      employeeInfo.id &&
+      employeeInfo.position &&
+      employeeInfo.permission &&
+      employeeInfo.rate
     ) {
-      console.log(`making call`)
-      API.addEmployee(newEmployee).then(res => {
+      console.log(`Making a POST call`)
+      API.addEmployee(employeeInfo).then(res => {
         console.log(`status code: ${res.status}`);
-        loadEmployees();
         closeEmployeeModal();
+        loadEmployees();
       });
     } else {
       alert(
@@ -229,7 +209,7 @@ function Employees() {
         cancel={closeEmployeeModal}
         title={modalTitle}
         submit={submitButtonPressed}
-        inputs={mode === `add` ? newEmployeeInput : editEmployeeInput} // array of input objs
+        inputs={inputs} // array of input objs
       />
 
       <Container className='d-flex justify-content-center mt-5'>
