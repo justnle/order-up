@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
-import TableComponent from '../../components/Table/index';
+import { Container, Col, Row } from 'react-bootstrap';
+import DataTable from '../../components/DataTable';
 import Calendar from '../../components/Calendar/index';
 import API from '../../utils/timeAPI';
-import { ViewButton, CloseButton } from '../../components/Buttons/index';
+import EditBar from '../../components/EditBar/index';
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
+  const [selectedShifts, setSelectedShifts] = useState([]);
+
   useEffect(() => {
     loadShifts();
   }, []);
   function loadShifts() {
     API.getTimeClock().then((res) => {
-      console.log(res);
       setShifts(res.data);
     });
   }
@@ -20,6 +21,24 @@ function TimeManagement() {
     const shiftId = event.target.id;
     API.removeEmployeeTimeClock(shiftId).then(loadShifts());
   }
+  const shiftsHeadingArr = [
+    { key: `employeeName`, heading: `Employee` },
+    { key: `clockIn`, heading: `Clock In` },
+    { key: `clockOut`, heading: `Clock Out` }
+  ];
+  const clickCheckbox = (event) => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedShifts([...selectedShifts, selectedId]);
+    } else {
+      setSelectedShifts(selectedShifts.filter((id) => id !== selectedId));
+    }
+    console.log(selectedShifts);
+  };
+  const deleteButtonPressed = (event) => {
+    console.log(`Build delete shift API`);
+  };
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
@@ -33,39 +52,24 @@ function TimeManagement() {
       </Container>
       <Container className='d-flex justify-content-center '>
         <span className='text-white mr-5'>Filter by date</span>
-        <Calendar className='mt-5 ' />
-        <Calendar className='mt-5 ' />
+        <Calendar className='mt-5' />
+        <Calendar className='mt-5' />
       </Container>
       <Container className='d-flex justify-content-center mt-5'>
-        <TableComponent className='text-white'>
-          <thead>
-            <TableComponent.TR>
-              <TableComponent.TH>Employee Name</TableComponent.TH>
-              <TableComponent.TH>Clock In</TableComponent.TH>
-              <TableComponent.TH>Clock Out</TableComponent.TH>
-              <TableComponent.TH>Modify</TableComponent.TH>
-            </TableComponent.TR>
-          </thead>
-          <tbody>
-            {shifts.map((shift) => (
-              <TableComponent.TR key={shift._id}>
-                <TableComponent.TD>{shift.employeeName}</TableComponent.TD>
-                <TableComponent.TD>{shift.clockIn}</TableComponent.TD>
-                <TableComponent.TD>
-                  {shift.clockOut === null ? `On the clock` : shift.clockOut}
-                </TableComponent.TD>
-                <TableComponent.TD>
-                  <ViewButton className='m-1' />
-                  <CloseButton
-                    className='m-1'
-                    id={shift._id}
-                    onClick={handleDelete}
-                  />
-                </TableComponent.TD>
-              </TableComponent.TR>
-            ))}
-          </tbody>
-        </TableComponent>
+        <Col>
+          <Row className='mb-1'>
+            <EditBar
+              noneSelected={selectedShifts.length ? false : true}
+              delete={deleteButtonPressed}
+            />
+            <DataTable
+              headingArr={shiftsHeadingArr}
+              hideEdit={false}
+              clickCheckbox={clickCheckbox}
+              dataArr={shifts}
+            />
+          </Row>
+        </Col>
       </Container>
     </div>
   );
