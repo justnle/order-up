@@ -1,13 +1,13 @@
 import React from "react";
 import Table from "react-bootstrap/Table";
-import Checkbox from 'react-bootstrap/InputGroup';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 const DataTable = props => {
   return (
     <Table responsive className='text-white'>
       <thead>
         <tr>
-          <th>Select</th>
+          <th hidden={props.hideEdit}>Select</th>
           {props.headingArr.map(heading => {
             return (
               <th key={heading.key}>{heading.heading}</th>
@@ -19,7 +19,7 @@ const DataTable = props => {
         {props.dataArr.map(data => {
           return (
             <tr key={data._id}>
-              <td><Checkbox /></td>
+              <td data-id={data._id} hidden={props.hideEdit}><InputGroup.Checkbox /></td>
               {props.headingArr.map(heading => <td key={`${data._id}${heading.key}`}>{data[heading.key]}</td>)}
             </tr>
           )
