@@ -7,26 +7,32 @@ import API from '../../utils/employeesAPI';
 
 export default function NumPad() {
   const [pin, setPin] = useState(``);
-  const [redirect, setRedirect] = useState(false);
+  const [loggedIn, setLoggedIn] = useState({
+    success: false,
+    permission: 0
+  });
 
   const handleBtnInput = (event) => {
     event.preventDefault();
     const { value } = event.target;
     setPin(pin + value);
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (pin.length > 0) {
       API.getEmployees()
         .then((res) => {
-          res.data.some((employee) => employee.id === pin)
-            ? setRedirect(true)
-            : errorPin();
+          const search = res.data.find( ({ id }) => id === pin );
+          if (search !== undefined) {
+            setLoggedIn({ success: true, permission: search.permission });
+          } else {
+            errorPin();
+          }
         })
         .catch((err) => console.error(err));
     }
-  }
+  };
 
   const handleDelete = () => {
     if (pin.length > 0) {
@@ -34,12 +40,12 @@ export default function NumPad() {
       pinStr = pinStr.slice(0, -1);
       setPin(pinStr);
     }
-  }
+  };
 
   const errorPin = () => {
     setPin(``);
     console.log(`incorrect pin`);
-  }
+  };
 
   const buttons = [
     [
@@ -92,7 +98,7 @@ export default function NumPad() {
 
   return (
     <>
-      {redirect ? <Redirect to='/manager' /> : null}
+      {loggedIn.success && loggedIn.permission === 1 ? <Redirect to='/manager' /> : null}
       <ButtonGroup vertical>
         <Form>
           <Form.Group controlId='formPIN'>
@@ -132,6 +138,3 @@ export default function NumPad() {
     </>
   );
 }
-
-
-//TODO:
