@@ -22,7 +22,7 @@ export default function NumPad() {
     if (pin.length > 0) {
       API.getEmployees()
         .then((res) => {
-          const search = res.data.find( ({ id }) => id === pin );
+          const search = res.data.find(({ id }) => id === pin);
           if (search !== undefined) {
             setLoggedIn({ success: true, permission: search.permission });
           } else {
@@ -43,8 +43,22 @@ export default function NumPad() {
 
   const errorPin = () => {
     setPin(``);
+    // TODO: make incorrect more visible
     console.log(`incorrect pin`);
   };
+
+  function permissionPages(checkPermission) {
+    switch (checkPermission) {
+      case 1:
+        return <Redirect to='/manager' />;
+      case 2:
+        return <Redirect to='/foh' />;
+      case 3:
+        return <Redirect to='/boh' />;
+      default:
+        return <Redirect to='/home' />;
+    }
+  }
 
   const buttons = [
     [
@@ -97,7 +111,7 @@ export default function NumPad() {
 
   return (
     <>
-      {loggedIn.success && loggedIn.permission === 1 ? <Redirect to='/manager' /> : null}
+      {loggedIn.success ? permissionPages(loggedIn.permission) : null}
       <ButtonGroup vertical>
         <Form>
           <Form.Group controlId='formPIN'>
@@ -113,7 +127,7 @@ export default function NumPad() {
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
-                  handleSubmit()
+                  handleSubmit();
                 }
               }}
             />
