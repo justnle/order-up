@@ -15,9 +15,7 @@ function SubmitButton(props) {
     </Button>
   );
 }
-function SelectButton() {
-  return <Button variant='success'>Select</Button>;
-}
+
 function ViewButton(props) {
   return (
     <Button variant='outline-info' {...props}>
