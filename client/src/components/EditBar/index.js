@@ -6,7 +6,7 @@ function EditBar(props) {
     // <ButtonGroup aria-label="edit bar">
     <div>
       <Button
-        className='mx-1'
+        className='mx-1 mb-3'
         variant='outline-success'
         onClick={() => props.add()}
       >
@@ -14,14 +14,14 @@ function EditBar(props) {
       </Button>
       <Button
         hidden={props.noneSelected}
-        className='mx-1'
+        className='mx-1 mb-3'
         variant='outline-warning'
       >
         Edit
       </Button>
       <Button
         hidden={props.noneSelected}
-        className='mx-1'
+        className='mx-1 mb-3'
         variant='outline-danger'
         onClick={() => props.delete()}
       >

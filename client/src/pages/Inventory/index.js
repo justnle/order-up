@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
+import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
 import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/inventoryAPI';
 import InputModal from '../../components/InputModal';
+import EditBar from '../../components/EditBar/index';
 
 function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
   const [addInventory, setAddInventory] = useState({});
   const [showNewProductModal, setShowNewProductModal] = useState(false);
-  // const [showModal, setModalShow] = useState(false);
-  // const [modalData, setModalData] = useState([]);
-  // const handleModalClose = () => setModalShow(false);
-  // const handleModalShow = () => setModalShow(true);
+  const [selectedInventoryItems, setSelectedInventoryItems] = useState([]);
 
   useEffect(() => {
     loadInventory();
   }, []);
+  const clickCheckbox = (event) => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedInventoryItems([...selectedInventoryItems, selectedId]);
+    } else {
+      setSelectedInventoryItems(
+        selectedInventoryItems.filter((id) => id !== selectedId)
+      );
+    }
+  };
 
   function loadInventory() {
     API.getInventory()
@@ -52,7 +61,6 @@ function Inventory() {
             isMatch = true;
           }
         });
-
         return isMatch;
       })
     );
@@ -142,14 +150,7 @@ function Inventory() {
       );
     }
   }
-  // function handleModalData(event) {
-  //   const id = event.target.id;
-  //   API.getInventoryItem(id)
-  //     .then((res) => {
-  //       setModalData([...modalData, res.data]);
-  //     })
-  //     .then(handleModalShow());
-  // }
+
   // function handleUpdate() {
   //   const item = document.querySelector('#button');
   //   const itemID = item.dataset.id;
@@ -180,22 +181,11 @@ function Inventory() {
           onChange={handleInputChange}
         />
       </Container>
-      <div
-        className=' d-flex row justify-content-center align-items-center text-white'
-        id='buttonsDiv'
-      >
-        <div className='m-1'>
-          <DropDownInput className='d-flex justify-content-center'>
-            Sort by vendor
-          </DropDownInput>
-        </div>
-        <div className='m-1'>
-          <AddButton
-            onClick={() => setShowNewProductModal(!showNewProductModal)}
-            aria-controls='example-collapse-text'
-          />
-        </div>
-      </div>
+
+      <DropDownInput className='d-flex justify-content-center'>
+        Sort by vendor
+      </DropDownInput>
+
       <InputModal
         show={showNewProductModal}
         cancel={() => {
@@ -206,10 +196,23 @@ function Inventory() {
         inputs={newInventoryProductInput}
       />
       <Container className='d-flex justify-content-center mt-5'>
-        <DataTable
-          headingArr={inventoryHeaderArr}
-          dataArr={filteredInventory}
-        />
+        <Col>
+          <Row className='mb-1'>
+            <EditBar
+              noneSelected={selectedInventoryItems.length ? false : true}
+              // delete={deleteButtonPressed}
+              add={() => {
+                setShowNewProductModal(!showNewProductModal);
+              }}
+            />
+            <DataTable
+              headingArr={inventoryHeaderArr}
+              dataArr={filteredInventory}
+              clickCheckbox={clickCheckbox}
+              hideEdit={false}
+            />
+          </Row>
+        </Col>
       </Container>
     </div>
   );
