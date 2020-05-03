@@ -124,7 +124,7 @@ function Employees2() {
       newEmployee.permission
     ) {
       console.log(`making call`)
-      API.addEmployee(newEmployee).then((res) => {
+      API.addEmployee(newEmployee).then(res => {
         console.log(`status code: ${res.status}`);
         loadEmployees();
         closeNewEmployeeModal();
@@ -137,7 +137,15 @@ function Employees2() {
   }
 
   const deleteButtonPressed = event => {
-    console.log(`NEED TO BUILD DELETE EMPLOYEES API`)
+    console.log(`Delete button clicked`)
+    API.deleteManyEmployee(selectedEmployees)
+      .then(res => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadEmployees();
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   return (
