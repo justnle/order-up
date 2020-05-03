@@ -12,7 +12,7 @@ function Employees2() {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newEmployee, setNewEmployee] = useState({});
-  const [selectedEmployoees, setSelectedEmployees] = useState([])
+  const [selectedEmployees, setSelectedEmployees] = useState([])
 
   const showNewEmployeeModal = () => setShowModal(true);
   const closeNewEmployeeModal = () => setShowModal(false);
@@ -105,6 +105,15 @@ function Employees2() {
 
   const clickCheckbox = event => {
     console.log(event.target.checked)
+    console.log(event.target.getAttribute(`data-id`))
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedEmployees([...selectedEmployees, selectedId])
+    } else {
+      setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
+    }
+    console.log(selectedEmployees);
   }
   
   function submitButtonPressed(event) {
