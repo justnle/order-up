@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
+import EditBar from '../../components/EditBar';
+import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
 import { AddButton } from '../../components/Buttons/index';
@@ -104,8 +105,6 @@ function Employees2() {
   ];
 
   const clickCheckbox = event => {
-    console.log(event.target.checked)
-    console.log(event.target.getAttribute(`data-id`))
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
@@ -115,7 +114,7 @@ function Employees2() {
     }
     console.log(selectedEmployees);
   }
-  
+
   function submitButtonPressed(event) {
     event.preventDefault();
     if (
@@ -173,13 +172,19 @@ function Employees2() {
       />
 
       <Container className='d-flex justify-content-center mt-5'>
-        <div className='row'></div>
-        <DataTable 
-          headingArr={headingArr} 
-          dataArr={filteredEmployees} 
-          hideEdit={false}
-          clickCheckbox={clickCheckbox}
-        />
+        <Col>
+          <Row className='mb-1'>
+            <EditBar noneSelected={selectedEmployees.length ? false : true} />
+          </Row>
+          <Row>
+            <DataTable
+              headingArr={headingArr}
+              dataArr={filteredEmployees}
+              hideEdit={false}
+              clickCheckbox={clickCheckbox}
+            />
+          </Row>
+        </Col>
       </Container>
 
 
