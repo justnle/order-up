@@ -57,8 +57,8 @@ function TimeManagement() {
       </Container>
       <Container className='d-flex justify-content-center '>
         <span className='text-white mr-5 lead'>Filter by date</span>
-        <Calendar className='mt-5' name='startDate' onChange={handleInput} />
-        <Calendar className='mt-5' name='endDate' onChange={handleInput} />
+        <Calendar className='mt-5' name='startDate' onClick={handleInput} />
+        <Calendar className='mt-5' name='endDate' onClick={handleInput} />
       </Container>
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
