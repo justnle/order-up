@@ -12,6 +12,7 @@ function Employees2() {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newEmployee, setNewEmployee] = useState({});
+  const [selectedEmployoees, setSelectedEmployees] = useState([])
 
   const showNewEmployeeModal = () => setShowModal(true);
   const closeNewEmployeeModal = () => setShowModal(false);
@@ -102,6 +103,10 @@ function Employees2() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
+  const clickCheckbox = event => {
+    console.log(event.target)
+  }
+  
   function submitButtonPressed(event) {
     event.preventDefault();
     if (
@@ -160,7 +165,12 @@ function Employees2() {
 
       <Container className='d-flex justify-content-center mt-5'>
         <div className='row'></div>
-        <DataTable headingArr={headingArr} dataArr={filteredEmployees} hideEdit={false}/>
+        <DataTable 
+          headingArr={headingArr} 
+          dataArr={filteredEmployees} 
+          hideEdit={false}
+          clickCheckbox={clickCheckbox}
+        />
       </Container>
 
 
