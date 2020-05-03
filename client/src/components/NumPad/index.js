@@ -18,8 +18,7 @@ export default function NumPad() {
     setPin(pin + value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     if (pin.length > 0) {
       API.getEmployees()
         .then((res) => {
@@ -110,6 +109,12 @@ export default function NumPad() {
               value={pin}
               onChange={(e) => {
                 setPin(e.target.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleSubmit()
+                }
               }}
             />
           </Form.Group>
