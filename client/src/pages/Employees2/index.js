@@ -104,7 +104,7 @@ function Employees2() {
   ];
 
   const clickCheckbox = event => {
-    console.log(event.target)
+    console.log(event.target.checked)
   }
   
   function submitButtonPressed(event) {
