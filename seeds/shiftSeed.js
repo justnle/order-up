@@ -2,7 +2,7 @@
 
 const shiftSeed = [
   {
-    employeeId: 23456,
+    employeeId: 123456,
     employeeName: `Zahra Merrill`,
     clockIn: Date.now()
   },
