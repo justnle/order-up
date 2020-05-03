@@ -115,7 +115,7 @@ function Employees2() {
     console.log(selectedEmployees);
   }
 
-  function submitButtonPressed(event) {
+  const submitButtonPressed = event => {
     event.preventDefault();
     if (
       newEmployee.name &&
@@ -134,6 +134,10 @@ function Employees2() {
         'Please fill in all fields with appropriate input to submit an employee'
       );
     }
+  }
+
+  const deleteButtonPressed = event => {
+    console.log(`NEED TO BUILD DELETE EMPLOYEES API`)
   }
 
   return (
@@ -174,7 +178,10 @@ function Employees2() {
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
-            <EditBar noneSelected={selectedEmployees.length ? false : true} />
+            <EditBar noneSelected={selectedEmployees.length ? false : true}
+              add={showNewEmployeeModal}
+              delete={deleteButtonPressed}
+            />
           </Row>
           <Row>
             <DataTable
