@@ -8,7 +8,7 @@ import EditBar from '../../components/EditBar/index';
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
-
+  const [filterShifts, setFilterShifts] = useState([]);
   useEffect(() => {
     loadShifts();
   }, []);
@@ -17,10 +17,12 @@ function TimeManagement() {
       setShifts(res.data);
     });
   }
-  function handleDelete(event) {
-    const shiftId = event.target.id;
-    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
+  function handleInput(event) {
+    const { name, value } = event.target;
+    setFilterShifts((filterShifts) => ({ ...filterShifts, [name]: value }));
+    console.log(filterShifts);
   }
+
   const shiftsHeadingArr = [
     { key: `employeeName`, heading: `Employee` },
     { key: `clockIn`, heading: `Clock In` },
@@ -37,7 +39,8 @@ function TimeManagement() {
     console.log(selectedShifts);
   };
   const deleteButtonPressed = (event) => {
-    console.log(`Build delete shift API`);
+    const shiftId = event.target.id;
+    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
   };
   return (
     <div>
@@ -48,12 +51,14 @@ function TimeManagement() {
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
+          name='name'
+          onChange={handleInput}
         />
       </Container>
       <Container className='d-flex justify-content-center '>
-        <span className='text-white mr-5'>Filter by date</span>
-        <Calendar className='mt-5' />
-        <Calendar className='mt-5' />
+        <span className='text-white mr-5 lead'>Filter by date</span>
+        <Calendar className='mt-5' name='startDate' onChange={handleInput} />
+        <Calendar className='mt-5' name='endDate' onChange={handleInput} />
       </Container>
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
