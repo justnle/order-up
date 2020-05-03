@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
+import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
-import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/menuAPI';
 import InputModal from '../../components/InputModal';
+import EditBar from '../../components/EditBar/index';
 
 function Menu() {
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
   const [addItem, setAddItem] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
+  const [selectedMenuItems, setSelectedMenuItems] = useState([]);
 
   useEffect(() => {
     loadMenu();
@@ -80,6 +81,15 @@ function Menu() {
       alert(`Please fill out all required fields with appropriate input`);
     }
   }
+  const clickCheckbox = (event) => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedMenuItems([...selectedMenuItems, selectedId]);
+    } else {
+      setSelectedMenuItems(selectedMenuItems.filter((id) => id !== selectedId));
+    }
+  };
   const addItemArr = [
     {
       name: `category`,
@@ -159,19 +169,10 @@ function Menu() {
           onChange={handleInputChange}
         />
       </Container>
-      <div id='buttonsDiv' className='d-flex row justify-content-center'>
-        <div className='m-1'>
-          <DropDownInput className='d-flex justify-content-center'>
-            Sort by category
-          </DropDownInput>
-        </div>
-        <div className='m-1'>
-          <AddButton
-            onClick={() => {
-              setShowAddModal(!showAddModal);
-            }}
-          />
-        </div>
+      <div className='m-1'>
+        <DropDownInput className='d-flex justify-content-center'>
+          Sort by category
+        </DropDownInput>
       </div>
       <InputModal
         show={showAddModal}
@@ -183,7 +184,23 @@ function Menu() {
         inputs={addItemArr}
       />
       <Container className='d-flex justify-content-center mt-5'>
-        <DataTable headingArr={menuItemsHeadingArr} dataArr={filteredMenu} />
+        <Col>
+          <Row className='mb-1'>
+            <EditBar
+              noneSelected={selectedMenuItems.length ? false : true}
+              // delete={deleteButtonPressed}
+              add={() => {
+                setShowAddModal(!showAddModal);
+              }}
+            />
+            <DataTable
+              headingArr={menuItemsHeadingArr}
+              dataArr={filteredMenu}
+              clickCheckbox={clickCheckbox}
+              hideEdit={false}
+            />
+          </Row>
+        </Col>
       </Container>
     </div>
   );
