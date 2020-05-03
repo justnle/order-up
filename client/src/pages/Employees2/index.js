@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
+import EditBar from '../../components/EditBar';
+import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
 import { AddButton } from '../../components/Buttons/index';
@@ -12,6 +13,7 @@ function Employees2() {
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newEmployee, setNewEmployee] = useState({});
+  const [selectedEmployees, setSelectedEmployees] = useState([])
 
   const showNewEmployeeModal = () => setShowModal(true);
   const closeNewEmployeeModal = () => setShowModal(false);
@@ -102,7 +104,18 @@ function Employees2() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
-  function submitButtonPressed(event) {
+  const clickCheckbox = event => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedEmployees([...selectedEmployees, selectedId])
+    } else {
+      setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
+    }
+    console.log(selectedEmployees);
+  }
+
+  const submitButtonPressed = event => {
     event.preventDefault();
     if (
       newEmployee.name &&
@@ -121,6 +134,10 @@ function Employees2() {
         'Please fill in all fields with appropriate input to submit an employee'
       );
     }
+  }
+
+  const deleteButtonPressed = event => {
+    console.log(`NEED TO BUILD DELETE EMPLOYEES API`)
   }
 
   return (
@@ -159,8 +176,22 @@ function Employees2() {
       />
 
       <Container className='d-flex justify-content-center mt-5'>
-        <div className='row'></div>
-        <DataTable headingArr={headingArr} dataArr={filteredEmployees} hideEdit={false}/>
+        <Col>
+          <Row className='mb-1'>
+            <EditBar noneSelected={selectedEmployees.length ? false : true}
+              add={showNewEmployeeModal}
+              delete={deleteButtonPressed}
+            />
+          </Row>
+          <Row>
+            <DataTable
+              headingArr={headingArr}
+              dataArr={filteredEmployees}
+              hideEdit={false}
+              clickCheckbox={clickCheckbox}
+            />
+          </Row>
+        </Col>
       </Container>
 
 

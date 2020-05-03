@@ -19,7 +19,7 @@ const DataTable = props => {
         {props.dataArr.map(data => {
           return (
             <tr key={data._id}>
-              <td data-id={data._id} hidden={props.hideEdit}><InputGroup.Checkbox /></td>
+              <td hidden={props.hideEdit}><InputGroup.Checkbox data-id={data._id} onClick={props.clickCheckbox}/></td>
               {props.headingArr.map(heading => <td key={`${data._id}${heading.key}`}>{data[heading.key]}</td>)}
             </tr>
           )
