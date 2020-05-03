@@ -42,6 +42,10 @@ function Sidebar() {
           <i className='fas fa-utensils fa-2x fa-fw'></i>
           <span>BOH</span>
         </Link>
+        <Link to='/floorplans'>
+          <i className='fas fa-utensils fa-2x fa-fw'></i>
+          <span>Floor Plans</span>
+        </Link>
       </nav>
     </div>
   );

@@ -1,0 +1,50 @@
+h1 {
+  text-align: center;
+  color: white;
+}
+h4{
+  color: white;
+}
+.container {
+  width: 600px;
+  margin: auto;
+}
+
+.grid td {
+  width: 150px;
+  height: 50px;
+  padding: 50px 30px;
+  border: 2px solid orange;
+  text-align: center;
+  float: left;
+  margin: 5px;
+}
+
+.grid td:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+.reserved {
+  background: orange;
+  color: #fff;
+  display: inline-block;
+}
+
+.reserved::after {
+  content: 'RESERVED'
+}
+
+.available::after {
+  content: 'AVAILABLE'
+}
+
+.available {
+  color: white;
+}
+
+li {
+  list-style: none;
+  color:white;
+}
+
