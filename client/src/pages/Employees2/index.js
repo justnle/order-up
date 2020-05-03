@@ -20,7 +20,7 @@ function Employees2() {
     loadEmployees();
   }, []);
 
-  function loadEmployees() {
+  const loadEmployees = () => {
     API.getEmployees()
       .then(res => {
         setEmployees(res.data);
@@ -29,13 +29,13 @@ function Employees2() {
       .catch(err => console.error(err));
   }
 
-  function handleInputChange(event) {
+  const handleInputChange = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
       employees.filter(employee => {
         const words = employee.name.split(' ');
         let isMatch = false;
-        words.forEach((word) => {
+        words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = true;
           }
@@ -159,6 +159,7 @@ function Employees2() {
       />
 
       <Container className='d-flex justify-content-center mt-5'>
+        <div className='row'></div>
         <DataTable headingArr={headingArr} dataArr={filteredEmployees} />
       </Container>
 
