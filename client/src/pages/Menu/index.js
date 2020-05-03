@@ -3,21 +3,26 @@ import SearchBar from '../../components/SearchBar/index';
 import Container from 'react-bootstrap/Container';
 import DropDownInput from '../../components/DropDownInput/index';
 import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton, CloseButton } from '../../components/Buttons/index';
+import {
+  AddButton,
+  SubmitButton,
+  CloseButton
+} from '../../components/Buttons/index';
 import Collapse from 'react-bootstrap/Collapse';
 import FControl from '../../components/TextInput/FormGroup';
 import API from '../../utils/menuAPI';
+import InputModal from '../../components/InputModal';
 
 function Menu() {
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
   const [addItem, setAddItem] = useState({});
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     loadMenu();
   }, []);
-
 
   function loadMenu() {
     API.getMenu()
@@ -58,11 +63,10 @@ function Menu() {
       })
     );
   }
-  function updateItemState(newItem) {
-    setAddItem({
-      ...addItem,
-      ...newItem,
-    });
+  function addItemInventory(event) {
+    const { name, value } = event.target;
+    setAddItem((addItem) => ({ ...addItem, [name]: value }));
+    console.log(addItem);
   }
   function handleAddItemSubmit(event) {
     event.preventDefault();
@@ -72,22 +76,76 @@ function Menu() {
       addItem.price &&
       addItem.description &&
       addItem.pairing &&
-      addItem.prepareTime 
-      // addItem.itemCount
+      addItem.prepareTime
     ) {
-      API.addMenuItem(addItem).then(loadMenu());
-      setOpen(!open);
-      var p = document.createElement('p');
-      p.innerHTML = 'Item successfully added';
-      document.getElementById('buttonsDiv').appendChild(p);
+      API.addMenuItem(addItem).then((res) => {
+        console.log(`status code: ${res.status}`);
+        loadMenu();
+        setShowAddModal(false);
+      });
     } else {
-      var p = document.createElement('p');
-      p.innerHTML = 'Please fill all fields with appropriate input to submit menu item';
-      document.getElementById('itemSubmit').appendChild(p);
+      alert(`Please fill out all required fields with appropriate input`);
     }
   }
+  const addItemArr = [
+    {
+      name: `category`,
+      label: `Category`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Food or Beverage`,
+      onChange: addItemInventory
+    },
+    {
+      name: `name`,
+      label: `Item Name`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Item Name`,
+      onChange: addItemInventory
+    },
 
-
+    {
+      name: `description`,
+      label: `Item Description`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Item Description`,
+      onChange: addItemInventory
+    },
+    {
+      name: `price`,
+      label: `Item Price`,
+      text: `Required`,
+      type: `number`,
+      placeholder: `Enter Item Price`,
+      onChange: addItemInventory
+    },
+    {
+      name: `pairing`,
+      label: `Item Pairing`,
+      type: `text`,
+      text: `Required`,
+      placeholder: `Enter item pairing`,
+      onChange: addItemInventory
+    },
+    {
+      name: `prepareTime`,
+      label: `Item Prep Time`,
+      text: `Required`,
+      type: `number`,
+      placeholder: `Enter Item Prep Time`,
+      onChange: addItemInventory
+    },
+    {
+      name: `itemCount`,
+      label: `Item Count`,
+      placeholder: `Enter Item Count`,
+      text: `Optional`,
+      type: `number`,
+      onChange: addItemInventory
+    }
+  ];
 
   return (
     <div>
@@ -105,44 +163,22 @@ function Menu() {
           </DropDownInput>
         </div>
         <div className='m-1'>
-          <AddButton 
-            onClick={() => setOpen(!open)}
-            aria-controls='example-collapse-text'
-            aria-expanded={open}
+          <AddButton
+            onClick={() => {
+              setShowAddModal(!showAddModal);
+            }}
           />
         </div>
       </div>
-      <div className='d-flex justify-content-center mt-5'>
-        <Collapse id='itemSubmit' className='text-danger' in={open}>
-          <div className='w-50'>
-            <FControl
-              onChange={(event) => { updateItemState({ category: event.target.value }) }}
-              placeholder='Food or Beverage' className='m-2' />
-            <FControl
-              onChange={(event) => { updateItemState({ name: event.target.value }) }}
-              placeholder='Item Name' className='m-2' />
-            <FControl
-              onChange={(event) => { updateItemState({ price: event.target.value }) }}
-              placeholder='Item Price' className='m-2' />
-            <FControl
-              onChange={(event) => { updateItemState({ description: event.target.value }) }}
-              placeholder='Item Description' className='m-2' />
-            <FControl
-              onChange={(event) => { updateItemState({ pairing: event.target.value }) }}
-              placeholder='Item Pairings' className='m-2' />
-            <FControl
-              onChange={(event) => { updateItemState({ prepareTime: event.target.value }) }}
-              placeholder='Item Prepare Time' className='m-2' />
-
-
-            <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton
-                onClick={handleAddItemSubmit}
-                className='d-flex align-self-center' />
-            </div>
-          </div>
-        </Collapse>
-      </div>
+      <InputModal
+        show={showAddModal}
+        cancel={() => {
+          setShowAddModal(!showAddModal);
+        }}
+        title={`Add New Menu Item`}
+        submit={handleAddItemSubmit}
+        inputs={addItemArr}
+      />
       <Container className='d-flex justify-content-center mt-5'>
         <TableComponent className='text-white w-100 '>
           <thead>
@@ -170,9 +206,7 @@ function Menu() {
                     className='m-1'
                     id={item.id}
                     onClick={(event) => {
-                      API.deleteMenuItem(event.target.id).then(
-                        loadMenu
-                      );
+                      API.deleteMenuItem(event.target.id).then(loadMenu);
                     }}
                   />
                 </TableComponent.TD>
