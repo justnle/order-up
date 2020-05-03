@@ -20,5 +20,13 @@ export default {
 
   deleteEmployee: function (id) {
     return axios.delete(`/api/employee/${id}`);
+  },
+
+  deleteManyEmployee: function (idArr) {
+    console.log(`connected to client util api`)
+    return axios.delete(`/api/employee/deleteMany`, {
+      data: { arr: idArr }
+    });
   }
+
 };

@@ -34,5 +34,16 @@ module.exports = {
       .then((dbModel) => dbModel.remove())
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
+  },
+  removeMany: function (req, res) {
+    console.log(`From controller:`);
+    console.log(req);
+    db.Employee.deleteMany({
+      _id: {
+        $in: req.body.arr
+      }
+    })
+      .then(result => res.json(result))
+      .catch(err => res.json(err));
   }
 };
