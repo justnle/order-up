@@ -7,7 +7,7 @@ function EditBar(props) {
     <div>
       <Button
         className='mx-1'
-        variant='outline-primary'
+        variant='outline-success'
         onClick={() => props.add()}
       >
         Add
