@@ -160,7 +160,7 @@ function Employees2() {
 
       <Container className='d-flex justify-content-center mt-5'>
         <div className='row'></div>
-        <DataTable headingArr={headingArr} dataArr={filteredEmployees} />
+        <DataTable headingArr={headingArr} dataArr={filteredEmployees} hideEdit={false}/>
       </Container>
 
 
