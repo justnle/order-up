@@ -4,7 +4,6 @@ import EditBar from '../../components/EditBar';
 import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
-import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
 
@@ -12,11 +11,11 @@ function Employees() {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [mode, setMode] = useState(`add`);
   const [newEmployee, setNewEmployee] = useState({});
+  const [editEmployee, setEditEmployee] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState([])
-
-  const showNewEmployeeModal = () => setShowModal(true);
-  const closeNewEmployeeModal = () => setShowModal(false);
+  const [modalTitle, setModalTitle] = useState();
 
   useEffect(() => {
     loadEmployees();
@@ -47,10 +46,14 @@ function Employees() {
     );
   }
 
-  const updateNewEmployee = event => {
+  const updateNewEmployeeState = event => {
     const { name, value } = event.target;
     setNewEmployee(newEmployee => ({ ...newEmployee, [name]: value }));
-    console.log(newEmployee)
+  };
+
+  const updateEditEmployeeState = event => {
+    const { name, value } = event.target;
+    setEditEmployee(editEmployee => ({ ...editEmployee, [name]: value }));
   };
 
   const newEmployeeInput = [
@@ -60,7 +63,7 @@ function Employees() {
       type: `text`,
       text: `Required`,
       placeholder: `Enter name`,
-      onChange: updateNewEmployee
+      onChange: updateNewEmployeeState
     },
     {
       name: `id`,
@@ -68,7 +71,7 @@ function Employees() {
       type: `number`,
       text: `Enter 6 digits (e.g. 000000)`,
       placeholder: `Enter PIN`,
-      onChange: updateNewEmployee
+      onChange: updateNewEmployeeState
     },
     {
       name: `position`,
@@ -76,7 +79,7 @@ function Employees() {
       type: `text`,
       text: `Required (e.g. server)`,
       placeholder: `Enter position`,
-      onChange: updateNewEmployee
+      onChange: updateNewEmployeeState
     },
     {
       name: `rate`,
@@ -84,7 +87,7 @@ function Employees() {
       type: `number`,
       text: `Required (format: 0.00)`,
       placeholder: `Enter hourly rate`,
-      onChange: updateNewEmployee
+      onChange: updateNewEmployeeState
     },
     {
       name: `permission`,
@@ -92,7 +95,34 @@ function Employees() {
       type: `number`,
       text: `Required (from 0 to 5)`,
       placeholder: `Set permission level`,
-      onChange: updateNewEmployee
+      onChange: updateNewEmployeeState
+    }
+  ]
+
+  const editEmployeeInput = [
+    {
+      name: `position`,
+      label: `Position`,
+      type: `text`,
+      text: `Required (e.g. server)`,
+      placeholder: `Enter position`,
+      onChange: updateEditEmployeeState
+    },
+    {
+      name: `rate`,
+      label: `Hourly Rate`,
+      type: `number`,
+      text: `Required (format: 0.00)`,
+      placeholder: `Enter hourly rate`,
+      onChange: updateEditEmployeeState
+    },
+    {
+      name: `permission`,
+      label: `Permission`,
+      type: `number`,
+      text: `Required (from 0 to 5)`,
+      placeholder: `Set permission level`,
+      onChange: updateEditEmployeeState
     }
   ]
 
@@ -104,7 +134,31 @@ function Employees() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
-  const clickCheckbox = event => {
+  const addButtonPressed = () => {
+    setMode(`add`);
+    setModalTitle(`Add a new employee`);
+    setShowModal(true);
+  }
+
+  const closeEmployeeModal = () => setShowModal(false);
+
+  const editButtonPressed = () => {
+    console.log(`Edit button pressed!`)
+    if (selectedEmployees.length > 1) {
+      console.log(`More than 1 employee selected`)
+      setMode(`edit`)
+      setModalTitle(`Edit employees`);
+      setShowModal(true)
+    } else {
+      console.log(`Only 1 employee selected`)
+      setMode(`add`)
+      setModalTitle(`Edit an employee`);
+      setShowModal(true)
+    }
+
+  }
+
+  const checkboxClicked = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
@@ -112,7 +166,6 @@ function Employees() {
     } else {
       setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
     }
-    console.log(selectedEmployees);
   }
 
   const submitButtonPressed = event => {
@@ -127,7 +180,7 @@ function Employees() {
       API.addEmployee(newEmployee).then(res => {
         console.log(`status code: ${res.status}`);
         loadEmployees();
-        closeNewEmployeeModal();
+        closeEmployeeModal();
       });
     } else {
       alert(
@@ -163,31 +216,28 @@ function Employees() {
 
       <div
         className=' d-flex row justify-content-center align-items-center text-white'
-        id='buttonsDiv'
-      >
+        id='buttonsDiv'>
         <div className='m-1'>
           <DropDownInput className='d-flex justify-content-center'>
             Sort by vendor
           </DropDownInput>
         </div>
-        <div className='m-1'>
-          <AddButton onClick={showNewEmployeeModal} />
-        </div>
       </div>
 
       <InputModal
         show={showModal} // bool
-        cancel={closeNewEmployeeModal} // bool
-        title={`Add a new employee`} // title string for your modal
+        cancel={closeEmployeeModal}
+        title={modalTitle}
         submit={submitButtonPressed}
-        inputs={newEmployeeInput} // array of input objs
+        inputs={mode === `add` ? newEmployeeInput : editEmployeeInput} // array of input objs
       />
 
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
             <EditBar noneSelected={selectedEmployees.length ? false : true}
-              add={showNewEmployeeModal}
+              add={addButtonPressed}
+              edit={editButtonPressed}
               delete={deleteButtonPressed}
             />
           </Row>
@@ -196,12 +246,11 @@ function Employees() {
               headingArr={headingArr}
               dataArr={filteredEmployees}
               hideEdit={false}
-              clickCheckbox={clickCheckbox}
+              clickCheckbox={checkboxClicked}
             />
           </Row>
         </Col>
       </Container>
-
 
     </div>
   );

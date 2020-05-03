@@ -16,6 +16,7 @@ function EditBar(props) {
         hidden={props.noneSelected}
         className='mx-1 mb-3'
         variant='outline-warning'
+        onClick={() => props.edit()}
       >
         Edit
       </Button>
