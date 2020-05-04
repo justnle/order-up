@@ -29,6 +29,21 @@ module.exports = {
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
+  updateMany: function (req, res) {
+    db.Employee.updateMany(
+      {
+        _id: { $in: req.body.idArr }
+      },
+      {
+        $set: req.body.updateData
+      }
+    )
+      .then(result => {
+        console.log(result);
+        res.json(result);
+      })
+      .catch(err => res.json(err));
+  },
   remove: function (req, res) {
     db.Employee.findById({ _id: req.params.id })
       .then((dbModel) => dbModel.remove())

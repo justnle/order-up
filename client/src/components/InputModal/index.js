@@ -27,7 +27,7 @@ function InputModal(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={() => props.cancel()}>Cancel</Button>
-        <Button variant="primary" onClick={event => props.submit(event)}>Submit</Button>
+      <Button variant="primary" onClick={event => props.submit(event)}>{props.submitButtonLabel}</Button>
       </Modal.Footer>
     </Modal>
   );

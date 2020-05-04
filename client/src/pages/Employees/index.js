@@ -6,16 +6,17 @@ import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
+import { set } from 'mongoose';
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [mode, setMode] = useState(`add`);
-  const [newEmployee, setNewEmployee] = useState({});
-  const [editEmployee, setEditEmployee] = useState({});
-  const [selectedEmployees, setSelectedEmployees] = useState([])
-  const [modalTitle, setModalTitle] = useState();
+  const [showModal, setShowModal] = useState(false); // using
+  const [employeeInfo, setEmployeeInfo] = useState({}); //using
+  const [inputs, setInputs] = useState([]); //using
+  const [selectedEmployees, setSelectedEmployees] = useState([]) //using
+  const [modalTitle, setModalTitle] = useState(); //using
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
 
   useEffect(() => {
     loadEmployees();
@@ -30,7 +31,7 @@ function Employees() {
       .catch(err => console.error(err));
   }
 
-  const handleInputChange = event => {
+  const updateFilteredEmployeesState = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
       employees.filter(employee => {
@@ -46,24 +47,19 @@ function Employees() {
     );
   }
 
-  const updateNewEmployeeState = event => {
+  const updateEmployeeInfoState = event => {
     const { name, value } = event.target;
-    setNewEmployee(newEmployee => ({ ...newEmployee, [name]: value }));
-  };
+    setEmployeeInfo(info => ({ ...info, [name]: value }));
+  }
 
-  const updateEditEmployeeState = event => {
-    const { name, value } = event.target;
-    setEditEmployee(editEmployee => ({ ...editEmployee, [name]: value }));
-  };
-
-  const newEmployeeInput = [
+  const employeeNameInput = [
     {
       name: `name`,
       label: `Employee Name`,
       type: `text`,
-      text: `Required`,
+      text: `Full name (e.g. John Smith)`,
       placeholder: `Enter name`,
-      onChange: updateNewEmployeeState
+      onChange: updateEmployeeInfoState
     },
     {
       name: `id`,
@@ -71,15 +67,18 @@ function Employees() {
       type: `number`,
       text: `Enter 6 digits (e.g. 000000)`,
       placeholder: `Enter PIN`,
-      onChange: updateNewEmployeeState
-    },
+      onChange: updateEmployeeInfoState
+    }
+  ]
+
+  const otherInput = [
     {
       name: `position`,
       label: `Position`,
       type: `text`,
-      text: `Required (e.g. server)`,
+      text: `Required (e.g. Server)`,
       placeholder: `Enter position`,
-      onChange: updateNewEmployeeState
+      onChange: updateEmployeeInfoState
     },
     {
       name: `rate`,
@@ -87,46 +86,19 @@ function Employees() {
       type: `number`,
       text: `Required (format: 0.00)`,
       placeholder: `Enter hourly rate`,
-      onChange: updateNewEmployeeState
+      onChange: updateEmployeeInfoState
     },
     {
       name: `permission`,
       label: `Permission`,
       type: `number`,
-      text: `Required (from 0 to 5)`,
+      text: `Permission level from 0 to 5, where 0 has most access`,
       placeholder: `Set permission level`,
-      onChange: updateNewEmployeeState
+      onChange: updateEmployeeInfoState
     }
   ]
 
-  const editEmployeeInput = [
-    {
-      name: `position`,
-      label: `Position`,
-      type: `text`,
-      text: `Required (e.g. server)`,
-      placeholder: `Enter position`,
-      onChange: updateEditEmployeeState
-    },
-    {
-      name: `rate`,
-      label: `Hourly Rate`,
-      type: `number`,
-      text: `Required (format: 0.00)`,
-      placeholder: `Enter hourly rate`,
-      onChange: updateEditEmployeeState
-    },
-    {
-      name: `permission`,
-      label: `Permission`,
-      type: `number`,
-      text: `Required (from 0 to 5)`,
-      placeholder: `Set permission level`,
-      onChange: updateEditEmployeeState
-    }
-  ]
-
-  const headingArr = [
+  const employeeTableHeadingArr = [
     { key: `name`, heading: `Employee Name` },
     { key: `id`, heading: `Employee PIN` },
     { key: `position`, heading: `Position` },
@@ -134,9 +106,11 @@ function Employees() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
+
   const addButtonPressed = () => {
-    setMode(`add`);
+    setInputs([...employeeNameInput, ...otherInput]);
     setModalTitle(`Add a new employee`);
+    setSubmitButtonLabel(`Submit`);
     setShowModal(true);
   }
 
@@ -146,16 +120,27 @@ function Employees() {
     console.log(`Edit button pressed!`)
     if (selectedEmployees.length > 1) {
       console.log(`More than 1 employee selected`)
-      setMode(`edit`)
+      setInputs(otherInput);
       setModalTitle(`Edit employees`);
-      setShowModal(true)
     } else {
       console.log(`Only 1 employee selected`)
-      setMode(`add`)
+      setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
-      setShowModal(true)
     }
+    setSubmitButtonLabel(`Save`);
+    setShowModal(true)
+  }
 
+  const deleteButtonPressed = () => {
+    console.log(`Delete button pressed`)
+    API.deleteManyEmployee(selectedEmployees)
+      .then(res => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadEmployees();
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   const checkboxClicked = event => {
@@ -171,31 +156,36 @@ function Employees() {
   const submitButtonPressed = event => {
     event.preventDefault();
     if (
-      newEmployee.name &&
-      newEmployee.id &&
-      newEmployee.position &&
-      newEmployee.permission
+      employeeInfo.name &&
+      employeeInfo.id &&
+      employeeInfo.position &&
+      employeeInfo.permission &&
+      employeeInfo.rate
     ) {
-      console.log(`making call`)
-      API.addEmployee(newEmployee).then(res => {
+      console.log(`Making a POST call`)
+      API.addEmployee(employeeInfo).then(res => {
         console.log(`status code: ${res.status}`);
-        loadEmployees();
         closeEmployeeModal();
+        loadEmployees();
       });
     } else {
       alert(
-        'Please fill in all fields with appropriate input to submit an employee'
+        'Please fill in all required fields to add an employee'
       );
     }
   }
 
-  const deleteButtonPressed = event => {
-    console.log(`Delete button clicked`)
-    API.deleteManyEmployee(selectedEmployees)
+  const saveButtonPressed = () => {
+    console.log(`Save button pressed`);
+    API.updateManyEmployees(selectedEmployees, employeeInfo)
       .then(res => {
-        console.log(`status code: ${res.status}`);
+        console.log(`Status code ${res.status}`)
+        console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
+          closeEmployeeModal();
           loadEmployees();
+        } else {
+          alert(`Something's wrong, we couldn't update employee info at this time...`)
         }
       })
       .catch(err => console.error(err));
@@ -210,7 +200,7 @@ function Employees() {
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
-          onChange={handleInputChange}
+          onChange={updateFilteredEmployeesState}
         />
       </Container>
 
@@ -228,8 +218,9 @@ function Employees() {
         show={showModal} // bool
         cancel={closeEmployeeModal}
         title={modalTitle}
-        submit={submitButtonPressed}
-        inputs={mode === `add` ? newEmployeeInput : editEmployeeInput} // array of input objs
+        submit={submitButtonLabel === `Submit` ? submitButtonPressed : saveButtonPressed}
+        submitButtonLabel={submitButtonLabel}
+        inputs={inputs} // array of input objs
       />
 
       <Container className='d-flex justify-content-center mt-5'>
@@ -243,7 +234,7 @@ function Employees() {
           </Row>
           <Row>
             <DataTable
-              headingArr={headingArr}
+              headingArr={employeeTableHeadingArr}
               dataArr={filteredEmployees}
               hideEdit={false}
               clickCheckbox={checkboxClicked}

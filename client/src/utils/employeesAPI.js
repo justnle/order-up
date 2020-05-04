@@ -18,12 +18,17 @@ export default {
     return axios.put(`/api/employee/${id}`, data);
   },
 
+  updateManyEmployees: function (idArr, data) {
+    return axios.put(`/api/employee/updateMany`, {
+      idArr: idArr, updateData: data
+    });
+  },
+
   deleteEmployee: function (id) {
     return axios.delete(`/api/employee/${id}`);
   },
 
   deleteManyEmployee: function (idArr) {
-    console.log(`connected to client util api`)
     return axios.delete(`/api/employee/deleteMany`, {
       data: { arr: idArr }
     });
