@@ -10,7 +10,6 @@ import EditBar from '../../components/EditBar/index';
 function Menu() {
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
-  const [addItem, setAddItem] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedMenuItems, setSelectedMenuItems] = useState([]);
   const [inputs, setInputs] = useState([]);
@@ -100,7 +99,38 @@ function Menu() {
       setSelectedMenuItems(selectedMenuItems.filter((id) => id !== selectedId));
     }
   };
-
+  const editButtonPressed = () => {
+    console.log(`Edit button pressed!`);
+    if (selectedMenuItems.length > 1) {
+      console.log(`More than 1 employee selected`);
+      setInputs(otherItemArr);
+      setModalTitle(`Edit items`);
+    } else {
+      console.log(`Only 1 employee selected`);
+      setItemInfo(menu.find((menu) => menu._id === selectedMenuItems[0]));
+      setInputs([...uniqueItemArr, ...otherItemArr]);
+      setModalTitle(`Edit item`);
+    }
+    setSubmitButtonLabel(`Save`);
+    setShowAddModal(true);
+  };
+  const saveButtonPressed = () => {
+    console.log(`Save button pressed`);
+    API.updateManyMenuItem(selectedMenuItems, itemInfo)
+      .then((res) => {
+        console.log(`Status code ${res.status}`);
+        console.log(`Affected records: ${res.data.n}`);
+        if (res.data.n > 0) {
+          setShowAddModal(false);
+          loadMenu();
+        } else {
+          alert(
+            `Something's wrong, we couldn't update employee info at this time...`
+          );
+        }
+      })
+      .catch((err) => console.error(err));
+  };
   const deleteButtonPressed = () => {
     API.deleteManyMenuItems(selectedMenuItems)
       .then((res) => {
@@ -203,7 +233,11 @@ function Menu() {
           setShowAddModal(!showAddModal);
         }}
         title={modalTitle}
-        submit={submitButtonPressed}
+        submit={
+          submitButtonLabel === `Submit`
+            ? submitButtonPressed
+            : saveButtonPressed
+        }
         submitButtonLabel={submitButtonLabel}
         inputs={inputs}
         value={itemInfo ? itemInfo : undefined}
@@ -215,7 +249,7 @@ function Menu() {
               noneSelected={selectedMenuItems.length ? false : true}
               delete={deleteButtonPressed}
               add={addButtonPressed}
-              // edit={editButtonPressed}
+              edit={editButtonPressed}
             />
             <DataTable
               headingArr={menuItemsHeadingArr}
