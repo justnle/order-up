@@ -80,7 +80,7 @@ function TimeManagement() {
         <Calendar className='mt-1' name='clockOut' onClick={handleInput} />
       </Container>
       <div className='d-flex justify-content-center mt-5'>
-        <FilterButton />
+        <FilterButton onClick={() => setShiftDisplay(shifts)} />
       </div>
       <Container className='d-flex justify-content-center mt-5'>
         <Col>

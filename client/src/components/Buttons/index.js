@@ -11,7 +11,7 @@ function AddButton(props) {
 function FilterButton(props) {
   return (
     <Button variant='outline-info' {...props}>
-      Apply Filter
+      Remove Filter
     </Button>
   );
 }
