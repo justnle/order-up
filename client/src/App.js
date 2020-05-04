@@ -9,6 +9,7 @@ import FOH from './pages/FOH';
 import BOH from './pages/BOH';
 import Inventory from './pages/Inventory/index';
 import TimeManagement from './pages/TimeManagement/index';
+import FloorPlans from "./pages/FloorPlans";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route exact path='/shifts' component={TimeManagement} />
           <Route exact path='/FOH' component={FOH} />
           <Route exact path='/BOH' component={BOH} />
+          <Route exact path='/floorplans' component={FloorPlans} />
         </Switch>
       </Router>
     </div>
