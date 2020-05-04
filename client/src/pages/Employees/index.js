@@ -6,7 +6,6 @@ import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
-import { set } from 'mongoose';
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -124,6 +123,7 @@ function Employees() {
       setModalTitle(`Edit employees`);
     } else {
       console.log(`Only 1 employee selected`)
+      setEmployeeInfo(employees.find(employee => employee._id === selectedEmployees[0]))
       setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
     }
@@ -221,6 +221,7 @@ function Employees() {
         submit={submitButtonLabel === `Submit` ? submitButtonPressed : saveButtonPressed}
         submitButtonLabel={submitButtonLabel}
         inputs={inputs} // array of input objs
+        value={employeeInfo ? employeeInfo : undefined}
       />
 
       <Container className='d-flex justify-content-center mt-5'>

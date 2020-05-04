@@ -16,7 +16,7 @@ function InputModal(props) {
             return (
               <Form.Group key={input.name}>
                 <Form.Label>{input.label}</Form.Label>
-                <Form.Control type={input.type} placeholder={input.placeholder} name={input.name}
+                <Form.Control type={input.type} placeholder={input.placeholder} name={input.name} value={props.value ? props.value[input.name] : ``}
                   onChange={event => input.onChange(event)}
                 />
                 <Form.Text className="text-muted">{input.text}</Form.Text>
