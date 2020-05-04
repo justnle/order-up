@@ -175,9 +175,20 @@ function Employees() {
     }
   }
 
-  const saveButtonPressed = event => {
+  const saveButtonPressed = () => {
     console.log(`Save button pressed`);
-    
+    API.updateManyEmployees(selectedEmployees, employeeInfo)
+      .then(res => {
+        console.log(`Status code ${res.status}`)
+        console.log(`Affected records: ${res.data.n}`);
+        if (res.data.n > 0) {
+          closeEmployeeModal();
+          loadEmployees();
+        } else {
+          alert(`Something's wrong, we couldn't update employee info at this time...`)
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   return (
