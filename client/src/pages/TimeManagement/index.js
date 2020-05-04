@@ -5,17 +5,33 @@ import DataTable from '../../components/DataTable';
 import Calendar from '../../components/Calendar/index';
 import API from '../../utils/timeAPI';
 import EditBar from '../../components/EditBar/index';
+import { FilterButton } from '../../components/Buttons/index';
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
   const [filterShifts, setFilterShifts] = useState([]);
+  const [shiftDisplay, setShiftDisplay] = useState([]);
 
   useEffect(() => {
     loadShifts();
   }, []);
+  useEffect(() => {
+    const filtered = shifts.filter((shift) => {
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        shift.clockIn >= filterShifts.clockIn &&
+        shift.clockOut <= filterShifts.clockOut
+      ) {
+        return true;
+      }
+    });
+    setShiftDisplay(filtered);
+  }, [filterShifts]);
+
   function loadShifts() {
     API.getTimeClock().then((res) => {
       setShifts(res.data);
+      setShiftDisplay(res.data);
     });
   }
   function handleInput(event) {
@@ -52,15 +68,20 @@ function TimeManagement() {
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
-          name='name'
+          name='employeeName'
           onChange={handleInput}
         />
       </Container>
-      <Container className='d-flex justify-content-center '>
+      <div className='d-flex justify-content-center mt-'>
         <span className='text-white mr-5 lead'>Filter by date</span>
-        <Calendar className='mt-5' name='start' onChange={handleInput} />
-        <Calendar className='mt-5' name='end' onClick={handleInput} />
+      </div>
+      <Container className='d-flex justify-content-center '>
+        <Calendar className='mt-1' name='clockIn' onChange={handleInput} />
+        <Calendar className='mt-1' name='clockOut' onClick={handleInput} />
       </Container>
+      <div className='d-flex justify-content-center mt-5'>
+        <FilterButton />
+      </div>
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
@@ -72,7 +93,7 @@ function TimeManagement() {
               headingArr={shiftsHeadingArr}
               hideEdit={false}
               clickCheckbox={clickCheckbox}
-              dataArr={shifts}
+              dataArr={shiftDisplay}
             />
           </Row>
         </Col>
