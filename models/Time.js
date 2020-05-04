@@ -7,7 +7,8 @@ const Schema = mongoose.Schema;
 const TimeSchema = new Schema(
   {
     employeeId: {
-      type: Number,
+      type: String,
+      unique: true,
       required: true
     },
     employeeName: {

@@ -3,7 +3,11 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import { Redirect } from 'react-router-dom';
-import API from '../../utils/employeesAPI';
+import EMPLOYEE_API from '../../utils/employeesAPI';
+import TIME_API from '../../utils/timeAPI';
+
+import { Row, Container, Col } from 'react-bootstrap';
+import { ClockInButton, ClockOutButton } from '../../components/Buttons';
 
 export default function NumPad() {
   const [pin, setPin] = useState(``);
@@ -20,11 +24,12 @@ export default function NumPad() {
 
   const handleSubmit = () => {
     if (pin.length > 0) {
-      API.getEmployees()
+      EMPLOYEE_API.getEmployees()
         .then((res) => {
           const search = res.data.find(({ id }) => id === pin);
           if (search !== undefined) {
             setLoggedIn({ success: true, permission: search.permission });
+            clockIn();
           } else {
             errorPin();
           }
@@ -32,6 +37,22 @@ export default function NumPad() {
         .catch((err) => console.error(err));
     }
   };
+
+  const clockIn = () => {
+    TIME_API.getTimeClock().then((res) => {
+      const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+      TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now() });
+    });
+  };
+
+  const clockOut = () => {
+    TIME_API.getTimeClock().then((res) => {
+      const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+      TIME_API.updateEmployeeTimeClock(searchId._id, { clockOut: Date.now() });
+      setLoggedIn({ success: false, permission: 0 });
+      setPin(``);
+    });
+  }
 
   const handleDelete = () => {
     if (pin.length > 0) {
@@ -112,48 +133,58 @@ export default function NumPad() {
   return (
     <>
       {loggedIn.success ? permissionPages(loggedIn.permission) : null}
-      <ButtonGroup vertical>
-        <Form>
-          <Form.Group controlId='formPIN'>
-            <Form.Control
-              autoFocus
-              name='pin'
-              type='password'
-              placeholder='Enter PIN'
-              value={pin}
-              onChange={(e) => {
-                setPin(e.target.value);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-                  handleSubmit();
-                }
-              }}
-            />
-          </Form.Group>
-        </Form>
-        {buttons.map((rows, index) => (
-          <ButtonGroup key={`button-row-${index}`}>
-            {rows.map((button, buttonIndex) => (
-              <Button
-                variant='outline-secondary'
-                key={`button-index-${buttonIndex}`}
-                value={!button.value ? button.name : button.value}
-                onClick={
-                  button.value === `del`
-                    ? handleDelete
-                    : button.value === `login`
-                    ? handleSubmit
-                    : handleBtnInput
-                }
-              >
-                {button.name}
-              </Button>
+      <Row>
+        <Col className='py-3'>
+          <ButtonGroup vertical>
+            <Form>
+              <Form.Group controlId='formPIN'>
+                <Form.Control
+                  autoFocus
+                  name='pin'
+                  type='password'
+                  placeholder='Enter PIN'
+                  value={pin}
+                  onChange={(e) => {
+                    setPin(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleSubmit();
+                    }
+                  }}
+                />
+              </Form.Group>
+            </Form>
+            {buttons.map((rows, index) => (
+              <ButtonGroup key={`button-row-${index}`}>
+                {rows.map((button, buttonIndex) => (
+                  <Button
+                    variant='outline-secondary'
+                    key={`button-index-${buttonIndex}`}
+                    value={!button.value ? button.name : button.value}
+                    onClick={
+                      button.value === `del`
+                        ? handleDelete
+                        : button.value === `login`
+                        ? handleSubmit
+                        : handleBtnInput
+                    }
+                  >
+                    {button.name}
+                  </Button>
+                ))}
+              </ButtonGroup>
             ))}
           </ButtonGroup>
-        ))}
-      </ButtonGroup>
+        </Col>
+      </Row>
+      <Row className='justify-content-around'>
+        <Col>
+          <ClockInButton className='mx-1' onClick={handleSubmit} />
+          <ClockOutButton className='mx-1' onClick={clockOut}/>
+        </Col>
+      </Row>
     </>
   );
 }

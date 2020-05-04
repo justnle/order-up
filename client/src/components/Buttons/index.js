@@ -43,11 +43,19 @@ function CloseButton(props) {
 function OrderSoldButton() {
   return <Button variant='danger'>Mark Order Sold</Button>;
 }
-function ClockInButton() {
-  return <Button variant='primary'>Clock In</Button>;
+function ClockInButton(props) {
+  return (
+    <Button variant='primary' {...props}>
+      Clock In
+    </Button>
+  );
 }
-function ClockOutButton() {
-  return <Button variant='danger'>Clock Out</Button>;
+function ClockOutButton(props) {
+  return (
+    <Button variant='danger' {...props}>
+      Clock Out
+    </Button>
+  );
 }
 function MenuItemButton({ children }) {
   return <Button variant='dark'>{children}</Button>;
