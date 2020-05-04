@@ -6,17 +6,17 @@ import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
+import { set } from 'mongoose';
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [mode, setMode] = useState(`add`);
-  const [editEmployee, setEditEmployee] = useState({});
-  const [employeeInfo, setEmployeeInfo] = useState({});
-  const [inputs, setInputs] = useState([]);
-  const [selectedEmployees, setSelectedEmployees] = useState([])
-  const [modalTitle, setModalTitle] = useState();
+  const [showModal, setShowModal] = useState(false); // using
+  const [employeeInfo, setEmployeeInfo] = useState({}); //using
+  const [inputs, setInputs] = useState([]); //using
+  const [selectedEmployees, setSelectedEmployees] = useState([]) //using
+  const [modalTitle, setModalTitle] = useState(); //using
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
 
   useEffect(() => {
     loadEmployees();
@@ -31,7 +31,7 @@ function Employees() {
       .catch(err => console.error(err));
   }
 
-  const handleInputChange = event => {
+  const updateFilteredEmployeesState = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
       employees.filter(employee => {
@@ -46,11 +46,6 @@ function Employees() {
       })
     );
   }
-
-  const updateEditEmployeeState = event => {
-    const { name, value } = event.target;
-    setEditEmployee(editEmployee => ({ ...editEmployee, [name]: value }));
-  };
 
   const updateEmployeeInfoState = event => {
     const { name, value } = event.target;
@@ -103,7 +98,7 @@ function Employees() {
     }
   ]
 
-  const headingArr = [
+  const employeeTableHeadingArr = [
     { key: `name`, heading: `Employee Name` },
     { key: `id`, heading: `Employee PIN` },
     { key: `position`, heading: `Position` },
@@ -111,11 +106,11 @@ function Employees() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
-  
+
   const addButtonPressed = () => {
-    setMode(`add`);
     setInputs([...employeeNameInput, ...otherInput]);
     setModalTitle(`Add a new employee`);
+    setSubmitButtonLabel(`Submit`);
     setShowModal(true);
   }
 
@@ -125,16 +120,27 @@ function Employees() {
     console.log(`Edit button pressed!`)
     if (selectedEmployees.length > 1) {
       console.log(`More than 1 employee selected`)
-      setMode(`edit`)
+      setInputs(otherInput);
       setModalTitle(`Edit employees`);
-      setShowModal(true)
     } else {
       console.log(`Only 1 employee selected`)
-      setMode(`add`)
+      setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
-      setShowModal(true)
     }
+    setSubmitButtonLabel(`Save`);
+    setShowModal(true)
+  }
 
+  const deleteButtonPressed = () => {
+    console.log(`Delete button pressed`)
+    API.deleteManyEmployee(selectedEmployees)
+      .then(res => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadEmployees();
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   const checkboxClicked = event => {
@@ -164,21 +170,14 @@ function Employees() {
       });
     } else {
       alert(
-        'Please fill in all fields with appropriate input to submit an employee'
+        'Please fill in all required fields to add an employee'
       );
     }
   }
 
-  const deleteButtonPressed = event => {
-    console.log(`Delete button clicked`)
-    API.deleteManyEmployee(selectedEmployees)
-      .then(res => {
-        console.log(`status code: ${res.status}`);
-        if (res.data.n > 0) {
-          loadEmployees();
-        }
-      })
-      .catch(err => console.error(err));
+  const saveButtonPressed = event => {
+    console.log(`Save button pressed`);
+    
   }
 
   return (
@@ -190,7 +189,7 @@ function Employees() {
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
-          onChange={handleInputChange}
+          onChange={updateFilteredEmployeesState}
         />
       </Container>
 
@@ -208,7 +207,8 @@ function Employees() {
         show={showModal} // bool
         cancel={closeEmployeeModal}
         title={modalTitle}
-        submit={submitButtonPressed}
+        submit={submitButtonLabel === `Submit` ? submitButtonPressed : saveButtonPressed}
+        submitButtonLabel={submitButtonLabel}
         inputs={inputs} // array of input objs
       />
 
@@ -223,7 +223,7 @@ function Employees() {
           </Row>
           <Row>
             <DataTable
-              headingArr={headingArr}
+              headingArr={employeeTableHeadingArr}
               dataArr={filteredEmployees}
               hideEdit={false}
               clickCheckbox={checkboxClicked}
