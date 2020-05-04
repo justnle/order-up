@@ -1,0 +1,24 @@
+.container{
+    margin-left: 35%;
+}
+
+
+
+.square {
+    height: 50px;
+    width: 50px;
+    background-color: lightcoral;
+}
+
+.circle {
+    height: 50px;
+    width: 50px;
+    background-color: yellowgreen;
+    border-radius: 50%;
+}
+
+.rectangle {
+    height: 50px;
+    width: 100px;
+    background-color: burlywood;
+}
