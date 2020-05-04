@@ -27,6 +27,7 @@ export default function NumPad() {
       EMPLOYEE_API.getEmployees()
         .then((res) => {
           const search = res.data.find(({ id }) => id === pin);
+
           if (search !== undefined) {
             setLoggedIn({ success: true, permission: search.permission });
             clockIn();
@@ -41,6 +42,7 @@ export default function NumPad() {
   const clockIn = () => {
     TIME_API.getTimeClock().then((res) => {
       const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+
       TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now() });
     });
   };
@@ -48,6 +50,7 @@ export default function NumPad() {
   const clockOut = () => {
     TIME_API.getTimeClock().then((res) => {
       const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+      
       TIME_API.updateEmployeeTimeClock(searchId._id, { clockOut: Date.now() });
       setLoggedIn({ success: false, permission: 0 });
       setPin(``);
