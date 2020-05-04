@@ -50,7 +50,7 @@ class Seats extends React.Component {
 class DrawGrid extends React.Component {
     render() {
         return (
-            <div className='container'>
+            <div id="seatsContainer"className='container'>
                 <h2></h2>
                 <table className='grid'>
                     <tbody>
