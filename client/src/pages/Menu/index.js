@@ -13,6 +13,10 @@ function Menu() {
   const [addItem, setAddItem] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedMenuItems, setSelectedMenuItems] = useState([]);
+  const [inputs, setInputs] = useState([]);
+  const [modalTitle, setModalTitle] = useState();
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
+  const [itemInfo, setItemInfo] = useState({});
 
   useEffect(() => {
     loadMenu();
@@ -57,22 +61,24 @@ function Menu() {
       })
     );
   }
-  function addItemInventory(event) {
-    const { name, value } = event.target;
-    setAddItem((addItem) => ({ ...addItem, [name]: value }));
-    console.log(addItem);
-  }
-  function handleAddItemSubmit(event) {
+  const addButtonPressed = () => {
+    setInputs([...uniqueItemArr, ...otherItemArr]);
+    setModalTitle(`Add Menu Item`);
+    setSubmitButtonLabel(`Submit`);
+    setShowAddModal(true);
+  };
+
+  function submitButtonPressed(event) {
     event.preventDefault();
     if (
-      addItem.category &&
-      addItem.name &&
-      addItem.price &&
-      addItem.description &&
-      addItem.pairing &&
-      addItem.prepareTime
+      itemInfo.category &&
+      itemInfo.name &&
+      itemInfo.price &&
+      itemInfo.description &&
+      itemInfo.pairing &&
+      itemInfo.prepareTime
     ) {
-      API.addMenuItem(addItem).then((res) => {
+      API.addMenuItem(itemInfo).then((res) => {
         console.log(`status code: ${res.status}`);
         loadMenu();
         setShowAddModal(false);
@@ -81,6 +87,10 @@ function Menu() {
       alert(`Please fill out all required fields with appropriate input`);
     }
   }
+  const updateMenuInfoState = (event) => {
+    const { name, value } = event.target;
+    setItemInfo((info) => ({ ...info, [name]: value }));
+  };
   const clickCheckbox = (event) => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
@@ -101,22 +111,14 @@ function Menu() {
       })
       .catch((err) => console.error(err));
   };
-  const addItemArr = [
-    {
-      name: `category`,
-      label: `Category`,
-      text: `Required`,
-      type: `text`,
-      placeholder: `Enter Food or Beverage`,
-      onChange: addItemInventory
-    },
+  const uniqueItemArr = [
     {
       name: `name`,
       label: `Item Name`,
       text: `Required`,
       type: `text`,
       placeholder: `Enter Item Name`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
 
     {
@@ -125,7 +127,17 @@ function Menu() {
       text: `Required`,
       type: `text`,
       placeholder: `Enter Item Description`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
+    }
+  ];
+  const otherItemArr = [
+    {
+      name: `category`,
+      label: `Category`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Food or Beverage`,
+      onChange: updateMenuInfoState
     },
     {
       name: `price`,
@@ -133,7 +145,7 @@ function Menu() {
       text: `Required`,
       type: `number`,
       placeholder: `Enter Item Price`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
     {
       name: `pairing`,
@@ -141,7 +153,7 @@ function Menu() {
       type: `text`,
       text: `Required`,
       placeholder: `Enter item pairing`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
     {
       name: `prepareTime`,
@@ -149,7 +161,7 @@ function Menu() {
       text: `Required`,
       type: `number`,
       placeholder: `Enter Item Prep Time`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
     {
       name: `itemCount`,
@@ -157,7 +169,7 @@ function Menu() {
       placeholder: `Enter Item Count`,
       text: `Optional`,
       type: `number`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     }
   ];
   const menuItemsHeadingArr = [
@@ -190,9 +202,11 @@ function Menu() {
         cancel={() => {
           setShowAddModal(!showAddModal);
         }}
-        title={`Add New Menu Item`}
-        submit={handleAddItemSubmit}
-        inputs={addItemArr}
+        title={modalTitle}
+        submit={submitButtonPressed}
+        submitButtonLabel={submitButtonLabel}
+        inputs={inputs}
+        value={itemInfo ? itemInfo : undefined}
       />
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
@@ -200,9 +214,8 @@ function Menu() {
             <EditBar
               noneSelected={selectedMenuItems.length ? false : true}
               delete={deleteButtonPressed}
-              add={() => {
-                setShowAddModal(!showAddModal);
-              }}
+              add={addButtonPressed}
+              // edit={editButtonPressed}
             />
             <DataTable
               headingArr={menuItemsHeadingArr}
