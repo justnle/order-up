@@ -5,22 +5,41 @@ import DataTable from '../../components/DataTable';
 import Calendar from '../../components/Calendar/index';
 import API from '../../utils/timeAPI';
 import EditBar from '../../components/EditBar/index';
+import { FilterButton } from '../../components/Buttons/index';
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
+  const [filterShifts, setFilterShifts] = useState([]);
+  const [shiftDisplay, setShiftDisplay] = useState([]);
 
   useEffect(() => {
     loadShifts();
   }, []);
+  useEffect(() => {
+    const filtered = shifts.filter((shift) => {
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        shift.clockIn >= filterShifts.clockIn &&
+        shift.clockOut <= filterShifts.clockOut
+      ) {
+        return true;
+      }
+    });
+    setShiftDisplay(filtered);
+  }, [filterShifts]);
+
   function loadShifts() {
     API.getTimeClock().then((res) => {
       setShifts(res.data);
+      setShiftDisplay(res.data);
     });
   }
-  function handleDelete(event) {
-    const shiftId = event.target.id;
-    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
+  function handleInput(event) {
+    const { name, value } = event.target;
+    setFilterShifts((filterShifts) => ({ ...filterShifts, [name]: value }));
+    console.log(filterShifts);
   }
+
   const shiftsHeadingArr = [
     { key: `employeeName`, heading: `Employee` },
     { key: `clockIn`, heading: `Clock In` },
@@ -37,7 +56,8 @@ function TimeManagement() {
     console.log(selectedShifts);
   };
   const deleteButtonPressed = (event) => {
-    console.log(`Build delete shift API`);
+    const shiftId = event.target.id;
+    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
   };
   return (
     <div>
@@ -48,13 +68,20 @@ function TimeManagement() {
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
+          name='employeeName'
+          onChange={handleInput}
         />
       </Container>
+      <div className='d-flex justify-content-center mt-'>
+        <span className='text-white mr-5 lead'>Filter by date</span>
+      </div>
       <Container className='d-flex justify-content-center '>
-        <span className='text-white mr-5'>Filter by date</span>
-        <Calendar className='mt-5' />
-        <Calendar className='mt-5' />
+        <Calendar className='mt-1' name='clockIn' onChange={handleInput} />
+        <Calendar className='mt-1' name='clockOut' onClick={handleInput} />
       </Container>
+      <div className='d-flex justify-content-center mt-5'>
+        <FilterButton onClick={() => setShiftDisplay(shifts)} />
+      </div>
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
@@ -66,7 +93,7 @@ function TimeManagement() {
               headingArr={shiftsHeadingArr}
               hideEdit={false}
               clickCheckbox={clickCheckbox}
-              dataArr={shifts}
+              dataArr={shiftDisplay}
             />
           </Row>
         </Col>

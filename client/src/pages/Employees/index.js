@@ -4,19 +4,18 @@ import EditBar from '../../components/EditBar';
 import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
 import DataTable from '../../components/DataTable';
-import { AddButton } from '../../components/Buttons/index';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
 
 function Employees() {
   const [employees, setEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [newEmployee, setNewEmployee] = useState({});
-  const [selectedEmployees, setSelectedEmployees] = useState([])
-
-  const showNewEmployeeModal = () => setShowModal(true);
-  const closeNewEmployeeModal = () => setShowModal(false);
+  const [showModal, setShowModal] = useState(false); // using
+  const [employeeInfo, setEmployeeInfo] = useState({}); //using
+  const [inputs, setInputs] = useState([]); //using
+  const [selectedEmployees, setSelectedEmployees] = useState([]) //using
+  const [modalTitle, setModalTitle] = useState(); //using
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
 
   useEffect(() => {
     loadEmployees();
@@ -31,7 +30,7 @@ function Employees() {
       .catch(err => console.error(err));
   }
 
-  const handleInputChange = event => {
+  const updateFilteredEmployeesState = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
       employees.filter(employee => {
@@ -47,20 +46,19 @@ function Employees() {
     );
   }
 
-  const updateNewEmployee = event => {
+  const updateEmployeeInfoState = event => {
     const { name, value } = event.target;
-    setNewEmployee(newEmployee => ({ ...newEmployee, [name]: value }));
-    console.log(newEmployee)
-  };
+    setEmployeeInfo(info => ({ ...info, [name]: value }));
+  }
 
-  const newEmployeeInput = [
+  const employeeNameInput = [
     {
       name: `name`,
       label: `Employee Name`,
       type: `text`,
-      text: `Required`,
+      text: `Full name (e.g. John Smith)`,
       placeholder: `Enter name`,
-      onChange: updateNewEmployee
+      onChange: updateEmployeeInfoState
     },
     {
       name: `id`,
@@ -68,15 +66,18 @@ function Employees() {
       type: `number`,
       text: `Enter 6 digits (e.g. 000000)`,
       placeholder: `Enter PIN`,
-      onChange: updateNewEmployee
-    },
+      onChange: updateEmployeeInfoState
+    }
+  ]
+
+  const otherInput = [
     {
       name: `position`,
       label: `Position`,
       type: `text`,
-      text: `Required (e.g. server)`,
+      text: `Required (e.g. Server)`,
       placeholder: `Enter position`,
-      onChange: updateNewEmployee
+      onChange: updateEmployeeInfoState
     },
     {
       name: `rate`,
@@ -84,19 +85,19 @@ function Employees() {
       type: `number`,
       text: `Required (format: 0.00)`,
       placeholder: `Enter hourly rate`,
-      onChange: updateNewEmployee
+      onChange: updateEmployeeInfoState
     },
     {
       name: `permission`,
       label: `Permission`,
       type: `number`,
-      text: `Required (from 0 to 5)`,
+      text: `Permission level from 0 to 5, where 0 has most access`,
       placeholder: `Set permission level`,
-      onChange: updateNewEmployee
+      onChange: updateEmployeeInfoState
     }
   ]
 
-  const headingArr = [
+  const employeeTableHeadingArr = [
     { key: `name`, heading: `Employee Name` },
     { key: `id`, heading: `Employee PIN` },
     { key: `position`, heading: `Position` },
@@ -104,7 +105,45 @@ function Employees() {
     { key: `permission`, heading: `Permission Level` }
   ];
 
-  const clickCheckbox = event => {
+
+  const addButtonPressed = () => {
+    setInputs([...employeeNameInput, ...otherInput]);
+    setModalTitle(`Add a new employee`);
+    setSubmitButtonLabel(`Submit`);
+    setShowModal(true);
+  }
+
+  const closeEmployeeModal = () => setShowModal(false);
+
+  const editButtonPressed = () => {
+    console.log(`Edit button pressed!`)
+    if (selectedEmployees.length > 1) {
+      console.log(`More than 1 employee selected`)
+      setInputs(otherInput);
+      setModalTitle(`Edit employees`);
+    } else {
+      console.log(`Only 1 employee selected`)
+      setEmployeeInfo(employees.find(employee => employee._id === selectedEmployees[0]))
+      setInputs([...employeeNameInput, ...otherInput]);
+      setModalTitle(`Edit an employee`);
+    }
+    setSubmitButtonLabel(`Save`);
+    setShowModal(true)
+  }
+
+  const deleteButtonPressed = () => {
+    console.log(`Delete button pressed`)
+    API.deleteManyEmployee(selectedEmployees)
+      .then(res => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadEmployees();
+        }
+      })
+      .catch(err => console.error(err));
+  }
+
+  const checkboxClicked = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
@@ -112,37 +151,41 @@ function Employees() {
     } else {
       setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
     }
-    console.log(selectedEmployees);
   }
 
   const submitButtonPressed = event => {
     event.preventDefault();
     if (
-      newEmployee.name &&
-      newEmployee.id &&
-      newEmployee.position &&
-      newEmployee.permission
+      employeeInfo.name &&
+      employeeInfo.id &&
+      employeeInfo.position &&
+      employeeInfo.permission &&
+      employeeInfo.rate
     ) {
-      console.log(`making call`)
-      API.addEmployee(newEmployee).then(res => {
+      console.log(`Making a POST call`)
+      API.addEmployee(employeeInfo).then(res => {
         console.log(`status code: ${res.status}`);
+        closeEmployeeModal();
         loadEmployees();
-        closeNewEmployeeModal();
       });
     } else {
       alert(
-        'Please fill in all fields with appropriate input to submit an employee'
+        'Please fill in all required fields to add an employee'
       );
     }
   }
 
-  const deleteButtonPressed = event => {
-    console.log(`Delete button clicked`)
-    API.deleteManyEmployee(selectedEmployees)
+  const saveButtonPressed = () => {
+    console.log(`Save button pressed`);
+    API.updateManyEmployees(selectedEmployees, employeeInfo)
       .then(res => {
-        console.log(`status code: ${res.status}`);
+        console.log(`Status code ${res.status}`)
+        console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
+          closeEmployeeModal();
           loadEmployees();
+        } else {
+          alert(`Something's wrong, we couldn't update employee info at this time...`)
         }
       })
       .catch(err => console.error(err));
@@ -157,51 +200,49 @@ function Employees() {
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
-          onChange={handleInputChange}
+          onChange={updateFilteredEmployeesState}
         />
       </Container>
 
       <div
         className=' d-flex row justify-content-center align-items-center text-white'
-        id='buttonsDiv'
-      >
+        id='buttonsDiv'>
         <div className='m-1'>
           <DropDownInput className='d-flex justify-content-center'>
             Sort by vendor
           </DropDownInput>
         </div>
-        <div className='m-1'>
-          <AddButton onClick={showNewEmployeeModal} />
-        </div>
       </div>
 
       <InputModal
         show={showModal} // bool
-        cancel={closeNewEmployeeModal} // bool
-        title={`Add a new employee`} // title string for your modal
-        submit={submitButtonPressed}
-        inputs={newEmployeeInput} // array of input objs
+        cancel={closeEmployeeModal}
+        title={modalTitle}
+        submit={submitButtonLabel === `Submit` ? submitButtonPressed : saveButtonPressed}
+        submitButtonLabel={submitButtonLabel}
+        inputs={inputs} // array of input objs
+        value={employeeInfo ? employeeInfo : undefined}
       />
 
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
             <EditBar noneSelected={selectedEmployees.length ? false : true}
-              add={showNewEmployeeModal}
+              add={addButtonPressed}
+              edit={editButtonPressed}
               delete={deleteButtonPressed}
             />
           </Row>
           <Row>
             <DataTable
-              headingArr={headingArr}
+              headingArr={employeeTableHeadingArr}
               dataArr={filteredEmployees}
               hideEdit={false}
-              clickCheckbox={clickCheckbox}
+              clickCheckbox={checkboxClicked}
             />
           </Row>
         </Col>
       </Container>
-
 
     </div>
   );

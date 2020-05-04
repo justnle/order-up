@@ -10,9 +10,12 @@ import EditBar from '../../components/EditBar/index';
 function Menu() {
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
-  const [addItem, setAddItem] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedMenuItems, setSelectedMenuItems] = useState([]);
+  const [inputs, setInputs] = useState([]);
+  const [modalTitle, setModalTitle] = useState();
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
+  const [itemInfo, setItemInfo] = useState({});
 
   useEffect(() => {
     loadMenu();
@@ -23,7 +26,7 @@ function Menu() {
       .then((res) => {
         const menu = res.data.map((item) => {
           return {
-            id: item._id,
+            _id: item._id,
             category: item.category,
             name: item.name,
             price: item.price,
@@ -57,22 +60,24 @@ function Menu() {
       })
     );
   }
-  function addItemInventory(event) {
-    const { name, value } = event.target;
-    setAddItem((addItem) => ({ ...addItem, [name]: value }));
-    console.log(addItem);
-  }
-  function handleAddItemSubmit(event) {
+  const addButtonPressed = () => {
+    setInputs([...uniqueItemArr, ...otherItemArr]);
+    setModalTitle(`Add Menu Item`);
+    setSubmitButtonLabel(`Submit`);
+    setShowAddModal(true);
+  };
+
+  function submitButtonPressed(event) {
     event.preventDefault();
     if (
-      addItem.category &&
-      addItem.name &&
-      addItem.price &&
-      addItem.description &&
-      addItem.pairing &&
-      addItem.prepareTime
+      itemInfo.category &&
+      itemInfo.name &&
+      itemInfo.price &&
+      itemInfo.description &&
+      itemInfo.pairing &&
+      itemInfo.prepareTime
     ) {
-      API.addMenuItem(addItem).then((res) => {
+      API.addMenuItem(itemInfo).then((res) => {
         console.log(`status code: ${res.status}`);
         loadMenu();
         setShowAddModal(false);
@@ -81,6 +86,10 @@ function Menu() {
       alert(`Please fill out all required fields with appropriate input`);
     }
   }
+  const updateMenuInfoState = (event) => {
+    const { name, value } = event.target;
+    setItemInfo((info) => ({ ...info, [name]: value }));
+  };
   const clickCheckbox = (event) => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
@@ -90,22 +99,56 @@ function Menu() {
       setSelectedMenuItems(selectedMenuItems.filter((id) => id !== selectedId));
     }
   };
-  const addItemArr = [
-    {
-      name: `category`,
-      label: `Category`,
-      text: `Required`,
-      type: `text`,
-      placeholder: `Enter Food or Beverage`,
-      onChange: addItemInventory
-    },
+  const editButtonPressed = () => {
+    console.log(`Edit button pressed!`);
+    if (selectedMenuItems.length > 1) {
+      console.log(`More than 1 employee selected`);
+      setInputs(otherItemArr);
+      setModalTitle(`Edit items`);
+    } else {
+      console.log(`Only 1 employee selected`);
+      setItemInfo(menu.find((menu) => menu._id === selectedMenuItems[0]));
+      setInputs([...uniqueItemArr, ...otherItemArr]);
+      setModalTitle(`Edit item`);
+    }
+    setSubmitButtonLabel(`Save`);
+    setShowAddModal(true);
+  };
+  const saveButtonPressed = () => {
+    console.log(`Save button pressed`);
+    API.updateManyMenuItem(selectedMenuItems, itemInfo)
+      .then((res) => {
+        console.log(`Status code ${res.status}`);
+        console.log(`Affected records: ${res.data.n}`);
+        if (res.data.n > 0) {
+          setShowAddModal(false);
+          loadMenu();
+        } else {
+          alert(
+            `Something's wrong, we couldn't update employee info at this time...`
+          );
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+  const deleteButtonPressed = () => {
+    API.deleteManyMenuItems(selectedMenuItems)
+      .then((res) => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadMenu();
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+  const uniqueItemArr = [
     {
       name: `name`,
       label: `Item Name`,
       text: `Required`,
       type: `text`,
       placeholder: `Enter Item Name`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
 
     {
@@ -114,7 +157,17 @@ function Menu() {
       text: `Required`,
       type: `text`,
       placeholder: `Enter Item Description`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
+    }
+  ];
+  const otherItemArr = [
+    {
+      name: `category`,
+      label: `Category`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter Food or Beverage`,
+      onChange: updateMenuInfoState
     },
     {
       name: `price`,
@@ -122,7 +175,7 @@ function Menu() {
       text: `Required`,
       type: `number`,
       placeholder: `Enter Item Price`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
     {
       name: `pairing`,
@@ -130,7 +183,7 @@ function Menu() {
       type: `text`,
       text: `Required`,
       placeholder: `Enter item pairing`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
     {
       name: `prepareTime`,
@@ -138,7 +191,7 @@ function Menu() {
       text: `Required`,
       type: `number`,
       placeholder: `Enter Item Prep Time`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     },
     {
       name: `itemCount`,
@@ -146,7 +199,7 @@ function Menu() {
       placeholder: `Enter Item Count`,
       text: `Optional`,
       type: `number`,
-      onChange: addItemInventory
+      onChange: updateMenuInfoState
     }
   ];
   const menuItemsHeadingArr = [
@@ -179,19 +232,24 @@ function Menu() {
         cancel={() => {
           setShowAddModal(!showAddModal);
         }}
-        title={`Add New Menu Item`}
-        submit={handleAddItemSubmit}
-        inputs={addItemArr}
+        title={modalTitle}
+        submit={
+          submitButtonLabel === `Submit`
+            ? submitButtonPressed
+            : saveButtonPressed
+        }
+        submitButtonLabel={submitButtonLabel}
+        inputs={inputs}
+        value={itemInfo ? itemInfo : undefined}
       />
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
             <EditBar
               noneSelected={selectedMenuItems.length ? false : true}
-              // delete={deleteButtonPressed}
-              add={() => {
-                setShowAddModal(!showAddModal);
-              }}
+              delete={deleteButtonPressed}
+              add={addButtonPressed}
+              edit={editButtonPressed}
             />
             <DataTable
               headingArr={menuItemsHeadingArr}

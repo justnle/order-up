@@ -71,6 +71,55 @@ const employeeSeed = [
     position: `Cook`,
     permission: 4,
     rate: 18.00
+  },
+  {
+    id: `000001`,
+    name: `Richard Wang`,
+    position: `Manager`,
+    permission: 1,
+    rate: 100.00
+  },
+  {
+    id: `000101`,
+    name: `Slave One`,
+    position: `Slave`,
+    permission: 5,
+    rate: 5.00
+  },
+  {
+    id: `000102`,
+    name: `Slave Two`,
+    position: `Slave`,
+    permission: 5,
+    rate: 5.00
+  },
+  {
+    id: `000103`,
+    name: `Slave Three`,
+    position: `Slave`,
+    permission: 5,
+    rate: 5.00
+  },
+  {
+    id: `000104`,
+    name: `Slave Four`,
+    position: `Slave`,
+    permission: 5,
+    rate: 5.00
+  },
+  {
+    id: `000105`,
+    name: `Slave Five`,
+    position: `Slave`,
+    permission: 5,
+    rate: 5.00
+  },
+  {
+    id: `000106`,
+    name: `Slave Six`,
+    position: `Slave`,
+    permission: 5,
+    rate: 5.00
   }
 ];
 
