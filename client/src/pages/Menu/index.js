@@ -23,7 +23,7 @@ function Menu() {
       .then((res) => {
         const menu = res.data.map((item) => {
           return {
-            id: item._id,
+            _id: item._id,
             category: item.category,
             name: item.name,
             price: item.price,
@@ -89,6 +89,17 @@ function Menu() {
     } else {
       setSelectedMenuItems(selectedMenuItems.filter((id) => id !== selectedId));
     }
+  };
+
+  const deleteButtonPressed = () => {
+    API.deleteManyMenuItems(selectedMenuItems)
+      .then((res) => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadMenu();
+        }
+      })
+      .catch((err) => console.error(err));
   };
   const addItemArr = [
     {
@@ -188,7 +199,7 @@ function Menu() {
           <Row className='mb-1'>
             <EditBar
               noneSelected={selectedMenuItems.length ? false : true}
-              // delete={deleteButtonPressed}
+              delete={deleteButtonPressed}
               add={() => {
                 setShowAddModal(!showAddModal);
               }}

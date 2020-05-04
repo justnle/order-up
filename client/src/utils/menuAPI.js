@@ -25,7 +25,7 @@ export default {
   deleteMenuItem: function (id) {
     return axios.delete(`/api/menu/${id}`);
   },
-  deleteManyMenu: function (idArr) {
+  deleteManyMenuItems: function (idArr) {
     return axios.delete(`/api/menu/deleteMany`, {
       data: { arr: idArr }
     });
