@@ -1,9 +1,7 @@
 import React from 'react';
 
-function Calendar() {
-  return (
-    <input type="date"></input>
-  );
+function Calendar(props) {
+  return <input type='date' {...props}></input>;
 }
 
 export default Calendar;

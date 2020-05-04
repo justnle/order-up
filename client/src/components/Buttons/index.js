@@ -8,6 +8,13 @@ function AddButton(props) {
     </Button>
   );
 }
+function FilterButton(props) {
+  return (
+    <Button variant='outline-info' {...props}>
+      Remove Filter
+    </Button>
+  );
+}
 function SubmitButton(props) {
   return (
     <Button variant='outline-info' type='Submit' {...props}>
@@ -54,5 +61,6 @@ export {
   OrderSoldButton,
   ClockInButton,
   ClockOutButton,
-  MenuItemButton
+  MenuItemButton,
+  FilterButton
 };
