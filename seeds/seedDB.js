@@ -6,6 +6,7 @@ const { menuSeed } = require(`./menuSeed`);
 const { orderSeed } = require(`./orderSeed`);
 const { archivedOrderSeed } = require(`./archivedOrderSeed`);
 const { shiftSeed } = require(`./shiftSeed`);
+const { vendorSeed } = require(`./vendorSeed`);
 const mongoose = require(`mongoose`);
 const db = require(`../models`);
 
@@ -39,6 +40,10 @@ async function seedDB() {
     {
       modelName: db.Time,
       data: shiftSeed
+    },
+    {
+      modelName: db.Vendor,
+      data: vendorSeed
     }
   ];
   for (const model of models) {
