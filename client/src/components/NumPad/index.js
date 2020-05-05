@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import { Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
 import { Redirect } from 'react-router-dom';
+import { ClockInButton, ClockOutButton } from '../../components/Buttons';
 import EMPLOYEE_API from '../../utils/employeesAPI';
 import TIME_API from '../../utils/timeAPI';
-
-import { Row, Container, Col } from 'react-bootstrap';
-import { ClockInButton, ClockOutButton } from '../../components/Buttons';
+import Modal from 'react-bootstrap/Modal';
 
 export default function NumPad() {
   const [pin, setPin] = useState(``);
@@ -15,6 +15,8 @@ export default function NumPad() {
     success: false,
     permission: 0
   });
+  const [showModal, setShowModal] = useState(false);
+  const [modalBody, setModalBody] = useState(``);
 
   const handleBtnInput = (event) => {
     event.preventDefault();
@@ -29,8 +31,7 @@ export default function NumPad() {
           const search = res.data.find(({ id }) => id === pin);
 
           if (search !== undefined) {
-            setLoggedIn({ success: true, permission: search.permission });
-            clockIn();
+            clockIn(search);
           } else {
             errorPin();
           }
@@ -39,37 +40,49 @@ export default function NumPad() {
     }
   };
 
-  const clockIn = () => {
-    TIME_API.getTimeClock().then((res) => {
-      const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+  const clockIn = (employee) => {
+    TIME_API.getTimeClock()
+      .then((res) => {
+        const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
-      switch (searchId.onTheClock) {
-        case false:
-        case null:
-          TIME_API.updateEmployeeTimeClock(searchId._id, {
-            clockIn: Date.now(),
-            onTheClock: true
-          });
-          break;
-        case true:
-          console.log(`${searchId.employeeName} is already clocked in`);
-        default:
-          console.log(`error handling`);
-      }
-    })
-    .catch((err) => console.error(err));
+        switch (searchId.onTheClock) {
+          case false:
+          case null:
+            TIME_API.updateEmployeeTimeClock(searchId._id, {
+              clockIn: Date.now(),
+              onTheClock: true
+            });
+            setLoggedIn({ success: true, permission: employee.permission });
+            break;
+          case true:
+            setPin(``);
+            setModalBody(`${searchId.employeeName} is already clocked in`);
+            setShowModal(true);
+            break;
+          default:
+            console.error(`Error, shouldn't be logging!`);
+        }
+      })
+      .catch((err) => console.error(err));
   };
 
   const clockOut = () => {
-    TIME_API.getTimeClock().then((res) => {
-      const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+    TIME_API.getTimeClock()
+      .then((res) => {
+        const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
-      TIME_API.updateEmployeeTimeClock(searchId._id, { clockOut: Date.now(), onTheClock: false });
-      setLoggedIn({ success: false, permission: 0 });
-      setPin(``);
-    });
+        TIME_API.updateEmployeeTimeClock(searchId._id, {
+          clockOut: Date.now(),
+          onTheClock: false
+        }).catch((err) => console.error(err));
+        setLoggedIn({ success: false, permission: 0 });
+        setPin(``);
+        setModalBody(`${searchId.employeeName} successfully clocked out`);
+        setShowModal(true);
+      })
+      .catch((err) => console.error(err));
   };
-  
+
   const handleDelete = () => {
     if (pin.length > 0) {
       let pinStr = pin;
@@ -80,8 +93,12 @@ export default function NumPad() {
 
   const errorPin = () => {
     setPin(``);
-    // TODO: make incorrect more visible
-    console.log(`incorrect pin`);
+    setModalBody(`Incorrect PIN`);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   function permissionPages(checkPermission) {
@@ -201,6 +218,18 @@ export default function NumPad() {
           <ClockOutButton className='mx-1' onClick={clockOut} />
         </Col>
       </Row>
+
+      <Modal show={showModal} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalBody}</Modal.Body>
+        <Modal.Footer>
+          <Button variant='secondary' onClick={closeModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
