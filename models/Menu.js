@@ -29,10 +29,6 @@ const MenuSchema = new Schema({
   prepareTime: {
     type: Number,
     required: false
-  },
-  itemCount: {
-    type: Number,
-    default: null
   }
 }, {
   collection: `menu`

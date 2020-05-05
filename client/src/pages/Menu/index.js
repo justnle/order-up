@@ -74,7 +74,7 @@ function Menu() {
   }
   const updateMenuInfoState = event => {
     const { name, value } = event.target;
-    setItemInfo(info => ({ ...info, [name]: [name] === `price` ? parseInt(value) : value }));
+    setItemInfo(info => ({ ...info, [name]: value }));
   };
   const clickCheckbox = (event) => {
     const checked = event.target.checked;
@@ -180,14 +180,6 @@ function Menu() {
       type: `number`,
       placeholder: `Enter Item Prep Time`,
       onChange: updateMenuInfoState
-    },
-    {
-      name: `itemCount`,
-      label: `Item Count`,
-      placeholder: `Enter Item Count`,
-      text: `Optional`,
-      type: `number`,
-      onChange: updateMenuInfoState
     }
   ];
 
@@ -196,8 +188,7 @@ function Menu() {
     { key: `category`, heading: `Category` },
     { key: `price`, heading: `Price` },
     { key: `pairing`, heading: `Pairing` },
-    { key: `prepareTime`, heading: `Prep Time` },
-    { key: `itemCount`, heading: `Count` }
+    { key: `prepareTime`, heading: `Prep Time` }
   ];
 
   return (
