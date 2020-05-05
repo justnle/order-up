@@ -14,8 +14,8 @@ const orderSeed = [
           }
         ]
       }
-    ],
-    employeeName: `Wyatt Ventura`
+    ]
+    // employeeName: `Wyatt Ventura`
   },
   {
     tableNumber: 2,
@@ -55,8 +55,8 @@ const orderSeed = [
           }
         ]
       }
-    ],
-    employeeName: `Paris Molloy`
+    ]
+    // employeeName: `Paris Molloy`
   },
   {
     tableNumber: 3,
@@ -81,8 +81,8 @@ const orderSeed = [
           }
         ]
       }
-    ],
-    employeeName: `Wyatt Ventura`
+    ]
+    // employeeName: `Wyatt Ventura`
   },
   {
     tableNumber: 3,
@@ -107,8 +107,8 @@ const orderSeed = [
           }
         ]
       }
-    ],
-    employeeName: `Fahima Ayers`
+    ]
+    // employeeName: `Fahima Ayers`
   }
 ];
 
