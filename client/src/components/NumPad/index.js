@@ -43,48 +43,33 @@ export default function NumPad() {
     TIME_API.getTimeClock().then((res) => {
       const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
-      switch(searchId.onTheClock) {
-        case(false):
-          TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now(), onTheClock: true });
+      switch (searchId.onTheClock) {
+        case false:
+        case null:
+          TIME_API.updateEmployeeTimeClock(searchId._id, {
+            clockIn: Date.now(),
+            onTheClock: true
+          });
           break;
-          case(true):
+        case true:
           console.log(`${searchId.employeeName} is already clocked in`);
-          break;
-          case()
-
+        default:
+          console.log(`error handling`);
       }
-
-      if (searchId.onTheClock === null || searchId.onTheClock === false) {
-        TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now(), onTheClock: true });
-      } else if (searchId.onTheClock === true) {
-        console.log(`${searchId.employeeName} is already clocked in`);
-      } else if 
-    });
+    })
+    .catch((err) => console.error(err));
   };
 
   const clockOut = () => {
     TIME_API.getTimeClock().then((res) => {
       const searchId = res.data.find(({ employeeId }) => employeeId === pin);
-  
-      TIME_API.updateEmployeeTimeClock(searchId._id, { clockOut: Date.now() });
+
+      TIME_API.updateEmployeeTimeClock(searchId._id, { clockOut: Date.now(), onTheClock: false });
       setLoggedIn({ success: false, permission: 0 });
       setPin(``);
     });
-  }
-
-  const clockStatus = () => {
-    TIME_API.getTimeClock.then((res) => {
-      const searchId = res.data.find(({ employeeId }) => employeeId === pin);
-
-      if (searchId.onTheClock) {
-        console.log(`clock out`);
-
-      } else {
-        console.log(`clock in`);
-      }
-    })
-  }
-
+  };
+  
   const handleDelete = () => {
     if (pin.length > 0) {
       let pinStr = pin;
@@ -213,7 +198,7 @@ export default function NumPad() {
       <Row className='justify-content-around'>
         <Col>
           <ClockInButton className='mx-1' onClick={handleSubmit} />
-          <ClockOutButton className='mx-1' onClick={clockOut}/>
+          <ClockOutButton className='mx-1' onClick={clockOut} />
         </Col>
       </Row>
     </>
