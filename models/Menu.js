@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 "use strict";
 
 const mongoose = require(`mongoose`);
@@ -14,20 +15,20 @@ const MenuSchema = new Schema({
     required: true
   },
   price: {
-    type: Number,
+    type: String,
     required: true
   },
   description: {
     type: String,
-    required: true
+    required: false
   },
   pairing: {
     type: String,
-    required: true
+    required: false
   },
   prepareTime: {
     type: Number,
-    required: true
+    required: false
   },
   itemCount: {
     type: Number,

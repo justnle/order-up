@@ -43,7 +43,7 @@ function Menu() {
       .catch((err) => console.error(err));
   }
 
-  function handleInputChange(event) {
+  function updateFilteredMenu(event) {
     const inputText = event.target.value;
     setFilteredMenu(
       menu.filter((item) => {
@@ -86,9 +86,9 @@ function Menu() {
       alert(`Please fill out all required fields with appropriate input`);
     }
   }
-  const updateMenuInfoState = (event) => {
+  const updateMenuInfoState = event => {
     const { name, value } = event.target;
-    setItemInfo((info) => ({ ...info, [name]: value }));
+    setItemInfo(info => ({ ...info, [name]: [name] === `price` ? parseInt(value) : value }));
   };
   const clickCheckbox = (event) => {
     const checked = event.target.checked;
@@ -141,13 +141,14 @@ function Menu() {
       })
       .catch((err) => console.error(err));
   };
+
   const uniqueItemArr = [
     {
       name: `name`,
-      label: `Item Name`,
+      label: `Name`,
       text: `Required`,
       type: `text`,
-      placeholder: `Enter Item Name`,
+      placeholder: `Enter item name`,
       onChange: updateMenuInfoState
     },
 
@@ -156,17 +157,18 @@ function Menu() {
       label: `Item Description`,
       text: `Required`,
       type: `text`,
-      placeholder: `Enter Item Description`,
+      placeholder: `Enter item description`,
       onChange: updateMenuInfoState
     }
   ];
+
   const otherItemArr = [
     {
       name: `category`,
       label: `Category`,
       text: `Required`,
       type: `text`,
-      placeholder: `Enter Food or Beverage`,
+      placeholder: `Enter menu category`,
       onChange: updateMenuInfoState
     },
     {
@@ -174,7 +176,7 @@ function Menu() {
       label: `Item Price`,
       text: `Required`,
       type: `number`,
-      placeholder: `Enter Item Price`,
+      placeholder: `Enter item Price`,
       onChange: updateMenuInfoState
     },
     {
@@ -202,14 +204,16 @@ function Menu() {
       onChange: updateMenuInfoState
     }
   ];
+
   const menuItemsHeadingArr = [
-    { key: `name`, heading: `Item Name` },
+    { key: `name`, heading: `Name` },
     { key: `category`, heading: `Category` },
     { key: `price`, heading: `Price` },
     { key: `pairing`, heading: `Pairing` },
     { key: `prepareTime`, heading: `Prep Time` },
     { key: `itemCount`, heading: `Count` }
   ];
+
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
@@ -218,8 +222,8 @@ function Menu() {
       <Container className='mt-5 mb-3'>
         <SearchBar
           className='col-12 rounded-sm'
-          placeholder='Search inventory items'
-          onChange={handleInputChange}
+          placeholder='Search menu items'
+          onChange={updateFilteredMenu}
         />
       </Container>
       <div className='m-1'>
@@ -227,6 +231,7 @@ function Menu() {
           Sort by category
         </DropDownInput>
       </div>
+
       <InputModal
         show={showAddModal}
         cancel={() => {
@@ -242,6 +247,7 @@ function Menu() {
         inputs={inputs}
         value={itemInfo ? itemInfo : undefined}
       />
+
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
