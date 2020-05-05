@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === `production`) {
 
 app.use(routes);
 
-mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/orderup`, {
+mongoose.connect(process.env.MONGODB_URI || `mongodb://jkrtr:project3@ds231228.mlab.com:31228/heroku_12rd66jg`, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true
