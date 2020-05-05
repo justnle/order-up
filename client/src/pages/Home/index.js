@@ -24,7 +24,7 @@ function Home() {
     setPin(pin + value);
   };
 
-  const formInput = (event) => {
+  const handleFormInput = (event) => {
     if (event.key === `Enter`) {
       event.preventDefault();
       handleSubmit();
@@ -40,10 +40,20 @@ function Home() {
           if (search !== undefined) {
             clockIn(search);
           } else {
-            errorPin();
+            setPin(``);
+            setModalBody(`Incorrect PIN`);
+            setShowModal(true);
           }
         })
         .catch((err) => console.error(err));
+    }
+  };
+
+  const handleDelete = () => {
+    if (pin.length > 0) {
+      let pinStr = pin;
+      pinStr = pinStr.slice(0, -1);
+      setPin(pinStr);
     }
   };
 
@@ -96,20 +106,6 @@ function Home() {
       .catch((err) => console.error(err));
   };
 
-  const handleDelete = () => {
-    if (pin.length > 0) {
-      let pinStr = pin;
-      pinStr = pinStr.slice(0, -1);
-      setPin(pinStr);
-    }
-  };
-
-  const errorPin = () => {
-    setPin(``);
-    setModalBody(`Incorrect PIN`);
-    setShowModal(true);
-  };
-
   const closeModal = () => {
     setShowModal(false);
   };
@@ -133,7 +129,7 @@ function Home() {
     submit: handleSubmit,
     delete: handleDelete,
     buttonInput: handleBtnInput,
-    formInput: formInput
+    formInput: handleFormInput
   };
 
   return (
