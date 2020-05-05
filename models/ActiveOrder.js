@@ -20,9 +20,21 @@ const ActiveOrderSchema = new Schema({
       itemPrepareTime: {
         type: Number,
         required: true
+      },
+      itemPrice: {
+        type: Number,
+        required: true
+      },
+      itemCount: {
+        type: Number,
+        required: true
       }
     }
   ],
+  employeeName: {
+    type: String,
+    required: true
+  },
   orderInTime: {
     type: Date,
     required: true,

@@ -6,65 +6,87 @@ const orderSeed = [
     order: [
       {
         itemSeat: 1,
-        itemName: `some food`,
-        itemPrepareTime: 100
+        itemName: `Charcuterie Board`,
+        itemPrepareTime: 10,
+        itemPrice: 10,
+        itemCount: 1
       }
-    ]
+    ],
+    employeeName: `Wyatt Ventura`
   },
   {
     tableNumber: 2,
     order: [
       {
         itemSeat: 1,
-        itemName: `some stuff`,
-        itemPrepareTime: 1
+        itemName: `Oysters 6`,
+        itemPrepareTime: 15,
+        itemPrice: 18,
+        itemCount: 1
       },
       {
         itemSeat: 2,
-        itemName: `some chow`,
-        itemPrepareTime: 2
+        itemName: `Grilled Veggie Sandwich`,
+        itemPrepareTime: 20,
+        itemPrice: 12, 
+        itemCount: 1
       },
       {
         itemSeat: 3,
-        itemName: `some food`,
-        itemPrepareTime: 3
+        itemName: `Malbec`,
+        itemPrepareTime: 5,
+        itemPrice: 7,
+        itemCount: 1 
       }
-    ]
+    ],
+    employeeName: `Paris Molloy`
   },
   {
     tableNumber: 3,
     order: [
       {
         itemSeat: 4,
-        itemName: `food`,
-        itemPrepareTime: 10
+        itemName: `Pinot Grigio`,
+        itemPrepareTime: 5,
+        itemPrice: 7,
+        itemCount: 1
       },
       {
         itemSeat: 6,
-        itemName: `things`,
-        itemPrepareTime: 11
+        itemName: `Pilsner`,
+        itemPrepareTime: 5,
+        itemPrice: 6,
+        itemCount: 1
       }
-    ]
+    ],
+    employeeName: `Wyatt Ventura`
   },
   {
     tableNumber: 4,
     order: [
       {
         itemSeat: 10,
-        itemName: `whatever`,
-        itemPrepareTime: 100
+        itemName: `NY Strip Steak Frites`,
+        itemPrepareTime: 25,
+        itemPrice: 30,
+        itemCount: 1
       },
       {
         itemSeat: 11,
-        itemName: `water`,
-        itemPrepareTime: 60
+        itemName: `Roasted Lemon Garlic Chicken`,
+        itemPrepareTime: 25,
+        itemPrice: 20,
+        itemCount: 1
       },
       {
         itemSeat: 2,
-        itemName: `some food`,
-        itemPrepareTime: 120
+        itemName: `Amber`,
+        itemPrepareTime: 5,
+        itemPrice: 6,
+        itemCount: 1
       }
-    ]
+    ],
+    employeeName: `Fahima Ayers`
   }
 ];
 
