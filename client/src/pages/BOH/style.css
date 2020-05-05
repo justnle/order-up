@@ -1,0 +1,7 @@
+.text-center, .row, .col{
+    color:white;
+}
+
+.container{ 
+    max-width: 850px;
+}
