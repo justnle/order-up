@@ -7,7 +7,7 @@ const ActiveOrderSchema = new Schema({
     type: Number,
     required: true
   },
-  seatOrder: [
+  seatOrders: [
     {
       seatNumber: {
         type: Number,
