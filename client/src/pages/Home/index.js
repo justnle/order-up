@@ -123,13 +123,63 @@ function Home() {
     }
   }
 
+  const buttons = [
+    [
+      {
+        name: `1`
+      },
+      {
+        name: `2`
+      },
+      {
+        name: `3`
+      }
+    ],
+    [
+      {
+        name: `4`
+      },
+      {
+        name: `5`
+      },
+      {
+        name: `6`
+      }
+    ],
+    [
+      {
+        name: `7`
+      },
+      {
+        name: `8`
+      },
+      {
+        name: `9`
+      }
+    ],
+    [
+      {
+        name: <i className='fas fa-backspace del-btn'></i>,
+        value: `del`
+      },
+      {
+        name: `0`
+      },
+      {
+        name: <i className='fas fa-sign-in-alt submit-btn'></i>,
+        value: `login`
+      }
+    ]
+  ];
+
   const props = {
     pin: pin,
     setPin: setPin,
     submit: handleSubmit,
     delete: handleDelete,
     buttonInput: handleBtnInput,
-    formInput: handleFormInput
+    formInput: handleFormInput,
+    buttons: buttons
   };
 
   return (
