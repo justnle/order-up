@@ -15,7 +15,7 @@ function FOH() {
   const [menuItems, setMenuItems] = useState([]);
   const [modalMenuItemId, setModalMenuItemId] = useState(null);
   const [seatOrders, setSeatOrders] = useState([]);
-  const [selectedSeatOrder, setSelectedSeatOrder] = useState(null);
+  const [selectedSeatOrderIndex, setSelectedSeatOrderIndex] = useState(null);
   const [tableNumber, setTableNumber] = useState('');
 
   const handleClose = () => setModalMenuItemId(null);
@@ -34,7 +34,7 @@ function FOH() {
   };
 
   function handleAddToSeatOrder(id) {
-    if (selectedSeatOrder === null) {
+    if (selectedSeatOrderIndex === null) {
       return;
     }
 
@@ -46,7 +46,9 @@ function FOH() {
 
     setSeatOrders(
       seatOrders.map((seatOrder, index) =>
-        selectedSeatOrder === index ? [...seatOrder, orderItem] : [...seatOrder]
+        selectedSeatOrderIndex === index
+          ? [...seatOrder, orderItem]
+          : [...seatOrder]
       )
     );
   }
@@ -56,26 +58,32 @@ function FOH() {
   }
 
   function selectSeat(index) {
-    setSelectedSeatOrder(index);
+    setSelectedSeatOrderIndex(index);
   }
 
   const modalMenuItem = modalMenuItemId
     ? menuItems.find((item) => item._id === modalMenuItemId)
     : null;
 
-// function submitOrder(event) {
-//     event.preventDefault();
-//     ORDER_API.addActiveOrder({
-//         tableNumber: grab from table number input (just use tableNumber const),
-//         seatOrder: grab from index of seatOrder, 
-//         menuItems: [ itemName: grab from menu item, itemPrepTime: grab from menu item, itemPrice: grab from menu item, itemCount: calculate how many of item selected],
-//         employeeName: grab from when employee enters pin to start creating order
-//     }
-// ).then((res) => {
-//     console.log(res);
-//     alert('Order sent to the kitchen');
-// })
-// }
+  function submitOrder() {
+    ORDER_API.addActiveOrder({
+      tableNumber: tableNumber,
+      seatOrders: seatOrders.map((seatOrder, index) => ({
+        seatNumber: index + 1,
+        menuItems: seatOrder.map((orderItem) => ({
+          itemName: orderItem.name,
+          itemPrepareTime: orderItem.prepareTime,
+          itemPrice: orderItem.price,
+        })),
+      })),
+      //   employeeName: 'some name',
+    })
+      .then((res) => {
+        console.log(res.data);
+        alert('Order sent to the kitchen');
+      })
+      .catch((err) => console.error(err));
+  }
 
   return (
     <>
@@ -89,7 +97,8 @@ function FOH() {
                   <Form.Control
                     type='number'
                     placeholder='Enter a number'
-                    onChange={event => setTableNumber(event.target.value)} />
+                    onChange={(event) => setTableNumber(event.target.value)}
+                  />
                 </Form.Group>
               </Form>
               <Table striped bordered variant='dark'>
@@ -103,9 +112,9 @@ function FOH() {
                   {seatOrders.map((seatOrder, index) => (
                     <SeatOrder
                       key={'seat-order-' + index}
-                      seatOrderNumberIndex={index}
+                      seatOrderNumber={index + 1}
                       seatOrder={seatOrder}
-                      isActiveRow={selectedSeatOrder === index}
+                      isActiveRow={selectedSeatOrderIndex === index}
                       onClick={() => {
                         selectSeat(index);
                       }}
@@ -116,8 +125,13 @@ function FOH() {
               <Button variant='primary' onClick={addSeatOrder}>
                 Add Seat
               </Button>
-              <Button variant='danger' >
-                  Submit Order
+              <Button
+                variant='danger'
+                onClick={() => {
+                  submitOrder();
+                }}
+              >
+                Submit Order
               </Button>
             </Col>
             <Col size='md-8'>

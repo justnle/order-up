@@ -3,7 +3,7 @@ import React from 'react';
 function SeatOrder(props) {
   return (
     <tr className={props.isActiveRow ? 'active' : ''} onClick={props.onClick}>
-      <td>{props.seatOrderNumberIndex + 1}</td>
+      <td>{props.seatOrderNumber}</td>
       <td>
         <ul>
           {props.seatOrder.map((orderItem, index) => (
