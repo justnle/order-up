@@ -10,8 +10,7 @@ const orderSeed = [
           {
             itemName: `Charcuterie Board`,
             itemPrepareTime: 10,
-            itemPrice: `10.00`,
-            itemCount: 1
+            itemPrice: `10.00`
           }
         ]
       }
@@ -27,8 +26,7 @@ const orderSeed = [
           {
             itemName: `Oysters 6`,
             itemPrepareTime: 15,
-            itemPrice: `18.00`,
-            itemCount: 1
+            itemPrice: `18.00`
           }
         ]
       },
@@ -38,14 +36,12 @@ const orderSeed = [
           {
             itemName: `Grilled Veggie Sandwich`,
             itemPrepareTime: 20,
-            itemPrice: `12.00`,
-            itemCount: 1
+            itemPrice: `12.00`
           },
           {
             itemName: `Pinot Grigio`,
             itemPrepareTime: 5,
-            itemPrice: `7.00`,
-            itemCount: 1
+            itemPrice: `7.00`
           }
         ]
       },
@@ -55,8 +51,7 @@ const orderSeed = [
           {
             itemName: `Malbec`,
             itemPrepareTime: 5,
-            itemPrice: `7.00`,
-            itemCount: 1
+            itemPrice: `7.00`
           }
         ]
       }
@@ -72,8 +67,7 @@ const orderSeed = [
           {
             itemName: `Pinot Grigio`,
             itemPrepareTime: 5,
-            itemPrice: `7.00`,
-            itemCount: 1
+            itemPrice: `7.00`
           }
         ]
       },
@@ -83,8 +77,7 @@ const orderSeed = [
           {
             itemName: `Pilsner`,
             itemPrepareTime: 5,
-            itemPrice: `6.00`,
-            itemCount: 1
+            itemPrice: `6.00`
           }
         ]
       }
@@ -100,8 +93,7 @@ const orderSeed = [
           {
             itemName: `Pinot Grigio`,
             itemPrepareTime: 5,
-            itemPrice: `7.00`,
-            itemCount: 1
+            itemPrice: `7.00`
           }
         ]
       },
@@ -111,8 +103,7 @@ const orderSeed = [
           {
             itemName: `Pilsner`,
             itemPrepareTime: 5,
-            itemPrice: `6.00`,
-            itemCount: 1
+            itemPrice: `6.00`
           }
         ]
       }

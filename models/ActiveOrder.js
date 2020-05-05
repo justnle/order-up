@@ -26,10 +26,6 @@ const ActiveOrderSchema = new Schema({
           itemPrice: {
             type: String,
             required: true
-          },
-          itemCount: {
-            type: Number,
-            required: true
           }
         }
       ]
