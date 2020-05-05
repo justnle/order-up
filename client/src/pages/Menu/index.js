@@ -23,33 +23,19 @@ function Menu() {
 
   function loadMenu() {
     API.getMenu()
-      .then((res) => {
-        const menu = res.data.map((item) => {
-          return {
-            _id: item._id,
-            category: item.category,
-            name: item.name,
-            price: item.price,
-            description: item.description,
-            pairing: item.pairing,
-            prepareTime: item.prepareTime,
-            itemCount: item.itemCount
-          };
-        });
-        const filteredMenu = [...menu];
-        setMenu(menu);
-        setFilteredMenu(filteredMenu);
+      .then(res => {
+        setMenu(res.data)
+        setFilteredMenu(res.data)
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
-  function handleInputChange(event) {
+  function updateFilteredMenu(event) {
     const inputText = event.target.value;
     setFilteredMenu(
       menu.filter((item) => {
         const words = item.name.split(' ');
         let isMatch = false;
-
         words.forEach((word) => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = true;
@@ -86,9 +72,9 @@ function Menu() {
       alert(`Please fill out all required fields with appropriate input`);
     }
   }
-  const updateMenuInfoState = (event) => {
+  const updateMenuInfoState = event => {
     const { name, value } = event.target;
-    setItemInfo((info) => ({ ...info, [name]: value }));
+    setItemInfo(info => ({ ...info, [name]: value }));
   };
   const clickCheckbox = (event) => {
     const checked = event.target.checked;
@@ -141,13 +127,14 @@ function Menu() {
       })
       .catch((err) => console.error(err));
   };
+
   const uniqueItemArr = [
     {
       name: `name`,
-      label: `Item Name`,
+      label: `Name`,
       text: `Required`,
       type: `text`,
-      placeholder: `Enter Item Name`,
+      placeholder: `Enter item name`,
       onChange: updateMenuInfoState
     },
 
@@ -156,17 +143,18 @@ function Menu() {
       label: `Item Description`,
       text: `Required`,
       type: `text`,
-      placeholder: `Enter Item Description`,
+      placeholder: `Enter item description`,
       onChange: updateMenuInfoState
     }
   ];
+
   const otherItemArr = [
     {
       name: `category`,
       label: `Category`,
       text: `Required`,
       type: `text`,
-      placeholder: `Enter Food or Beverage`,
+      placeholder: `Enter menu category`,
       onChange: updateMenuInfoState
     },
     {
@@ -174,7 +162,7 @@ function Menu() {
       label: `Item Price`,
       text: `Required`,
       type: `number`,
-      placeholder: `Enter Item Price`,
+      placeholder: `Enter item Price`,
       onChange: updateMenuInfoState
     },
     {
@@ -192,24 +180,17 @@ function Menu() {
       type: `number`,
       placeholder: `Enter Item Prep Time`,
       onChange: updateMenuInfoState
-    },
-    {
-      name: `itemCount`,
-      label: `Item Count`,
-      placeholder: `Enter Item Count`,
-      text: `Optional`,
-      type: `number`,
-      onChange: updateMenuInfoState
     }
   ];
+
   const menuItemsHeadingArr = [
-    { key: `name`, heading: `Item Name` },
+    { key: `name`, heading: `Name` },
     { key: `category`, heading: `Category` },
     { key: `price`, heading: `Price` },
     { key: `pairing`, heading: `Pairing` },
-    { key: `prepareTime`, heading: `Prep Time` },
-    { key: `itemCount`, heading: `Count` }
+    { key: `prepareTime`, heading: `Prep Time` }
   ];
+
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
@@ -218,8 +199,8 @@ function Menu() {
       <Container className='mt-5 mb-3'>
         <SearchBar
           className='col-12 rounded-sm'
-          placeholder='Search inventory items'
-          onChange={handleInputChange}
+          placeholder='Search menu items'
+          onChange={updateFilteredMenu}
         />
       </Container>
       <div className='m-1'>
@@ -227,6 +208,7 @@ function Menu() {
           Sort by category
         </DropDownInput>
       </div>
+
       <InputModal
         show={showAddModal}
         cancel={() => {
@@ -242,6 +224,7 @@ function Menu() {
         inputs={inputs}
         value={itemInfo ? itemInfo : undefined}
       />
+
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>

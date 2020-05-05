@@ -8,7 +8,7 @@ import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
 
 function Employees() {
-  const [employees, setEmployees] = useState([]);
+  const [cachedEmployees, setCachedEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false); // using
   const [employeeInfo, setEmployeeInfo] = useState({}); //using
@@ -24,7 +24,7 @@ function Employees() {
   const loadEmployees = () => {
     API.getEmployees()
       .then(res => {
-        setEmployees(res.data);
+        setCachedEmployees(res.data);
         setFilteredEmployees(res.data);
       })
       .catch(err => console.error(err));
@@ -33,12 +33,12 @@ function Employees() {
   const updateFilteredEmployeesState = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
-      employees.filter(employee => {
+      cachedEmployees.filter(employee => {
         const words = employee.name.split(' ');
         let isMatch = false;
         words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
-            isMatch = true;
+            isMatch = word.toLowerCase().startsWith(inputText.toLowerCase())
           }
         });
         return isMatch;
@@ -116,14 +116,13 @@ function Employees() {
   const closeEmployeeModal = () => setShowModal(false);
 
   const editButtonPressed = () => {
-    console.log(`Edit button pressed!`)
     if (selectedEmployees.length > 1) {
       console.log(`More than 1 employee selected`)
       setInputs(otherInput);
       setModalTitle(`Edit employees`);
     } else {
       console.log(`Only 1 employee selected`)
-      setEmployeeInfo(employees.find(employee => employee._id === selectedEmployees[0]))
+      setEmployeeInfo(cachedEmployees.find(employee => employee._id === selectedEmployees[0]))
       setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
     }
@@ -192,7 +191,7 @@ function Employees() {
   }
 
   return (
-    <div>
+    <Container>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
         Employees
       </h1>
@@ -244,7 +243,7 @@ function Employees() {
         </Col>
       </Container>
 
-    </div>
+    </Container>
   );
 }
 
