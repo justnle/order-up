@@ -31,10 +31,10 @@ const ActiveOrderSchema = new Schema({
       ]
     }
   ],
-  employeeName: {
-    type: String,
-    required: true
-  },
+  // employeeName: {
+  //   type: String,
+  //   required: true
+  // },
   orderInTime: {
     type: Date,
     required: true,
