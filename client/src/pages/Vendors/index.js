@@ -16,7 +16,7 @@ function Vendors() {
   const loadVendors = () => {
     API.getVendors()
       .then((res) => {
-        setVendors(res.data);
+        setVendors();
       })
       .catch((err) => console.error(err));
   };
@@ -30,6 +30,7 @@ function Vendors() {
       setSelectedVendors(selectedVendors.filter((id) => id !== selectedId));
     }
   };
+
   const vendorsHeaderArr = [
     { key: `vendorName`, heading: `Vendor Name` },
     { key: `vendorContactName`, heading: `Contact` },
