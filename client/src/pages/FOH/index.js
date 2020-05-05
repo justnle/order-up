@@ -8,6 +8,7 @@ import API from '../../utils/menuAPI';
 import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
 import MenuItem from '../../components/MenuItem';
+import Form from 'react-bootstrap/Form';
 // import API2 from '../../utils/activeOrderAPI';
 
 function FOH() {
@@ -61,12 +62,28 @@ function FOH() {
     ? menuItems.find((item) => item._id === modalMenuItemId)
     : null;
 
+ function getTableNumber() {
+
+ }
+
   return (
     <>
       <div>
         <Container className='d-flex mt-5'>
           <Row>
             <Col size='md-4'>
+              <Form className='form-inline mb-3'>
+                <Form.Group controlId='formTableNumber'>
+                  <Form.Label>Table # </Form.Label>
+                  <Form.Control
+                    type='number'
+                    placeholder='1'
+                  />
+                </Form.Group>
+                <Button variant='primary' type='submit'>
+                  Submit
+                </Button>
+              </Form>
               <Table striped bordered variant='dark'>
                 <thead>
                   <tr>
