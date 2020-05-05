@@ -5,13 +5,13 @@ import { ClockInButton, ClockOutButton } from '../../components/Buttons';
 
 import './style.css';
 
-function Home(props) {
+function Home() {
   return (
     <Container
       className='border border-dark rounded text-center mt-5'
       id='home-container'
     >
-        <NumPad />
+      <NumPad />
     </Container>
   );
 }
