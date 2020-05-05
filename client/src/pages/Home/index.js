@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import NumPad from '../../components/NumPad';
-import { Redirect } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 import { ClockInButton, ClockOutButton } from '../../components/Buttons';
+import NumPad from '../../components/NumPad';
 import EMPLOYEE_API from '../../utils/employeesAPI';
 import TIME_API from '../../utils/timeAPI';
-import Modal from 'react-bootstrap/Modal';
 import './style.css';
 
 function Home() {
