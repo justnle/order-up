@@ -1,8 +1,6 @@
 import React from 'react';
-import { Row, Container, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import NumPad from '../../components/NumPad';
-import { ClockInButton, ClockOutButton } from '../../components/Buttons';
-
 import './style.css';
 
 function Home() {
