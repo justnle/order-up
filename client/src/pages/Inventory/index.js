@@ -72,6 +72,7 @@ function Inventory() {
       itemInfo.productCost
     ) {
       API.addInventoryItem(itemInfo).then(res => {
+        console.log(`status code: ${res.status}`);
         loadInventory();
         setShowAddModal(false);
       });
