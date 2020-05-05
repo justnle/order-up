@@ -10,52 +10,34 @@ import EditBar from '../../components/EditBar/index';
 function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [filteredInventory, setFilteredInventory] = useState([]);
-  const [addInventory, setAddInventory] = useState({});
-  const [showNewProductModal, setShowNewProductModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [selectedInventoryItems, setSelectedInventoryItems] = useState([]);
+  const [inputs, setInputs] = useState([]);
+  const [modalTitle, setModalTitle] = useState();
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
+  const [itemInfo, setItemInfo] = useState({});
 
   useEffect(() => {
     loadInventory();
   }, []);
-  const clickCheckbox = (event) => {
-    const checked = event.target.checked;
-    const selectedId = event.target.getAttribute(`data-id`);
-    if (checked) {
-      setSelectedInventoryItems([...selectedInventoryItems, selectedId]);
-    } else {
-      setSelectedInventoryItems(
-        selectedInventoryItems.filter((id) => id !== selectedId)
-      );
-    }
-  };
 
-  function loadInventory() {
+  const loadInventory = () => {
     API.getInventory()
-      .then((res) => {
-        const inventory = res.data.map((item) => {
-          return {
-            id: item._id,
-            productName: item.productName,
-            vendorName: item.vendorName,
-            quantity: item.quantity
-          };
-        });
-        const filteredInventory = [...inventory];
-        setInventory(inventory);
-        setFilteredInventory(filteredInventory);
+      .then(res => {
+        setInventory(res.data);
+        setFilteredInventory(res.data);
       })
-
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
-  function handleInputChange(event) {
+
+  const handleInputChange = event => {
     const inputText = event.target.value;
     setFilteredInventory(
-      inventory.filter((item) => {
+      inventory.filter(item => {
         const words = item.productName.split(' ');
         let isMatch = false;
-
-        words.forEach((word) => {
+        words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = true;
           }
@@ -64,27 +46,111 @@ function Inventory() {
       })
     );
   }
-  const addToInventory = (event) => {
+
+  const updateInventoryItemState = event => {
     const { name, value } = event.target;
-    setAddInventory((addInventory) => ({ ...addInventory, [name]: value }));
-    console.log(addInventory);
+    setItemInfo(info => ({ ...info, [name]: value }))
   };
-  const newInventoryProductInput = [
+
+  const addButtonPressed = () => {
+    setInputs([...inventoryItemInput, ...otherInput]);
+    setModalTitle(`Add Iventory Item`);
+    setSubmitButtonLabel(`Submit`);
+    setShowAddModal(true);
+  };
+
+
+  const submitButtonPressed = event => {
+    event.preventDefault();
+    if (
+      itemInfo.productName &&
+      itemInfo.quantity &&
+      itemInfo.vendorName &&
+      itemInfo.vendorContactName &&
+      itemInfo.vendorPhoneNumber &&
+      itemInfo.vendorEmail &&
+      itemInfo.productCost
+    ) {
+      API.addInventoryItem(itemInfo).then(res => {
+        console.log(`status code: ${res.status}`);
+        loadInventory();
+        setShowAddModal(false);
+      });
+    } else {
+      alert(
+        'Please fill in all fields with appropriate input to submit an employee'
+      );
+    }
+  };
+
+  const clickCheckbox = event => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedInventoryItems([...selectedInventoryItems, selectedId]);
+    } else {
+      setSelectedInventoryItems(
+        selectedInventoryItems.filter(id => id !== selectedId)
+      );
+    }
+  };
+
+  const editButtonPressed = () => {
+    if (selectedInventoryItems.length > 1) {
+      setInputs(otherInput);
+      setModalTitle('Edit items');
+    } else {
+      setItemInfo(inventory.find(inventory => inventory.id === selectedInventoryItems[0]));
+      setInputs([...inventoryItemInput, ...otherInput]);
+      setModalTitle('Edit items');
+    }
+    setSubmitButtonLabel('Save');
+    setShowAddModal(true);
+  }
+
+  const saveButtonPressed = () => {
+    API.updateManyInventoryItem(selectedInventoryItems, itemInfo)
+      .then((res) => {
+        if (res.data.n > 0) {
+          setShowAddModal(false);
+          loadInventory();
+        } else {
+          alert(`Something's wrong, we couldn't update inventory item at this time...`)
+        }
+      })
+      .catch((err) => console.error(err));
+  }
+
+  const deleteButtonPressed = () => {
+    API.deleteManyInventoryItem(selectedInventoryItems)
+      .then(res => {
+        if (res.data.n > 0) {
+          loadInventory();
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+
+  const inventoryItemInput = [
     {
       name: `productName`,
       label: `Product Name`,
       text: `Required`,
       type: `text`,
       placeholder: `Enter Product Name`,
-      onChange: addToInventory
-    },
+      onChange: updateInventoryItemState
+    }
+  ];
+
+  const otherInput = [
     {
       name: `quantity`,
       label: `Quantity`,
       text: `Required`,
       type: `number`,
       placeholder: `Enter Quantity`,
-      onChange: addToInventory
+      onChange: updateInventoryItemState
     },
     {
       name: `vendorName`,
@@ -92,7 +158,7 @@ function Inventory() {
       text: `Required`,
       type: `text`,
       placeholder: `Enter Vendor Name`,
-      onChange: addToInventory
+      onChange: updateInventoryItemState
     },
     {
       name: `vendorContactName`,
@@ -100,7 +166,7 @@ function Inventory() {
       text: `Required`,
       type: `text`,
       placeholder: `Enter Vendor Contact Name`,
-      onChange: addToInventory
+      onChange: updateInventoryItemState
     },
     {
       name: `vendorPhoneNumber`,
@@ -108,7 +174,7 @@ function Inventory() {
       text: `Required`,
       type: `text`,
       placeholder: `Enter Vendor Phone Number`,
-      onChange: addToInventory
+      onChange: updateInventoryItemState
     },
     {
       name: `vendorEmail`,
@@ -116,7 +182,7 @@ function Inventory() {
       text: `Required`,
       type: `text`,
       placeholder: `Enter Vendor Email`,
-      onChange: addToInventory
+      onChange: updateInventoryItemState
     },
     {
       name: `productCost`,
@@ -124,50 +190,20 @@ function Inventory() {
       text: `Required`,
       type: `number`,
       placeholder: `Enter Vendor Product Cost`,
-      onChange: addToInventory
+      onChange: updateInventoryItemState
     }
   ];
-  function handleAddProductSubmit(event) {
-    event.preventDefault();
-    if (
-      addInventory.productName &&
-      addInventory.quantity &&
-      addInventory.vendorName &&
-      addInventory.vendorContactName &&
-      addInventory.vendorPhoneNumber &&
-      addInventory.vendorEmail &&
-      addInventory.productCost
-    ) {
-      API.addInventoryItem(addInventory).then((res) => {
-        console.log(`status code: ${res.status}`);
-        loadInventory();
-        setShowNewProductModal(false);
-      });
-    } else {
-      alert(
-        'Please fill in all fields with appropriate input to submit an employee'
-      );
-    }
-  }
 
-  // function handleUpdate() {
-  //   const item = document.querySelector('#button');
-  //   const itemID = item.dataset.id;
-  //   const updateValues = {
-  //     quantity: document.getElementById('quantity').textContent,
-  //     vendorName: document.getElementById('vendorName').textContent,
-  //     vendorContactName: document.getElementById('contact').textContent,
-  //     vendorPhoneNumber: document.getElementById('phone').textContent,
-  //     vendorEmail: document.getElementById('email').textContent,
-  //     productCost: document.getElementById('cost').textContent
-  //   };
-  //   API.updateInventoryItem(itemID, updateValues).then(handleModalClose);
-  // }
   const inventoryHeaderArr = [
     { key: `productName`, heading: `Product Name` },
     { key: `vendorName`, heading: `Vendor Name` },
+    { key: `vendorPhoneNumber`, heading: `Vendor Phone Number` },
     { key: `quantity`, heading: `Quantity` }
   ];
+
+
+
+
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
@@ -186,23 +222,28 @@ function Inventory() {
       </DropDownInput>
 
       <InputModal
-        show={showNewProductModal}
+        show={showAddModal}
         cancel={() => {
-          setShowNewProductModal(!showNewProductModal);
+          setShowAddModal(!showAddModal);
         }}
-        title={`Add a new Product`}
-        submit={handleAddProductSubmit}
-        inputs={newInventoryProductInput}
+        title={modalTitle}
+        submit={
+          submitButtonLabel === 'Submit'
+            ? submitButtonPressed
+            : saveButtonPressed
+        }
+        submitButtonLabel={submitButtonLabel}
+        inputs={inputs}
+        value={itemInfo ? itemInfo : undefined}
       />
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
             <EditBar
               noneSelected={selectedInventoryItems.length ? false : true}
-              // delete={deleteButtonPressed}
-              add={() => {
-                setShowNewProductModal(!showNewProductModal);
-              }}
+              delete={deleteButtonPressed}
+              add={addButtonPressed}
+              edit={editButtonPressed}
             />
             <DataTable
               headingArr={inventoryHeaderArr}
