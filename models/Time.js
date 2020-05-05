@@ -22,6 +22,10 @@ const TimeSchema = new Schema(
     clockOut: {
       type: Date,
       default: null
+    },
+    onTheClock: {
+      type: Boolean,
+      default: null
     }
   },
   {
