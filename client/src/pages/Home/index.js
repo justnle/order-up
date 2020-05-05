@@ -78,14 +78,20 @@ function Home() {
       .then((res) => {
         const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
-        TIME_API.updateEmployeeTimeClock(searchId._id, {
-          clockOut: Date.now(),
-          onTheClock: false
-        }).catch((err) => console.error(err));
-        setLoggedIn({ success: false, permission: 0 });
-        setPin(``);
-        setModalBody(`${searchId.employeeName} successfully clocked out`);
-        setShowModal(true);
+        if (searchId.onTheClock) {
+          TIME_API.updateEmployeeTimeClock(searchId._id, {
+            clockOut: Date.now(),
+            onTheClock: false
+          }).catch((err) => console.error(err));
+          setLoggedIn({ success: false, permission: 0 });
+          setPin(``);
+          setModalBody(`${searchId.employeeName} successfully clocked out`);
+          setShowModal(true);
+        } else {
+          setPin(``);
+          setModalBody(`${searchId.employeeName} is not currently clocked in.`);
+          setShowModal(true);
+        }
       })
       .catch((err) => console.error(err));
   };
