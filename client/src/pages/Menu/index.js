@@ -23,24 +23,11 @@ function Menu() {
 
   function loadMenu() {
     API.getMenu()
-      .then((res) => {
-        const menu = res.data.map((item) => {
-          return {
-            _id: item._id,
-            category: item.category,
-            name: item.name,
-            price: item.price,
-            description: item.description,
-            pairing: item.pairing,
-            prepareTime: item.prepareTime,
-            itemCount: item.itemCount
-          };
-        });
-        const filteredMenu = [...menu];
-        setMenu(menu);
-        setFilteredMenu(filteredMenu);
+      .then(res => {
+        setMenu(res.data)
+        setFilteredMenu(res.data)
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
   function updateFilteredMenu(event) {
@@ -49,7 +36,6 @@ function Menu() {
       menu.filter((item) => {
         const words = item.name.split(' ');
         let isMatch = false;
-
         words.forEach((word) => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = true;
