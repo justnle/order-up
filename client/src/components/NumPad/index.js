@@ -43,18 +43,46 @@ export default function NumPad() {
     TIME_API.getTimeClock().then((res) => {
       const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
-      TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now() });
+      switch(searchId.onTheClock) {
+        case(false):
+          TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now(), onTheClock: true });
+          break;
+          case(true):
+          console.log(`${searchId.employeeName} is already clocked in`);
+          break;
+          case()
+
+      }
+
+      if (searchId.onTheClock === null || searchId.onTheClock === false) {
+        TIME_API.updateEmployeeTimeClock(searchId._id, { clockIn: Date.now(), onTheClock: true });
+      } else if (searchId.onTheClock === true) {
+        console.log(`${searchId.employeeName} is already clocked in`);
+      } else if 
     });
   };
 
   const clockOut = () => {
     TIME_API.getTimeClock().then((res) => {
       const searchId = res.data.find(({ employeeId }) => employeeId === pin);
-      
+  
       TIME_API.updateEmployeeTimeClock(searchId._id, { clockOut: Date.now() });
       setLoggedIn({ success: false, permission: 0 });
       setPin(``);
     });
+  }
+
+  const clockStatus = () => {
+    TIME_API.getTimeClock.then((res) => {
+      const searchId = res.data.find(({ employeeId }) => employeeId === pin);
+
+      if (searchId.onTheClock) {
+        console.log(`clock out`);
+
+      } else {
+        console.log(`clock in`);
+      }
+    })
   }
 
   const handleDelete = () => {
