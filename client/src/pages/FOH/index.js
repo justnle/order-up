@@ -4,17 +4,19 @@ import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 
 import { Container, Col, Row } from 'react-bootstrap';
-import API from '../../utils/menuAPI';
+import MENU_API from '../../utils/menuAPI';
 import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
 import MenuItem from '../../components/MenuItem';
-// import API2 from '../../utils/activeOrderAPI';
+import Form from 'react-bootstrap/Form';
+import ORDER_API from '../../utils/activeOrderAPI';
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
   const [modalMenuItemId, setModalMenuItemId] = useState(null);
   const [seatOrders, setSeatOrders] = useState([]);
   const [selectedSeatOrder, setSelectedSeatOrder] = useState(null);
+  const [tableNumber, setTableNumber] = useState('');
 
   const handleClose = () => setModalMenuItemId(null);
   const handleShow = (id) => setModalMenuItemId(id);
@@ -24,7 +26,7 @@ function FOH() {
   }, []);
 
   const loadMenu = () => {
-    API.getMenu()
+    MENU_API.getMenu()
       .then((res) => {
         setMenuItems(res.data);
       })
@@ -61,12 +63,35 @@ function FOH() {
     ? menuItems.find((item) => item._id === modalMenuItemId)
     : null;
 
+// function submitOrder(event) {
+//     event.preventDefault();
+//     ORDER_API.addActiveOrder({
+//         tableNumber: grab from table number input (just use tableNumber const),
+//         seatOrder: grab from index of seatOrder, 
+//         menuItems: [ itemName: grab from menu item, itemPrepTime: grab from menu item, itemPrice: grab from menu item, itemCount: calculate how many of item selected],
+//         employeeName: grab from when employee enters pin to start creating order
+//     }
+// ).then((res) => {
+//     console.log(res);
+//     alert('Order sent to the kitchen');
+// })
+// }
+
   return (
     <>
       <div>
         <Container className='d-flex mt-5'>
           <Row>
             <Col size='md-4'>
+              <Form className='form-inline mb-3'>
+                <Form.Group controlId='formTableNumber'>
+                  <Form.Label>Table </Form.Label>
+                  <Form.Control
+                    type='number'
+                    placeholder='Enter a number'
+                    onChange={event => setTableNumber(event.target.value)} />
+                </Form.Group>
+              </Form>
               <Table striped bordered variant='dark'>
                 <thead>
                   <tr>
@@ -90,6 +115,9 @@ function FOH() {
               </Table>
               <Button variant='primary' onClick={addSeatOrder}>
                 Add Seat
+              </Button>
+              <Button variant='danger' >
+                  Submit Order
               </Button>
             </Col>
             <Col size='md-8'>
