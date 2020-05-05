@@ -24,6 +24,18 @@ function TimeManagement() {
       ) {
         return true;
       }
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        !filterShifts.clockIn
+      ) {
+        return true;
+      }
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        !filterShifts.clockOut
+      ) {
+        return true;
+      }
     });
     setShiftDisplay(filtered);
   }, [filterShifts]);
