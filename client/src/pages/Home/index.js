@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import { format } from 'date-fns';
 import { ClockInButton, ClockOutButton } from '../../components/Buttons';
 import NumPad from '../../components/NumPad';
 import EMPLOYEE_API from '../../utils/employeesAPI';
@@ -66,7 +67,7 @@ function Home() {
           case false:
           case null:
             TIME_API.updateEmployeeTimeClock(searchId._id, {
-              clockIn: Date.now(),
+              clockIn: format(Date.now(), "MM-dd-yyyy, hh:mm:ss a"),
               onTheClock: true
             });
             setLoggedIn({ success: true, permission: employee.permission });
@@ -90,7 +91,7 @@ function Home() {
 
         if (searchId.onTheClock) {
           TIME_API.updateEmployeeTimeClock(searchId._id, {
-            clockOut: Date.now(),
+            clockOut: format(Date.now(), "MM-dd-yyyy, hh:mm:ss a"),
             onTheClock: false
           }).catch((err) => console.error(err));
           setLoggedIn({ success: false, permission: 0 });
