@@ -2,34 +2,74 @@
 
 const shiftSeed = [
   {
-    employeeId: 123456,
+    employeeId: `123456`,
     employeeName: `Zahra Merrill`,
-    clockIn: Date.now(),
+    clockIn: `2020-05-01`,
     onTheClock: null
   },
   {
-    employeeId: 452885,
+    employeeId: `452885`,
     employeeName: `Anish Mcgowan`,
-    clockIn: Date.now(),
+    clockIn: `2020-05-02`,
     onTheClock: null
   },
   {
-    employeeId: 369979,
+    employeeId: `369979`,
     employeeName: `Salahuddin Haas"`,
-    clockIn: Date.now(),
+    clockIn: `2020-05-03`,
     onTheClock: null
   },
   {
-    employeeId: 667475,
+    employeeId: `667475`,
     employeeName: `Fahima Ayers`,
-    clockIn: Date.now(),
+    clockIn: `2020-05-04`,
     onTheClock: null
   },
   {
-    employeeId: 782914,
+    employeeId: `782914`,
     employeeName: `Nadia Huber`,
-    clockIn: Date.now(),
+    clockIn: `2020-05-05`,
     onTheClock: null
+  },
+  {
+    employeeId: `000001`,
+    employeeName: `Richard Wang`,
+    clockIn: `2020-05-01`,
+    clockOut: `2020-05-02`
+  },
+  {
+    employeeId: `000001`,
+    employeeName: `Richard Wang`,
+    clockIn: `2020-05-02`,
+    clockOut: `2020-05-03`
+  }
+  ,
+  {
+    employeeId: `000001`,
+    employeeName: `Richard Wang`,
+    clockIn: `2020-05-03`,
+    clockOut: `2020-05-04`
+  }
+  ,
+  {
+    employeeId: `000001`,
+    employeeName: `Richard Wang`,
+    clockIn: `2020-05-04`,
+    clockOut: `2020-05-05`
+  }
+  ,
+  {
+    employeeId: `000001`,
+    employeeName: `Richard Wang`,
+    clockIn: `2020-05-05`,
+    clockOut: `2020-05-06`
+  }
+  ,
+  {
+    employeeId: `000001`,
+    employeeName: `Richard Wang`,
+    clockIn: `2020-05-06`,
+    clockOut: `2020-05-07`
   }
 ];
 module.exports = {
