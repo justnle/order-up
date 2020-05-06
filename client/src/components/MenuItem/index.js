@@ -1,14 +1,43 @@
 import React from 'react';
 import { Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import './style.css';
 
 function MenuItem(props) {
   return (
-    <div
-      className='grid-container'
-    >
-      <div
+    <div className= 'd-flex text-center'>
+      <Card
+        id='menuItem'
+        value={
+          !props.menuItem.value ? props.menuItem.name : props.menuItem.value
+        }
+        style={{ width: '11rem' }}
+        bg='dark'
+        className='bg-dark text-white'
+      >
+        <Card.Body>
+          <Card.Title>{props.menuItem.name}</Card.Title>
+          <Button
+              className='mx-1'
+              size='sm'
+              variant='primary'
+              onClick={props.handleAddToSeatOrder}
+            >
+              Select
+            </Button>
+            <Button
+              className='mx-1'
+              size='sm'
+              variant='success'
+              onClick={props.handleShow}
+            >
+              View
+            </Button>
+        </Card.Body>
+      </Card>
+
+      {/* <div
         className='m-1 text-white'
         id='menuItem'
         value={
@@ -44,7 +73,7 @@ function MenuItem(props) {
             </Button>
           </Row>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
