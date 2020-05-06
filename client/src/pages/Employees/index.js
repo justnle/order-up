@@ -22,6 +22,7 @@ function Employees() {
   }, []);
 
   const loadEmployees = () => {
+    setSelectedEmployees([]);
     API.getEmployees()
       .then(res => {
         setCachedEmployees(res.data);
