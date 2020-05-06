@@ -234,6 +234,7 @@ function Menu() {
         <Col>
           <Row className='mb-1'>
             <EditBar
+              hideAddButton={false}
               noneSelected={selectedMenuItems.length ? false : true}
               delete={deleteButtonPressed}
               add={addButtonPressed}

@@ -6,6 +6,7 @@ import Calendar from '../../components/Calendar/index';
 import API from '../../utils/timeAPI';
 import EditBar from '../../components/EditBar/index';
 import { FilterButton } from '../../components/Buttons/index';
+
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
@@ -15,8 +16,9 @@ function TimeManagement() {
   useEffect(() => {
     loadShifts();
   }, []);
+
   useEffect(() => {
-    const filtered = shifts.filter((shift) => {
+    const filtered = shifts.filter(shift => {
       if (
         shift.employeeName === filterShifts.employeeName &&
         shift.clockIn >= filterShifts.clockIn &&
@@ -40,8 +42,8 @@ function TimeManagement() {
     setShiftDisplay(filtered);
   }, [filterShifts]);
 
-  function loadShifts() {
-    API.getTimeClock().then((res) => {
+  const loadShifts = () => {
+    API.getTimeClock().then(res => {
       setShifts(res.data);
       setShiftDisplay(res.data);
     });
@@ -57,20 +59,23 @@ function TimeManagement() {
     { key: `clockIn`, heading: `Clock In` },
     { key: `clockOut`, heading: `Clock Out` }
   ];
-  const clickCheckbox = (event) => {
+
+  const clickCheckbox = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
       setSelectedShifts([...selectedShifts, selectedId]);
     } else {
-      setSelectedShifts(selectedShifts.filter((id) => id !== selectedId));
+      setSelectedShifts(selectedShifts.filter(id => id !== selectedId));
     }
     console.log(selectedShifts);
   };
-  const deleteButtonPressed = (event) => {
+
+  const deleteButtonPressed = event => {
     const shiftId = event.target.id;
     API.removeEmployeeTimeClock(shiftId).then(loadShifts());
   };
+
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
@@ -89,7 +94,7 @@ function TimeManagement() {
       </div>
       <Container className='d-flex justify-content-center '>
         <Calendar className='mt-1' name='clockIn' onChange={handleInput} />
-        <Calendar className='mt-1' name='clockOut' onClick={handleInput} />
+        <Calendar className='mt-1' name='clockOut' onChange={handleInput} />
       </Container>
       <div className='d-flex justify-content-center mt-5'>
         <FilterButton onClick={() => setShiftDisplay(shifts)} />
@@ -98,6 +103,7 @@ function TimeManagement() {
         <Col>
           <Row className='mb-1'>
             <EditBar
+              hideAddButton={true}
               noneSelected={selectedShifts.length ? false : true}
               delete={deleteButtonPressed}
             />
