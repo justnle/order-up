@@ -1,3 +1,17 @@
 .grid-container {
-    display: grid;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-x: scroll;
+  }
+
+  #menuItem {
+    height: 170px;
+  }
+
+  .scroll {
+    overflow-x: scroll;
+  }
+
+  button {
+    position: relative;
   }
