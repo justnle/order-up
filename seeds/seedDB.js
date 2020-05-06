@@ -47,13 +47,13 @@ async function seedDB() {
       .then(() =>
         model.modelName.collection
           .insertMany(model.data)
-          .then((res) =>
+          .then(res =>
             console.log(
               `${res.result.n} ${model.modelName.collection.name} records inserted!`
             )
           )
       )
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   }

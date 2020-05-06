@@ -8,7 +8,6 @@ const TimeSchema = new Schema(
   {
     employeeId: {
       type: String,
-      unique: true,
       required: true
     },
     employeeName: {
@@ -16,12 +15,11 @@ const TimeSchema = new Schema(
       required: true
     },
     clockIn: {
-      type: Date,
-      default: Date.now()
+      type: String,
+      require: true
     },
     clockOut: {
-      type: Date,
-      default: null
+      type: String
     },
     onTheClock: {
       type: Boolean,
@@ -29,7 +27,7 @@ const TimeSchema = new Schema(
     }
   },
   {
-    collection: `Time`
+    collection: `time`
   }
 );
 
