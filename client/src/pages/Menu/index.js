@@ -21,7 +21,8 @@ function Menu() {
     loadMenu();
   }, []);
 
-  function loadMenu() {
+  const loadMenu = () => {
+    setSelectedMenuItems([]);
     API.getMenu()
       .then(res => {
         setMenu(res.data)
@@ -30,22 +31,22 @@ function Menu() {
       .catch(err => console.error(err));
   }
 
-  function updateFilteredMenu(event) {
+  const updateFilteredMenu = event => {
     const inputText = event.target.value;
     setFilteredMenu(
-      menu.filter((item) => {
+      menu.filter(item => {
         const words = item.name.split(' ');
         let isMatch = false;
-        words.forEach((word) => {
+        words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = true;
           }
         });
-
         return isMatch;
       })
     );
   }
+
   const addButtonPressed = () => {
     setInputs([...uniqueItemArr, ...otherItemArr]);
     setModalTitle(`Add Menu Item`);
@@ -53,13 +54,13 @@ function Menu() {
     setShowAddModal(true);
   };
 
-  function submitButtonPressed(event) {
+  const submitButtonPressed = event => {
     event.preventDefault();
     if (
-      itemInfo.category &&
       itemInfo.name &&
-      itemInfo.price &&
       itemInfo.description &&
+      itemInfo.category &&
+      itemInfo.price &&
       itemInfo.pairing &&
       itemInfo.prepareTime
     ) {
@@ -69,14 +70,15 @@ function Menu() {
         setShowAddModal(false);
       });
     } else {
-      alert(`Please fill out all required fields with appropriate input`);
+      alert(`Please fill out all required fields of the menu item.`);
     }
   }
   const updateMenuInfoState = event => {
     const { name, value } = event.target;
     setItemInfo(info => ({ ...info, [name]: value }));
   };
-  const clickCheckbox = (event) => {
+
+  const clickCheckbox = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
@@ -85,25 +87,27 @@ function Menu() {
       setSelectedMenuItems(selectedMenuItems.filter((id) => id !== selectedId));
     }
   };
+
   const editButtonPressed = () => {
     console.log(`Edit button pressed!`);
     if (selectedMenuItems.length > 1) {
-      console.log(`More than 1 employee selected`);
+      console.log(`More than 1 menu selected`);
       setInputs(otherItemArr);
-      setModalTitle(`Edit items`);
+      setModalTitle(`Edit menu items`);
     } else {
-      console.log(`Only 1 employee selected`);
-      setItemInfo(menu.find((menu) => menu._id === selectedMenuItems[0]));
+      console.log(`Only 1 menu selected`);
+      setItemInfo(menu.find(menu => menu._id === selectedMenuItems[0]));
       setInputs([...uniqueItemArr, ...otherItemArr]);
-      setModalTitle(`Edit item`);
+      setModalTitle(`Edit a menu item`);
     }
     setSubmitButtonLabel(`Save`);
     setShowAddModal(true);
   };
+
   const saveButtonPressed = () => {
     console.log(`Save button pressed`);
     API.updateManyMenuItem(selectedMenuItems, itemInfo)
-      .then((res) => {
+      .then(res => {
         console.log(`Status code ${res.status}`);
         console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
@@ -111,7 +115,7 @@ function Menu() {
           loadMenu();
         } else {
           alert(
-            `Something's wrong, we couldn't update employee info at this time...`
+            `Something's wrong, we couldn't update the menu item at this time...`
           );
         }
       })
@@ -119,8 +123,9 @@ function Menu() {
   };
   const deleteButtonPressed = () => {
     API.deleteManyMenuItems(selectedMenuItems)
-      .then((res) => {
+      .then(res => {
         console.log(`status code: ${res.status}`);
+        console.log(res.data.n);
         if (res.data.n > 0) {
           loadMenu();
         }
