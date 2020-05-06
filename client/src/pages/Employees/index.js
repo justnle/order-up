@@ -227,7 +227,9 @@ function Employees() {
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
-            <EditBar noneSelected={selectedEmployees.length ? false : true}
+            <EditBar
+              hideAddButton={false}
+              noneSelected={selectedEmployees.length ? false : true}
               add={addButtonPressed}
               edit={editButtonPressed}
               delete={deleteButtonPressed}
