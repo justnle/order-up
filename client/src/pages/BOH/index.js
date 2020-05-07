@@ -17,7 +17,9 @@ function Boh() {
 
   useEffect(() => {
     if (archivedOrder.length > 0) {
-      addArchived();
+      ARCHIVED_ORDER_API.addArchivedOrder(archivedOrder).catch((err) =>
+        console.error(err)
+      );
     }
   }, [archivedOrder]);
 
@@ -26,6 +28,8 @@ function Boh() {
       .then((res) => {
         if (res.data.length > 0) {
           setActiveOrders(res.data);
+        } else {
+          setActiveOrders();
         }
       })
       .catch((err) => console.error(err));
@@ -50,14 +54,8 @@ function Boh() {
       .catch((err) => console.error(err));
   };
 
-  const addArchived = () => {
-    ARCHIVED_ORDER_API.addArchivedOrder(archivedOrder).catch((err) =>
-      console.error(err)
-    );
-  };
-
   return (
-    <Container>
+    <Container className='h-100'>
       <BohHeader />
       {activeOrders ? (
         activeOrders.map((data, index) => (
