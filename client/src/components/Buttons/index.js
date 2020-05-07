@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import './style.css';
 
 function AddButton(props) {
   return (
@@ -45,14 +46,14 @@ function OrderSoldButton() {
 }
 function ClockInButton(props) {
   return (
-    <Button variant='primary' {...props}>
+    <Button id='clockInBtn' variant='primary' {...props}>
       Clock In
     </Button>
   );
 }
 function ClockOutButton(props) {
   return (
-    <Button variant='danger' {...props}>
+    <Button id='clockOutBtn' variant='danger' {...props}>
       Clock Out
     </Button>
   );
