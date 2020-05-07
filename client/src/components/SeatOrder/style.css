@@ -6,3 +6,8 @@ li {
     list-style-type: none;
 
 }
+
+.delete-btn {
+    /* float: right; */
+    color: #e74944;
+  }
