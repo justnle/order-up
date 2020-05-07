@@ -74,6 +74,7 @@ function TimeManagement() {
 
   const deleteButtonPressed = event => {
     const shiftId = event.target.id;
+    console.log(event.target)
     API.removeEmployeeTimeClock(shiftId).then(loadShifts());
   };
 

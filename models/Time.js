@@ -20,6 +20,10 @@ const TimeSchema = new Schema(
     },
     clockOut: {
       type: String
+    },
+    onTheClock: {
+      type: Boolean,
+      default: null
     }
   },
   {
