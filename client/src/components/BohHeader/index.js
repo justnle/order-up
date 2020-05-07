@@ -20,7 +20,7 @@ function BohHeader() {
             size: 2
         },
         {
-            name: `Mark Sold`,
+            name: `Completed`,
             size: 2
         }
     ];
