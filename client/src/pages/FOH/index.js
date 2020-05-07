@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 // import { AddButton, SelectButton } from '../../components/Buttons';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import './style.css';
 
 import { Container, Col, Row } from 'react-bootstrap';
 import MENU_API from '../../utils/menuAPI';
@@ -88,12 +89,13 @@ function FOH() {
   return (
     <>
       <div>
-        <Container className='d-flex mt-5'>
+        <Container fluid className='d-flex mt-5'>
           <Row>
-            <Col size='md-4'>
+            <Col></Col>
+            <Col xs={3}>
               <Form className='form-inline mb-3'>
                 <Form.Group controlId='formTableNumber'>
-                  <Form.Label>Table </Form.Label>
+                  <Form.Label className='mr-1'>Table #</Form.Label>
                   <Form.Control
                     type='number'
                     placeholder='Enter a number'
@@ -101,7 +103,7 @@ function FOH() {
                   />
                 </Form.Group>
               </Form>
-              <Table striped bordered variant='dark'>
+              <Table bordered variant='dark'>
                 <thead>
                   <tr>
                     <th>Seat #</th>
@@ -134,7 +136,7 @@ function FOH() {
                 Submit Order
               </Button>
             </Col>
-            <Col size='md-8'>
+            <Col xs={7} className='menu'>
               <Row>
                 {menuItems.map((menuItem) => (
                   <MenuItem
