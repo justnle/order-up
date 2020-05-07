@@ -8,15 +8,19 @@ function BohHeader() {
             size: 2
         },
         {
+            name: `Seat`,
+            size: 1
+        },
+        {
             name: `Items`,
-            size: 6
+            size: 5
         },
         {
             name: `Time`,
             size: 2
         },
         {
-            name: `Mark Sold`,
+            name: `Completed`,
             size: 2
         }
     ];

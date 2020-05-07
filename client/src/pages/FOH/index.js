@@ -67,6 +67,7 @@ function FOH() {
 
   function submitOrder() {
     ORDER_API.addActiveOrder({
+      orderInTime: Date.now(),
       tableNumber: tableNumber,
       seatOrders: seatOrders.map((seatOrder, index) => ({
         seatNumber: index + 1,
