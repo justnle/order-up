@@ -18,7 +18,6 @@ function FOH() {
   const [seatOrders, setSeatOrders] = useState([]);
   const [selectedSeatOrderIndex, setSelectedSeatOrderIndex] = useState(null);
   const [tableNumber, setTableNumber] = useState('');
-  const [showEditOrderBtn, setShowEditOrderBtn] = useState(false);
 
   const handleClose = () => setModalMenuItemId(null);
   const handleShow = (id) => setModalMenuItemId(id);
@@ -91,17 +90,19 @@ function FOH() {
     }
   }
 
-  const clickCheckbox = event => {
-    const checked = event.target.checked;
-    const selectedId = event.target.getAttribute(`data-id`);
-    if(checked) {
-      const handleShowButton = (selectedId) => setShowEditOrderBtn(true);
-      console.log(selectedId);
-      // show remove menu item from order button
-      // when remove item button is clicked remove the item from the order
-    }
-  }
+  const clickDeleteBtn = (event) => {
+    const selectedIndex = event.target.getAttribute(`data-id`);
 
+    const copyOfSeatOrder = [...seatOrders[selectedSeatOrderIndex]];
+
+    copyOfSeatOrder.splice(selectedIndex, 1);
+
+    setSeatOrders(
+      seatOrders.map((seatOrder, index) =>
+        selectedSeatOrderIndex === index ? copyOfSeatOrder : [...seatOrder]
+      )
+    );
+  };
 
   return (
     <>
@@ -118,8 +119,7 @@ function FOH() {
                     placeholder='Enter a number'
                     onChange={(event) => setTableNumber(event.target.value)}
                   />
-                  <Button hidden={true} 
-                  >Remove Item </Button>
+                  <Button hidden={true}>Remove Item </Button>
                 </Form.Group>
               </Form>
               <Table bordered variant='dark'>
@@ -139,7 +139,7 @@ function FOH() {
                       onClick={() => {
                         selectSeat(index);
                       }}
-                     clickCheckbox={clickCheckbox}
+                      clickDeleteBtn={clickDeleteBtn}
                     />
                   ))}
                 </tbody>
