@@ -10,6 +10,7 @@ export default {
   },
 
   addArchivedOrder: function (archivedData) {
+    console.log(archivedData);
     return axios.post(`/api/archivedorder`, archivedData);
   },
 
