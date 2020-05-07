@@ -67,23 +67,35 @@ function FOH() {
     : null;
 
   function submitOrder() {
-    ORDER_API.addActiveOrder({
-      tableNumber: tableNumber,
-      seatOrders: seatOrders.map((seatOrder, index) => ({
-        seatNumber: index + 1,
-        menuItems: seatOrder.map((orderItem) => ({
-          itemName: orderItem.name,
-          itemPrepareTime: orderItem.prepareTime,
-          itemPrice: orderItem.price,
+    if (tableNumber) {
+      ORDER_API.addActiveOrder({
+        tableNumber: tableNumber,
+        seatOrders: seatOrders.map((seatOrder, index) => ({
+          seatNumber: index + 1,
+          menuItems: seatOrder.map((orderItem) => ({
+            itemName: orderItem.name,
+            itemPrepareTime: orderItem.prepareTime,
+            itemPrice: orderItem.price,
+          })),
         })),
-      })),
-      //   employeeName: 'some name',
-    })
-      .then((res) => {
-        console.log(res.data);
-        alert('Order sent to the kitchen');
+        //   employeeName: 'some name',
       })
-      .catch((err) => console.error(err));
+        .then((res) => {
+          console.log(res.data);
+          alert('Order sent to the kitchen');
+        })
+        .catch((err) => console.error(err));
+    } else {
+      alert(`You must enter a table number to submit order`);
+    }
+  }
+
+  const clickCheckbox = event => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if(checked) {
+      console.log(selectedId);
+    }
   }
 
   return (
@@ -92,7 +104,7 @@ function FOH() {
         <Container fluid className='d-flex mt-5'>
           <Row>
             <Col></Col>
-            <Col xs={3}>
+            <Col xs={4}>
               <Form className='form-inline mb-3'>
                 <Form.Group controlId='formTableNumber'>
                   <Form.Label className='mr-1'>Table #</Form.Label>
@@ -120,6 +132,7 @@ function FOH() {
                       onClick={() => {
                         selectSeat(index);
                       }}
+                     clickCheckbox={clickCheckbox}
                     />
                   ))}
                 </tbody>
