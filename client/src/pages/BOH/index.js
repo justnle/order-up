@@ -18,6 +18,7 @@ function Boh() {
   const loadOrders = () => {
     ACTIVE_ORDER_API.getActiveOrders()
       .then((res) => {
+        console.log(res.data);
         setActiveOrders(res.data);
       })
       .catch((err) => console.error(err));
@@ -72,7 +73,7 @@ function Boh() {
                 {format(Date.parse(data.orderInTime), 'pp')}
               </Col>
               <Col md={2} className='text-center my-auto' key={`sold-col-${index + 1}`}>
-                <Button variant='success' onClick={test}>CHECK</Button>
+                <Button variant='success' value={data._id} onClick={test}>CHECK</Button>
               </Col>
             </Row>
           ))
