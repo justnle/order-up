@@ -1,5 +1,4 @@
 import React from 'react';
-import { Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './style.css';
@@ -13,11 +12,11 @@ function MenuItem(props) {
           !props.menuItem.value ? props.menuItem.name : props.menuItem.value
         }
         style={{ width: '11rem' }}
-        bg='dark'
-        className='bg-dark text-white'
+        bg='transparent'
+        className='text-white'
       >
         <Card.Body>
-          <Card.Title>{props.menuItem.name}</Card.Title>
+          <Card.Text>{props.menuItem.name}</Card.Text>
           <Button
               className='mx-1'
               size='sm'
