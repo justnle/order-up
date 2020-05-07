@@ -206,7 +206,7 @@ function Inventory() {
 
   return (
     <div>
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+      <h1 className='d-flex justify-content-center display-4 mt-5'>
         Inventory
       </h1>
       <Container className='mt-5 mb-3'>

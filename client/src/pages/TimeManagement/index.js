@@ -78,7 +78,7 @@ function TimeManagement() {
 
   return (
     <div>
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+      <h1 className='d-flex justify-content-center display-4 mt-5'>
         Shift Tracker
       </h1>
       <Container className='mb-3 mt-5'>
