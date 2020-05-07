@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
 import { format } from 'date-fns';
 import BohHeader from '../../components/BohHeader';
 import ACTIVE_ORDER_API from '../../utils/activeOrderAPI';
 import ARCHIVED_ORDER_API from '../../utils/archivedOrderAPI';
 import './style.css';
+import Button from 'react-bootstrap/Button';
 
 function Boh() {
-  const [activeOrders, setActiveOrders] = useState([]);
+  const [activeOrders, setActiveOrders] = useState();
   const [archivedOrder, setArchivedOrder] = useState([]);
 
   useEffect(() => {
     loadOrders();
-  }, []);
+  }, [activeOrders]);
 
   useEffect(() => {
-    ARCHIVED_ORDER_API.addArchivedOrder(archivedOrder).catch((err) =>
-      console.error(err)
-    );
+    if (archivedOrder.length > 0) {
+      ARCHIVED_ORDER_API.addArchivedOrder(archivedOrder).catch((err) =>
+        console.error(err)
+      );
+    }
   }, [archivedOrder]);
 
   const loadOrders = () => {
     ACTIVE_ORDER_API.getActiveOrders()
-      .then((res) => setActiveOrders(res.data))
+      .then((res) => {
+        if (res.data.length > 0) {
+          setActiveOrders(res.data);
+        } else {
+          setActiveOrders();
+        }
+      })
       .catch((err) => console.error(err));
   };
 
@@ -38,14 +46,18 @@ function Boh() {
       .catch((err) => console.error(err));
 
     ACTIVE_ORDER_API.deleteActiveOrder(value)
-      .then(() => loadOrders())
+      .then((res) => {
+        if (res.data.length > 0) {
+          loadOrders();
+        }
+      })
       .catch((err) => console.error(err));
   };
 
   return (
     <Container className='h-100'>
       <BohHeader />
-      {activeOrders.length > 0 ? (
+      {activeOrders ? (
         activeOrders.map((data, index) => (
           <Row className='py-2 border' key={`table-row-${index + 1}`}>
             <Col
