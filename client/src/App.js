@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import Sidebar from './components/Sidebar';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
@@ -13,9 +14,9 @@ import FloorPlans from "./pages/FloorPlans";
 
 function App() {
   return (
-    <div>
+    <div id='App'>
       <Router>
-        <Sidebar />
+      <Sidebar />
         <Switch>
           <Route exact path='/home' component={Home} />
           <Route exact path='/manager' component={Manager} />

@@ -9,6 +9,7 @@ import NumPad from '../../components/NumPad';
 import EMPLOYEE_API from '../../utils/employeesAPI';
 import TIME_API from '../../utils/timeAPI';
 import './style.css';
+import Greeting from '../../components/Greeting';
 
 function Home() {
   const [pin, setPin] = useState(``);
@@ -183,11 +184,13 @@ function Home() {
     buttons: buttons
   };
 
+
   return (
-    <>
+    <div id='homeBackGround'>
+      <Greeting />
       {loggedIn.success ? permissionPages(loggedIn.permission) : null}
       <Container
-        className='border border-dark rounded text-center mt-5'
+        className='text-center mt-5'
         id='home-container'
       >
         <Row>
@@ -214,7 +217,7 @@ function Home() {
           </Modal.Footer>
         </Modal>
       </Container>
-    </>
+    </div>
   );
 }
 
