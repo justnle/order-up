@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
+import { format } from 'date-fns';
 import BohHeader from '../../components/BohHeader';
 import ACTIVE_ORDER_API from '../../utils/activeOrderAPI';
 import ARCHIVED_ORDER_API from '../../utils/archivedOrderAPI';
@@ -17,6 +18,7 @@ function Boh() {
 
   const loadOrders = () => {
     ACTIVE_ORDER_API.getActiveOrders().then((res) => {
+      console.log(res.data);
       setActiveOrders(res.data);
     });
   };
@@ -27,27 +29,30 @@ function Boh() {
       {activeOrders
         ? activeOrders.map((data, index) => (
             <Row className='py-2 border' key={`table-row-${index + 1}`}>
-              <Col md={4} className='my-auto' key={`table-col`}>
+              <Col md={2} className='my-auto' key={`table-col`}>
                 <h6>Table #{data.tableNumber}</h6>
               </Col>
-              <Col md={4} className='d-flex flex-row' key={`order-col`}>
-                <Col md={2} key={`order-number-col`}>
+              <Col md={6} className='d-flex flex-row' key={`order-col`}>
+                <Col key={`order-items-col`}>
                   {data.seatOrders.map((order, index) => (
-                    <Row key={`order-number-${index + 1}`}>{index + 1}</Row>
-                  ))}
-                </Col>
-                <Col md={10} key={`order-items-col`}>
-                  {data.seatOrders.map((order, index) => (
-                    <Row key={`order-item-${index + 1}`}>
-                      {order.menuItems.map((items, index) => items.itemName)}
+                    <Row
+                      className='d-flex flex-column'
+                      key={`order-item-${index + 1}`}
+                    >
+                      {order.menuItems.map((items, index) => (
+                        <Row className='text-center' key={`menu-items-${index + 1}`}>
+                          <Col className='text-center' md={1}>{order.seatNumber}</Col>
+                          <Col>{items.itemName}</Col>
+                        </Row>
+                      ))}
                     </Row>
                   ))}
                 </Col>
               </Col>
               <Col md={2} className='text-center my-auto' key={`time-col`}>
-                {data.orderInTime}
+                {format(Date.parse(data.orderInTime), 'pp')}
               </Col>
-              <Col md={2} className='text-center' key={`sold-col`}>
+              <Col md={2} className='text-center my-auto' key={`sold-col`}>
                 <Button variant='success'>CHECK</Button>
               </Col>
             </Row>
