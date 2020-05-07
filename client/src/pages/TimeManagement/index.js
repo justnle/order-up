@@ -43,10 +43,11 @@ function TimeManagement() {
   }, [filterShifts]);
 
   const loadShifts = () => {
-    API.getTimeClock().then(res => {
-      setShifts(res.data);
-      setShiftDisplay(res.data);
-    });
+    API.getTimeClock()
+      .then(res => {
+        setShifts(res.data);
+        setShiftDisplay(res.data);
+      });
   }
   function handleInput(event) {
     const { name, value } = event.target;
@@ -84,15 +85,15 @@ function TimeManagement() {
       <Container className='mb-3 mt-5'>
         <SearchBar
           placeholder='Search employees'
-          className='col-12 rounded-sm'
-          name='employeeName'
+          // className='col-12 rounded-sm'
+          // name='employeeName'
           onChange={handleInput}
         />
       </Container>
       <div className='d-flex justify-content-center mt-'>
         <span className='text-white mr-5 lead'>Filter by date</span>
       </div>
-      <Container className='d-flex justify-content-center '>
+      <Container className='d-flex justify-content-center'>
         <Calendar className='mt-1' name='clockIn' onChange={handleInput} />
         <Calendar className='mt-1' name='clockOut' onChange={handleInput} />
       </Container>
