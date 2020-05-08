@@ -49,14 +49,14 @@ function Boh() {
         activeOrders.map((data, index) => (
           <Row className='py-2 border' key={`table-row-${index + 1}`}>
             <Col
-              md={2}
+              xs={2}
               className='my-auto text-center'
               key={`table-col-${index + 1}`}
             >
               <span>Table #{data.tableNumber}</span>
             </Col>
             <Col
-              md={6}
+              xs={6}
               className='d-flex flex-row my-auto'
               key={`order-col-${index + 1}`}
             >
@@ -71,7 +71,7 @@ function Boh() {
                         className='text-center'
                         key={`menu-items-${index + 1}`}
                       >
-                        <Col className='text-center my-auto' md={1}>
+                        <Col className='text-center my-auto' xs={1}>
                           {order.seatNumber}
                         </Col>
                         <Col>{items.itemName}</Col>
@@ -82,14 +82,14 @@ function Boh() {
               </Col>
             </Col>
             <Col
-              md={2}
+              xs={2}
               className='text-center my-auto'
               key={`time-col-${index + 1}`}
             >
               {format(Date.parse(data.orderInTime), 'pp')}
             </Col>
             <Col
-              md={2}
+              xs={2}
               className='text-center my-auto'
               key={`sold-col-${index + 1}`}
             >
