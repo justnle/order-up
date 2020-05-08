@@ -64,6 +64,7 @@ function TimeManagement() {
   const clickCheckbox = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
+    console.log(selectedId)
     if (checked) {
       setSelectedShifts([...selectedShifts, selectedId]);
     } else {
@@ -72,10 +73,16 @@ function TimeManagement() {
     console.log(selectedShifts);
   };
 
-  const deleteButtonPressed = event => {
-    const shiftId = event.target.id;
-    console.log(event.target)
-    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
+  const deleteButtonPressed = () => {
+    console.log(selectedShifts);
+    if (selectedShifts.length === 1) {
+      API.removeEmployeeTimeClock(selectedShifts[0])
+        .then(() => {
+          loadShifts();
+          setSelectedShifts([]);
+        });
+    }
+
   };
 
   return (
@@ -86,8 +93,6 @@ function TimeManagement() {
       <Container className='mb-3 mt-5'>
         <SearchBar
           placeholder='Search employees'
-          // className='col-12 rounded-sm'
-          // name='employeeName'
           onChange={handleInput}
         />
       </Container>
