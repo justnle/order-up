@@ -94,7 +94,7 @@ function Boh() {
               key={`sold-col-${index + 1}`}
             >
               <Button variant='success' value={data._id} onClick={removeActive}>
-                <i class='fas fa-check'></i>
+                Done
               </Button>
             </Col>
           </Row>
