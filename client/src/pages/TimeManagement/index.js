@@ -69,13 +69,23 @@ function TimeManagement() {
     } else {
       setSelectedShifts(selectedShifts.filter(id => id !== selectedId));
     }
-    console.log(selectedShifts);
   };
 
-  const deleteButtonPressed = event => {
-    const shiftId = event.target.id;
-    console.log(event.target)
-    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
+  const deleteButtonPressed = () => {
+    console.log(selectedShifts);
+    if (selectedShifts.length === 1) {
+      API.removeEmployeeTimeClock(selectedShifts[0])
+        .then(() => {
+          loadShifts();
+          setSelectedShifts([]);
+        });
+    } else {
+      API.removeManyEmployeeTimeClock(selectedShifts)
+        .then(() => {
+          loadShifts();
+          setSelectedShifts([]);
+        })
+    }
   };
 
   return (
@@ -86,8 +96,6 @@ function TimeManagement() {
       <Container className='mb-3 mt-5'>
         <SearchBar
           placeholder='Search employees'
-          // className='col-12 rounded-sm'
-          // name='employeeName'
           onChange={handleInput}
         />
       </Container>

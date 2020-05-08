@@ -55,7 +55,7 @@ module.exports = {
         $in: req.body.arr
       }
     })
-      .then((result) => res.json(result))
-      .catch((err) => res.json(err));
+      .then(result => res.json(result))
+      .catch(err => res.json(err));
   }
 };
