@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import EditBar from '../../components/EditBar';
-import { Container, Col, Row } from 'react-bootstrap';
-import DropDownInput from '../../components/DropDownInput/index';
+import {Container, Col, Row} from 'react-bootstrap';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
@@ -48,8 +47,10 @@ function Employees() {
   };
 
   const updateEmployeeInfoState = event => {
+
     const { name, value } = event.target;
     setEmployeeInfo(info => ({ ...info, [name]: value }));
+
   };
 
   const employeeNameInput = [
@@ -99,11 +100,11 @@ function Employees() {
   ];
 
   const employeeTableHeadingArr = [
-    { key: `name`, heading: `Employee Name` },
-    { key: `id`, heading: `Employee PIN` },
-    { key: `position`, heading: `Position` },
-    { key: `rate`, heading: `Hourly Rate` },
-    { key: `permission`, heading: `Permission Level` }
+    {key: `name`, heading: `Employee Name`},
+    {key: `id`, heading: `Employee PIN`},
+    {key: `position`, heading: `Position`},
+    {key: `rate`, heading: `Hourly Rate`},
+    {key: `permission`, heading: `Permission Level`}
   ];
 
   const addButtonPressed = () => {
@@ -121,9 +122,11 @@ function Employees() {
       setModalTitle(`Edit employees`);
     } else {
       setEmployeeInfo(
+
         cachedEmployees.find(
           employee => employee._id === selectedEmployees[0]
         )
+
       );
       setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
@@ -135,6 +138,7 @@ function Employees() {
   const deleteButtonPressed = () => {
     API.deleteManyEmployee(selectedEmployees)
       .then(res => {
+
         if (res.data.n > 0) {
           loadEmployees();
         }
@@ -161,7 +165,10 @@ function Employees() {
       employeeInfo.permission &&
       employeeInfo.rate
     ) {
+
+
       API.addEmployee(employeeInfo).then(() => {
+
         closeEmployeeModal();
         loadEmployees();
       });
@@ -197,17 +204,6 @@ function Employees() {
           onChange={updateFilteredEmployeesState}
         />
       </Container>
-
-      <div
-        className=' d-flex row justify-content-center align-items-center text-white'
-        id='buttonsDiv'
-      >
-        <div className='m-1'>
-          <DropDownInput className='d-flex justify-content-center'>
-            Sort by vendor
-          </DropDownInput>
-        </div>
-      </div>
 
       <InputModal
         show={showModal}

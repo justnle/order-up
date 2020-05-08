@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import { Container, Col, Row } from 'react-bootstrap';
-import DropDownInput from '../../components/DropDownInput/index';
+import {Container, Col, Row} from 'react-bootstrap';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/inventoryAPI';
 import InputModal from '../../components/InputModal';
@@ -29,8 +28,7 @@ function Inventory() {
         setFilteredInventory(res.data);
       })
       .catch(err => console.error(err));
-  }
-
+  };
 
   const handleInputChange = event => {
     const inputText = event.target.value;
@@ -46,11 +44,11 @@ function Inventory() {
         return isMatch;
       })
     );
-  }
+  };
 
   const updateInventoryItemState = event => {
-    const { name, value } = event.target;
-    setItemInfo(info => ({ ...info, [name]: value }))
+    const {name, value} = event.target;
+    setItemInfo(info => ({...info, [name]: value}));
   };
 
   const addButtonPressed = () => {
@@ -59,7 +57,6 @@ function Inventory() {
     setSubmitButtonLabel(`Submit`);
     setShowAddModal(true);
   };
-
 
   const submitButtonPressed = event => {
     event.preventDefault();
@@ -100,26 +97,32 @@ function Inventory() {
       setInputs(otherInput);
       setModalTitle('Edit items');
     } else {
-      setItemInfo(inventory.find(inventory => inventory.id === selectedInventoryItems[0]));
+      setItemInfo(
+        inventory.find(inventory => inventory.id === selectedInventoryItems[0])
+      );
       setInputs([...inventoryItemInput, ...otherInput]);
       setModalTitle('Edit items');
     }
     setSubmitButtonLabel('Save');
     setShowAddModal(true);
-  }
+  };
 
   const saveButtonPressed = () => {
     API.updateManyInventoryItem(selectedInventoryItems, itemInfo)
-      .then((res) => {
+      .then(res => {
         if (res.data.n > 0) {
           setShowAddModal(false);
           loadInventory();
         } else {
-          alert(`Something's wrong, we couldn't update inventory item at this time...`)
+          alert(
+            `Something's wrong, we couldn't update inventory item at this time...`
+          );
         }
       })
       .catch(err => console.error(err));
+
   }
+
 
   const deleteButtonPressed = () => {
     API.deleteManyInventoryItem(selectedInventoryItems)
@@ -130,7 +133,6 @@ function Inventory() {
       })
       .catch(err => console.error(err));
   };
-
 
   const inventoryItemInput = [
     {
@@ -195,14 +197,11 @@ function Inventory() {
   ];
 
   const inventoryHeaderArr = [
-    { key: `productName`, heading: `Product Name` },
-    { key: `vendorName`, heading: `Vendor Name` },
-    { key: `vendorPhoneNumber`, heading: `Vendor Phone Number` },
-    { key: `quantity`, heading: `Quantity` }
+    {key: `productName`, heading: `Product Name`},
+    {key: `vendorName`, heading: `Vendor Name`},
+    {key: `vendorPhoneNumber`, heading: `Vendor Phone Number`},
+    {key: `quantity`, heading: `Quantity`}
   ];
-
-
-
 
   return (
     <div>
@@ -216,10 +215,6 @@ function Inventory() {
           onChange={handleInputChange}
         />
       </Container>
-
-      <DropDownInput className='d-flex justify-content-center'>
-        Sort by vendor
-      </DropDownInput>
 
       <InputModal
         show={showAddModal}
