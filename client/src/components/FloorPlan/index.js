@@ -45,9 +45,9 @@ class DrawGrid extends React.Component {
         id='seatsContainer'
         className='container d-flex row justify-content-center '
       >
-        <h2 className='display-4 d-flex justify-content-center mt-5 mb-5'>
+        <h1 className='display-4 d-flex justify-content-center mt-5 mb-5'>
           Floor Plan
-        </h2>
+        </h1>
         <table className='grid '>
           <tbody>
             <tr>

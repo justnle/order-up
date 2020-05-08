@@ -1,5 +1,9 @@
 .menuContainer {
     overflow: scroll;
-    height: 875px;
+    height: 100%;
+}
+
+#FOHbtn{
+    margin-right: 10px;
 }
 

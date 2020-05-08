@@ -136,7 +136,7 @@ function FOH() {
   return (
     <>
       <div>
-        <Container fluid className='d-flex mt-5'>
+        <Container className='mt-5'>
           <Row>
             <Col></Col>
             <Col xs={4}>
@@ -173,8 +173,9 @@ function FOH() {
                   ))}
                 </tbody>
               </Table>
-              <Button
-                variant='primary'
+              <Button 
+                id='FOHbtn'
+                variant='outline-success'
                 onClick={() => {
                   addSeatOrder();
                   setDecrement();
@@ -183,7 +184,7 @@ function FOH() {
                 Add Seat
               </Button>
               <Button
-                variant='danger'
+                variant='outline-danger'
                 onClick={() => {
                   submitOrder();
                   decrementInventory();
