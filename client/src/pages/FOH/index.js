@@ -175,7 +175,7 @@ function FOH() {
               </Table>
               <Button 
                 id='FOHbtn'
-                variant='primary'
+                variant='outline-success'
                 onClick={() => {
                   addSeatOrder();
                   setDecrement();
@@ -184,7 +184,7 @@ function FOH() {
                 Add Seat
               </Button>
               <Button
-                variant='danger'
+                variant='outline-danger'
                 onClick={() => {
                   submitOrder();
                   decrementInventory();

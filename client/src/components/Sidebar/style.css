@@ -16,7 +16,6 @@
   background-color: #f1f1f1;
   position: fixed;
   overflow: auto;
-  z-index: 100;
 }
 
 .sidebar a {
