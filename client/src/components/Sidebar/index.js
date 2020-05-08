@@ -14,7 +14,6 @@ function Sidebar() {
           <i className='fas fa-book-open fa-2x fa-fw'></i>
           <span>Menu</span>
         </Link>
-
         <Link to='/inventory' className='inventory'>
           <i className='fas fa-cubes fa-2x fa-fw'></i>
           <span>Inventory</span>
