@@ -1,0 +1,47 @@
+h4{
+  color: white;
+}
+#seatsContainer {
+  width: 600px;
+  margin: auto;
+}
+
+.grid td {
+  width: 150px;
+  height: 150px;
+  padding: 50px 30px;
+  border-radius: 50%;
+  border: 2px solid orange;
+  text-align: center;
+  float: left;
+  margin: 5px;
+}
+
+.grid td:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+.reserved {
+  background: orange;
+  color: #fff;
+  display: inline-block;
+}
+
+.reserved::after {
+  content: 'RESERVED'
+}
+
+.available::after {
+  content: 'AVAILABLE'
+}
+
+.available {
+  color: white;
+}
+
+li {
+  list-style: none;
+  color:white;
+}
+

@@ -7,6 +7,9 @@ router
   .route(`/`)
   .get(inventoryController.findAll)
   .post(inventoryController.create);
+router
+  .route(`/updateManyDecrement`)
+  .put(inventoryController.updateManyQuantity);
 
 router
   .route(`/:id`)

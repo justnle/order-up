@@ -1,109 +1,213 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import Container from 'react-bootstrap/Container';
+import EditBar from '../../components/EditBar';
+import { Container, Col, Row } from 'react-bootstrap';
 import DropDownInput from '../../components/DropDownInput/index';
-import TableComponent from '../../components/Table/index';
-import { AddButton, SubmitButton } from '../../components/Buttons/index';
-import Collapse from 'react-bootstrap/Collapse';
-import FControl from '../../components/TextInput/FormGroup';
+import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
+import InputModal from '../../components/InputModal';
 
 function Employees() {
-  const [uiSettings, setUiSettings] = useState({
-    open: false,
-    formStatusMessage: null
-  });
-  const [employees, setEmployees] = useState([]);
+  const [cachedEmployees, setCachedEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [addEmployee, setAddEmployee] = useState({});
+  const [showModal, setShowModal] = useState(false); // using
+  const [employeeInfo, setEmployeeInfo] = useState({}); //using
+  const [inputs, setInputs] = useState([]); //using
+  const [selectedEmployees, setSelectedEmployees] = useState([]); //using
+  const [modalTitle, setModalTitle] = useState(); //using
+  const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
 
   useEffect(() => {
     loadEmployees();
   }, []);
 
-  function loadEmployees() {
+  const loadEmployees = () => {
+    setSelectedEmployees([]);
     API.getEmployees()
       .then((res) => {
-        console.log(res);
-        const employees = res.data.map((employee) => {
-          return {
-            id: employee.id,
-            name: employee.name,
-            position: employee.position,
-            permission: employee.permission,
-            rate: employee.rate
-          };
-        });
-        const filteredEmployees = [...employees];
-        setEmployees(employees);
-        setFilteredEmployees(filteredEmployees);
+        setCachedEmployees(res.data);
+        setFilteredEmployees(res.data);
       })
       .catch((err) => console.error(err));
-  }
+  };
 
-  function handleInputChange(event) {
+  const updateFilteredEmployeesState = (event) => {
     const inputText = event.target.value;
     setFilteredEmployees(
-      employees.filter((employee) => {
+      cachedEmployees.filter((employee) => {
         const words = employee.name.split(' ');
         let isMatch = false;
-
         words.forEach((word) => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
-            isMatch = true;
+            isMatch = word.toLowerCase().startsWith(inputText.toLowerCase());
           }
         });
-
         return isMatch;
       })
     );
-  }
+  };
 
-  function updateEmployeeState(newEmployee) {
-    setAddEmployee({
-      ...addEmployee,
-      ...newEmployee
-    });
-  }
+  const updateEmployeeInfoState = (event) => {
+    const { name, value } = event.target;
+    setEmployeeInfo((info) => ({ ...info, [name]: value }));
+  };
 
-  function handleAddEmployeeSubmit(event) {
+  const employeeNameInput = [
+    {
+      name: `name`,
+      label: `Employee Name`,
+      type: `text`,
+      text: `Full name (e.g. John Smith)`,
+      placeholder: `Enter name`,
+      onChange: updateEmployeeInfoState
+    },
+    {
+      name: `id`,
+      label: `PIN`,
+      type: `number`,
+      text: `Enter 6 digits (e.g. 000000)`,
+      placeholder: `Enter PIN`,
+      onChange: updateEmployeeInfoState
+    }
+  ];
+
+  const otherInput = [
+    {
+      name: `position`,
+      label: `Position`,
+      type: `text`,
+      text: `Required (e.g. Server)`,
+      placeholder: `Enter position`,
+      onChange: updateEmployeeInfoState
+    },
+    {
+      name: `rate`,
+      label: `Hourly Rate`,
+      type: `number`,
+      text: `Required (format: 0.00)`,
+      placeholder: `Enter hourly rate`,
+      onChange: updateEmployeeInfoState
+    },
+    {
+      name: `permission`,
+      label: `Permission`,
+      type: `number`,
+      text: `Permission level from 0 to 5, where 0 has most access`,
+      placeholder: `Set permission level`,
+      onChange: updateEmployeeInfoState
+    }
+  ];
+
+  const employeeTableHeadingArr = [
+    { key: `name`, heading: `Employee Name` },
+    { key: `id`, heading: `Employee PIN` },
+    { key: `position`, heading: `Position` },
+    { key: `rate`, heading: `Hourly Rate` },
+    { key: `permission`, heading: `Permission Level` }
+  ];
+
+  const addButtonPressed = () => {
+    setInputs([...employeeNameInput, ...otherInput]);
+    setModalTitle(`Add a new employee`);
+    setSubmitButtonLabel(`Submit`);
+    setShowModal(true);
+  };
+
+  const closeEmployeeModal = () => setShowModal(false);
+
+  const editButtonPressed = () => {
+    if (selectedEmployees.length > 1) {
+      console.log(`More than 1 employee selected`);
+      setInputs(otherInput);
+      setModalTitle(`Edit employees`);
+    } else {
+      console.log(`Only 1 employee selected`);
+      setEmployeeInfo(
+        cachedEmployees.find(
+          (employee) => employee._id === selectedEmployees[0]
+        )
+      );
+      setInputs([...employeeNameInput, ...otherInput]);
+      setModalTitle(`Edit an employee`);
+    }
+    setSubmitButtonLabel(`Save`);
+    setShowModal(true);
+  };
+
+  const deleteButtonPressed = () => {
+    console.log(`Delete button pressed`);
+    API.deleteManyEmployee(selectedEmployees)
+      .then((res) => {
+        console.log(`status code: ${res.status}`);
+        if (res.data.n > 0) {
+          loadEmployees();
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const checkboxClicked = (event) => {
+    const checked = event.target.checked;
+    const selectedId = event.target.getAttribute(`data-id`);
+    if (checked) {
+      setSelectedEmployees([...selectedEmployees, selectedId]);
+    } else {
+      setSelectedEmployees(selectedEmployees.filter((id) => id !== selectedId));
+    }
+    console.log(selectedEmployees);
+  };
+
+  const submitButtonPressed = (event) => {
     event.preventDefault();
     if (
-      addEmployee.name &&
-      addEmployee.id &&
-      addEmployee.position &&
-      !isNaN(addEmployee.rate) &&
-      addEmployee.permission
+      employeeInfo.name &&
+      employeeInfo.id &&
+      employeeInfo.position &&
+      employeeInfo.permission &&
+      employeeInfo.rate
     ) {
-      API.addEmployee(addEmployee).then(loadEmployees());
-      setUiSettings({
-        ...uiSettings,
-        open: !uiSettings.open,
-        formStatusMessage: 'Employee successfully added'
+      console.log(`Making a POST call`);
+      API.addEmployee(employeeInfo).then((res) => {
+        console.log(`status code: ${res.status}`);
+        closeEmployeeModal();
+        loadEmployees();
       });
     } else {
-      setUiSettings({
-        ...uiSettings,
-        formStatusMessage:
-          'Please fill in all fields with appropriate input to submit an employee'
-      });
+      alert('Please fill in all required fields to add an employee');
     }
-  }
+  };
 
-  console.log(uiSettings);
+  const saveButtonPressed = () => {
+    console.log(`Save button pressed`);
+    API.updateManyEmployees(selectedEmployees, employeeInfo)
+      .then((res) => {
+        console.log(`Status code ${res.status}`);
+        console.log(`Affected records: ${res.data.n}`);
+        if (res.data.n > 0) {
+          closeEmployeeModal();
+          loadEmployees();
+        } else {
+          alert(
+            `Something's wrong, we couldn't update employee info at this time...`
+          );
+        }
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
-    <div>
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+    <Container>
+      <h1 className='d-flex justify-content-center display-4 mt-5'>
         Employees
       </h1>
       <Container className='mb-3 mt-5'>
         <SearchBar
           placeholder='Search employees'
           className='col-12 rounded-sm'
-          onChange={handleInputChange}
+          onChange={updateFilteredEmployeesState}
         />
       </Container>
+
       <div
         className=' d-flex row justify-content-center align-items-center text-white'
         id='buttonsDiv'
@@ -113,93 +217,44 @@ function Employees() {
             Sort by vendor
           </DropDownInput>
         </div>
-        <div className='m-1'>
-          <AddButton
-            onClick={() =>
-              setUiSettings({
-                ...uiSettings,
-                open: !uiSettings.open
-              })
-            }
-            aria-controls='example-collapse-text'
-            aria-expanded={uiSettings.open}
-          />
-        </div>
-      </div>
-      <div className='d-flex justify-content-center mt-5'>
-        <Collapse in={uiSettings.open}>
-          <div className='w-50 '>
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ name: event.target.value });
-              }}
-              placeholder='Employee Name'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ id: event.target.value });
-              }}
-              placeholder='Employee Pin'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ rate: event.target.value });
-              }}
-              placeholder='Employee Rate'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ position: event.target.value });
-              }}
-              placeholder='Employee Role'
-              className='m-2'
-            />
-            <FControl
-              onChange={(event) => {
-                updateEmployeeState({ permission: event.target.value });
-              }}
-              placeholder='Employee Permissions'
-              className='m-2'
-            />
-            <div className='d-flex justify-content-center mt-5'>
-              <SubmitButton
-                onClick={handleAddEmployeeSubmit}
-                className='d-flex align-self-center'
-              />
-            </div>
-          </div>
-        </Collapse>
       </div>
 
-      <div className='d-flex justify-content-center mt-5 text-white'>
-        {uiSettings.formStatusMessage && <p>{uiSettings.formStatusMessage}</p>}
-      </div>
-      <Container className='d-flex justify-content-center'>
-        <TableComponent className='text-white w-75'>
-          <thead>
-            <TableComponent.TR>
-              <TableComponent.TH>Employee Name</TableComponent.TH>
-              <TableComponent.TH>Employee Role</TableComponent.TH>
-              <TableComponent.TH>Employee Rate</TableComponent.TH>
-              <TableComponent.TH>Employee Pin</TableComponent.TH>
-            </TableComponent.TR>
-          </thead>
-          <tbody>
-            {filteredEmployees.map((employee) => (
-              <TableComponent.TR key={employee.id}>
-                <TableComponent.TD>{employee.name}</TableComponent.TD>
-                <TableComponent.TD>{employee.position}</TableComponent.TD>
-                <TableComponent.TD>{employee.rate}</TableComponent.TD>
-                <TableComponent.TD>{employee.id}</TableComponent.TD>
-              </TableComponent.TR>
-            ))}
-          </tbody>
-        </TableComponent>
+      <InputModal
+        show={showModal} // bool
+        cancel={closeEmployeeModal}
+        title={modalTitle}
+        submit={
+          submitButtonLabel === `Submit`
+            ? submitButtonPressed
+            : saveButtonPressed
+        }
+        submitButtonLabel={submitButtonLabel}
+        inputs={inputs} // array of input objs
+        value={employeeInfo ? employeeInfo : undefined}
+      />
+
+      <Container className='d-flex justify-content-center mt-5'>
+        <Col>
+          <Row className='mb-1'>
+            <EditBar
+              hideAddButton={false}
+              noneSelected={selectedEmployees.length ? false : true}
+              add={addButtonPressed}
+              edit={editButtonPressed}
+              delete={deleteButtonPressed}
+            />
+          </Row>
+          <Row>
+            <DataTable
+              headingArr={employeeTableHeadingArr}
+              dataArr={filteredEmployees}
+              hideEdit={false}
+              clickCheckbox={checkboxClicked}
+            />
+          </Row>
+        </Col>
       </Container>
-    </div>
+    </Container>
   );
 }
 

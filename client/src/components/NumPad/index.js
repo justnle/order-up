@@ -1,82 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
+import './style.css';
 
-export default function NumPad() {
-  const [pin, setPin] = useState(``);
-
-  const handleBtnInput = (event) => {
-    event.preventDefault();
-    const { value } = event.target;
-    setPin(pin + value);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const userData = {
-      pin: pin
-    };
-    console.log(userData);
-  };
-
-  const handleDelete = () => {
-    if (pin.length > 0) {
-      let pinStr = pin;
-      pinStr = pinStr.slice(0, -1);
-      setPin(pinStr);
-    }
-  };
-
-  const buttons = [
-    [
-      {
-        name: `1`
-      },
-      {
-        name: `2`
-      },
-      {
-        name: `3`
-      }
-    ],
-    [
-      {
-        name: `4`
-      },
-      {
-        name: `5`
-      },
-      {
-        name: `6`
-      }
-    ],
-    [
-      {
-        name: `7`
-      },
-      {
-        name: `8`
-      },
-      {
-        name: `9`
-      }
-    ],
-    [
-      {
-        name: <i className='fas fa-backspace del-btn'></i>,
-        value: `del`
-      },
-      {
-        name: `0`
-      },
-      {
-        name: <i className='fas fa-sign-in-alt submit-btn'></i>,
-        value: `login`
-      }
-    ]
-  ];
-
+export default function NumPad(props) {
   return (
     <ButtonGroup vertical>
       <Form>
@@ -86,14 +14,13 @@ export default function NumPad() {
             name='pin'
             type='password'
             placeholder='Enter PIN'
-            value={pin}
-            onChange={(e) => {
-              setPin(e.target.value);
-            }}
+            value={props.pin}
+            onChange={(e) => props.setPin(e.target.value)}
+            onKeyDown={(e) => props.formInput(e)}
           />
         </Form.Group>
       </Form>
-      {buttons.map((rows, index) => (
+      {props.buttons.map((rows, index) => (
         <ButtonGroup key={`button-row-${index}`}>
           {rows.map((button, buttonIndex) => (
             <Button
@@ -102,10 +29,10 @@ export default function NumPad() {
               value={!button.value ? button.name : button.value}
               onClick={
                 button.value === `del`
-                  ? handleDelete
+                  ? props.delete
                   : button.value === `login`
-                  ? handleSubmit
-                  : handleBtnInput
+                  ? props.submit
+                  : (e) => props.buttonInput(e)
               }
             >
               {button.name}

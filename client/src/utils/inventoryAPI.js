@@ -17,7 +17,22 @@ export default {
     return axios.put(`/api/inventory/${id}`, data);
   },
 
+  updateManyInventoryItem: function (idArr, data) {
+    return axios.put(`/api/inventory/updateMany`, {
+      idArr: idArr,
+      updateData: data
+    });
+  },
+  updateManyInventoryQuantity: function (productName) {
+    return axios.put(`/api/inventory/updateManyDecrement`, productName );
+  },
   deleteInventoryItem: function (id) {
     return axios.delete(`/api/inventory/${id}`);
+  },
+
+  deleteManyInventoryItem: function (idArr) {
+    return axios.delete(`/api/inventory/deleteMany`, {
+      data: { arr: idArr }
+    });
   }
 };

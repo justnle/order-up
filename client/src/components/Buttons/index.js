@@ -1,10 +1,18 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import './style.css';
 
 function AddButton(props) {
   return (
     <Button variant='outline-success' {...props}>
       Add
+    </Button>
+  );
+}
+function FilterButton(props) {
+  return (
+    <Button variant='outline-info' {...props}>
+      Remove Filter
     </Button>
   );
 }
@@ -15,9 +23,7 @@ function SubmitButton(props) {
     </Button>
   );
 }
-function SelectButton() {
-  return <Button variant='success'>Select</Button>;
-}
+
 function ViewButton(props) {
   return (
     <Button variant='outline-info' {...props}>
@@ -38,11 +44,19 @@ function CloseButton(props) {
 function OrderSoldButton() {
   return <Button variant='danger'>Mark Order Sold</Button>;
 }
-function ClockInButton() {
-  return <Button variant='primary'>Clock In</Button>;
+function ClockInButton(props) {
+  return (
+    <Button id='clockInBtn' variant='primary' {...props}>
+      Clock In
+    </Button>
+  );
 }
-function ClockOutButton() {
-  return <Button variant='danger'>Clock Out</Button>;
+function ClockOutButton(props) {
+  return (
+    <Button id='clockOutBtn' variant='danger' {...props}>
+      Clock Out
+    </Button>
+  );
 }
 function MenuItemButton({ children }) {
   return <Button variant='dark'>{children}</Button>;
@@ -56,5 +70,6 @@ export {
   OrderSoldButton,
   ClockInButton,
   ClockOutButton,
-  MenuItemButton
+  MenuItemButton,
+  FilterButton
 };

@@ -9,6 +9,14 @@ router
   .post(employeesController.create);
 
 router
+  .route(`/deleteMany`)
+  .delete(employeesController.removeMany);
+
+router
+  .route(`/updateMany`)
+  .put(employeesController.updateMany);
+
+router
   .route(`/:id`)
   .get(employeesController.findById)
   .put(employeesController.update)

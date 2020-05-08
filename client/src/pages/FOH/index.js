@@ -9,7 +9,11 @@ import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
 import Form from 'react-bootstrap/Form';
 import ORDER_API from '../../utils/activeOrderAPI';
+
 import MenuTabs from '../../components/MenuTabs';
+
+import Decrement_API from '../../utils/inventoryAPI';
+
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
@@ -17,7 +21,7 @@ function FOH() {
   const [seatOrders, setSeatOrders] = useState([]);
   const [selectedSeatOrderIndex, setSelectedSeatOrderIndex] = useState(null);
   const [tableNumber, setTableNumber] = useState('');
-
+  const [ingredients, setIngredients] = useState([]);
   const handleClose = () => setModalMenuItemId(null);
   const handleShow = (id) => setModalMenuItemId(id);
 
@@ -37,11 +41,9 @@ function FOH() {
     if (selectedSeatOrderIndex === null) {
       return;
     }
-
     const selectedItem = menuItems.find((item) => item._id === id);
-
     const orderItem = {
-      ...selectedItem,
+      ...selectedItem
     };
 
     setSeatOrders(
@@ -66,6 +68,7 @@ function FOH() {
     : null;
 
   function submitOrder() {
+
     if (tableNumber) {
       ORDER_API.addActiveOrder({
         orderInTime: Date.now(),
@@ -88,6 +91,32 @@ function FOH() {
     } else {
       alert(`You must enter a table number to submit order`);
     }
+  }
+  function setDecrement(id) {
+    const item = menuItems.find((item) => item._id === id);
+    if (item === undefined) {
+      return;
+    } else {
+      const itemIngredients = [];
+      const ing = item.ingredients;
+      for (let i = 0; i < ing.length; ++i) {
+        itemIngredients.push(ing[i].productName);
+      }
+      setIngredients([...ingredients, itemIngredients]);
+    }
+  }
+  function decrementInventory() {
+    console.log(`Submitting order`);
+    const flatIng = Object.values(ingredients).flat();
+    console.log(flatIng);
+    Decrement_API.updateManyInventoryQuantity({
+      productName: flatIng
+    })
+      .then((res) => {
+        console.log(`${res.status}`);
+        console.log(`Affected records: ${res.data.n}`);
+      })
+      .catch((err) => console.error(err));
   }
 
   const clickDeleteBtn = (event) => {
@@ -144,24 +173,36 @@ function FOH() {
                   ))}
                 </tbody>
               </Table>
-              <Button variant='primary' onClick={addSeatOrder}>
+              <Button
+                variant='primary'
+                onClick={() => {
+                  addSeatOrder();
+                  setDecrement();
+                }}
+              >
                 Add Seat
               </Button>
               <Button
                 variant='danger'
                 onClick={() => {
                   submitOrder();
+                  decrementInventory();
                 }}
               >
                 Submit Order
               </Button>
             </Col>
+
             <Col xs={6} className='menu'>
               <MenuTabs
                 menuItems={menuItems}
-                handleAddToSeatOrder={handleAddToSeatOrder}
+                handleAddToSeatOrder={() => {
+                      handleAddToSeatOrder(menuItem._id);
+                      setDecrement(menuItem._id);}
                 handleShow={handleShow}
               />
+
+
             </Col>
           </Row>
           {modalMenuItemId && (

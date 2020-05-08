@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const TimeSchema = new Schema(
   {
     employeeId: {
-      type: Number,
+      type: String,
       required: true
     },
     employeeName: {
@@ -15,16 +15,19 @@ const TimeSchema = new Schema(
       required: true
     },
     clockIn: {
-      type: Date,
-      default: Date.now()
+      type: String,
+      require: true
     },
     clockOut: {
-      type: Date,
+      type: String
+    },
+    onTheClock: {
+      type: Boolean,
       default: null
     }
   },
   {
-    collection: `Time`
+    collection: `time`
   }
 );
 
