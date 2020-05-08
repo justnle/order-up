@@ -193,7 +193,7 @@ function FOH() {
               </Button>
             </Col>
 
-            <Col xs={6} className='menu'>
+            <Col xs={6} className='menuContainer'>
               <MenuTabs
                 menuItems={menuItems}
                 handleAddToSeatOrderAndDecrement={(id) => {
