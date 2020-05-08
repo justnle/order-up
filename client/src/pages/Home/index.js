@@ -115,7 +115,7 @@ function Home() {
   function permissionPages(checkPermission) {
     switch (checkPermission) {
       case 1:
-        return <Redirect to='/manager' />;
+        return <Redirect to='/employees' />;
       case 2:
         return <Redirect to='/foh' />;
       case 3:
@@ -207,7 +207,7 @@ function Home() {
           </Col>
         </Row>
 
-        <Modal show={showModal} onHide={closeModal}>
+        <Modal animation={false} show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title></Modal.Title>
           </Modal.Header>
