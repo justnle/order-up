@@ -5,7 +5,7 @@ import './style.css';
 
 function MenuItem(props) {
   return (
-    <div className= 'd-flex text-center bg-dark'>
+    <div className='d-flex text-center bg-dark menuItems'>
       <Card
         id='menuItem'
         value={
@@ -17,21 +17,21 @@ function MenuItem(props) {
         <Card.Body>
           <Card.Text>{props.menuItem.name}</Card.Text>
           <Button
-              className='mx-1'
-              size='sm'
-              variant='primary'
-              onClick={props.handleAddToSeatOrder}
-            >
-              Select
-            </Button>
-            <Button
-              className='mx-1'
-              size='sm'
-              variant='success'
-              onClick={props.handleShow}
-            >
-              View
-            </Button>
+            className='mx-1'
+            size='sm'
+            variant='primary'
+            onClick={props.handleAddToSeatOrder}
+          >
+            Select
+          </Button>
+          <Button
+            className='mx-1'
+            size='sm'
+            variant='success'
+            onClick={props.handleShow}
+          >
+            View
+          </Button>
         </Card.Body>
       </Card>
     </div>

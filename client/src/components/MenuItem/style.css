@@ -1,8 +1,6 @@
-.grid-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    
-  }
+.menuItems {
+  background-color: transparent;
+}
 
   #menuItem {
     height: 150px;
