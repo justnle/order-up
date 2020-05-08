@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import { Container, Col, Row } from 'react-bootstrap';
-import DropDownInput from '../../components/DropDownInput/index';
+import {Container, Col, Row} from 'react-bootstrap';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/menuAPI';
 import InputModal from '../../components/InputModal';
@@ -26,11 +25,11 @@ function Menu() {
     setSelectedMenuItems([]);
     API.getMenu()
       .then(res => {
-        setMenu(res.data)
-        setFilteredMenu(res.data)
+        setMenu(res.data);
+        setFilteredMenu(res.data);
       })
       .catch(err => console.error(err));
-  }
+  };
 
   const updateFilteredMenu = event => {
     const inputText = event.target.value;
@@ -46,7 +45,7 @@ function Menu() {
         return isMatch;
       })
     );
-  }
+  };
 
   const addButtonPressed = () => {
     setInputs([...uniqueItemArr, ...otherItemArr]);
@@ -65,7 +64,7 @@ function Menu() {
       itemInfo.pairing &&
       itemInfo.prepareTime
     ) {
-      API.addMenuItem(itemInfo).then((res) => {
+      API.addMenuItem(itemInfo).then(res => {
         console.log(`status code: ${res.status}`);
         loadMenu();
         setShowAddModal(false);
@@ -73,10 +72,10 @@ function Menu() {
     } else {
       alert(`Please fill out all required fields of the menu item.`);
     }
-  }
+  };
   const updateMenuInfoState = event => {
-    const { name, value } = event.target;
-    setItemInfo(info => ({ ...info, [name]: value }));
+    const {name, value} = event.target;
+    setItemInfo(info => ({...info, [name]: value}));
   };
 
   const clickCheckbox = event => {
@@ -85,7 +84,7 @@ function Menu() {
     if (checked) {
       setSelectedMenuItems([...selectedMenuItems, selectedId]);
     } else {
-      setSelectedMenuItems(selectedMenuItems.filter((id) => id !== selectedId));
+      setSelectedMenuItems(selectedMenuItems.filter(id => id !== selectedId));
     }
   };
 
@@ -120,7 +119,7 @@ function Menu() {
           );
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
   const deleteButtonPressed = () => {
     API.deleteManyMenuItems(selectedMenuItems)
@@ -131,7 +130,7 @@ function Menu() {
           loadMenu();
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
   const uniqueItemArr = [
@@ -190,18 +189,16 @@ function Menu() {
   ];
 
   const menuItemsHeadingArr = [
-    { key: `name`, heading: `Name` },
-    { key: `category`, heading: `Category` },
-    { key: `price`, heading: `Price` },
-    { key: `pairing`, heading: `Pairing` },
-    { key: `prepareTime`, heading: `Prep Time` }
+    {key: `name`, heading: `Name`},
+    {key: `category`, heading: `Category`},
+    {key: `price`, heading: `Price`},
+    {key: `pairing`, heading: `Pairing`},
+    {key: `prepareTime`, heading: `Prep Time`}
   ];
 
   return (
     <div>
-      <h1 className='d-flex justify-content-center display-4 mt-5'>
-        Menu
-      </h1>
+      <h1 className='d-flex justify-content-center display-4 mt-5'>Menu</h1>
       <Container className='mt-5 mb-3'>
         <SearchBar
           className='col-12 rounded-sm'
@@ -209,11 +206,6 @@ function Menu() {
           onChange={updateFilteredMenu}
         />
       </Container>
-      <div className='m-1'>
-        <DropDownInput className='d-flex justify-content-center'>
-          Sort by category
-        </DropDownInput>
-      </div>
 
       <InputModal
         show={showAddModal}
