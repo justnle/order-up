@@ -16,7 +16,7 @@ export default function MenuTabs(props) {
             <MenuItem
               key={menuItem._id}
               menuItem={menuItem}
-              handleAddToSeatOrder={() => props.handleAddToSeatOrder(menuItem._id)}
+              handleAddToSeatOrder={() => props.handleAddToSeatOrderAndDecrement(menuItem._id)}
               handleShow={() => props.handleShow(menuItem._id)}
             />
           ))}
@@ -28,7 +28,7 @@ export default function MenuTabs(props) {
             <MenuItem
               key={menuItem._id}
               menuItem={menuItem}
-              handleAddToSeatOrder={() => props.handleAddToSeatOrder(menuItem._id)}
+              handleAddToSeatOrder={() => props.handleAddToSeatOrderAndDecrement(menuItem._id)}
               handleShow={() => props.handleShow(menuItem._id)}
             />
           ))}
