@@ -26,7 +26,7 @@ export default {
   removeEmployeeTimeClock: function (id) {
     return axios.delete(`/api/time/${id}`);
   },
-  deleteManyShifts: function (idArr) {
+  removeManyEmployeeShifts: function (idArr) {
     return axios.delete(`/api/shifts/deleteMany`, {
       data: { arr: idArr }
     });

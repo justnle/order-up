@@ -64,13 +64,11 @@ function TimeManagement() {
   const clickCheckbox = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
-    console.log(selectedId)
     if (checked) {
       setSelectedShifts([...selectedShifts, selectedId]);
     } else {
       setSelectedShifts(selectedShifts.filter(id => id !== selectedId));
     }
-    console.log(selectedShifts);
   };
 
   const deleteButtonPressed = () => {
@@ -82,7 +80,6 @@ function TimeManagement() {
           setSelectedShifts([]);
         });
     }
-
   };
 
   return (
