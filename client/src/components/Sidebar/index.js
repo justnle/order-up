@@ -9,15 +9,12 @@ function Sidebar() {
         <Link to='/home'>
           <h3 className='home'>Order Up</h3>
         </Link>
-        
+
         <Link to='/menu' className='menu'>
           <i className='fas fa-book-open fa-2x fa-fw'></i>
           <span>Menu</span>
         </Link>
-        <Link to='/manager' className='manager'>
-          <i className='fas fa-chalkboard-teacher fa-2x fa-fw'></i>
-          <span>Manager</span>
-        </Link>
+
         <Link to='/inventory' className='inventory'>
           <i className='fas fa-cubes fa-2x fa-fw'></i>
           <span>Inventory</span>
