@@ -31,7 +31,7 @@ module.exports = {
   updateManyQuantity: function (req, res) {
     db.Inventory.updateMany(
       {
-        productName: { $in: req.body.arr }
+        productName: { $in: req.body.productName }
       },
       {
         $inc: { quantity: -1 }
