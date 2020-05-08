@@ -28,6 +28,7 @@ module.exports = {
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
+
   updateMany: function (req, res) {
     db.Inventory.updateMany(
       {
@@ -35,6 +36,15 @@ module.exports = {
       },
       {
         $set: req.body.updateData
+
+  updateManyQuantity: function (req, res) {
+    db.Inventory.updateMany(
+      {
+        productName: { $in: req.body.productName }
+      },
+      {
+        $inc: { quantity: -1 }
+
       }
     )
       .then((result) => {

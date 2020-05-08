@@ -6,6 +6,7 @@ import DataTable from '../../components/DataTable';
 import API from '../../utils/menuAPI';
 import InputModal from '../../components/InputModal';
 import EditBar from '../../components/EditBar/index';
+import './style.css';
 
 function Menu() {
   const [menu, setMenu] = useState([]);
@@ -198,7 +199,7 @@ function Menu() {
 
   return (
     <div>
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+      <h1 className='d-flex justify-content-center display-4 mt-5'>
         Menu
       </h1>
       <Container className='mt-5 mb-3'>
