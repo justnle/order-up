@@ -16,30 +16,30 @@ function Boh() {
   }, []);
 
   useEffect(() => {
-    ARCHIVED_ORDER_API.addArchivedOrder(archivedOrder).catch((err) =>
+    ARCHIVED_ORDER_API.addArchivedOrder(archivedOrder).catch(err =>
       console.error(err)
     );
   }, [archivedOrder]);
 
   const loadOrders = () => {
     ACTIVE_ORDER_API.getActiveOrders()
-      .then((res) => setActiveOrders(res.data))
-      .catch((err) => console.error(err));
+      .then(res => setActiveOrders(res.data))
+      .catch(err => console.error(err));
   };
 
-  const removeActive = (event) => {
+  const removeActive = event => {
     event.preventDefault();
     const { value } = event.target;
 
     ACTIVE_ORDER_API.getActiveOrder(value)
-      .then((res) => {
+      .then(res => {
         setArchivedOrder([res.data]);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
 
     ACTIVE_ORDER_API.deleteActiveOrder(value)
       .then(() => loadOrders())
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
   return (
