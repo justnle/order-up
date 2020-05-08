@@ -91,7 +91,7 @@ class AvailableList extends React.Component {
     return (
       <div className='left'>
         <h4>
-          Available Seats: ({seatCount === 0 ? 'No seats available' : seatCount}
+          Available Tables: ({seatCount === 0 ? 'No tables available' : seatCount}
           )
         </h4>
         <ul>
@@ -108,7 +108,7 @@ class ReservedList extends React.Component {
   render() {
     return (
       <div className='right'>
-        <h4>Reserved Seats: ({this.props.reserved.length})</h4>
+        <h4>Reserved Tables: ({this.props.reserved.length})</h4>
         <ul>
           {this.props.reserved.map((res) => (
             <li key={res}>{res}</li>
