@@ -196,9 +196,9 @@ function FOH() {
             <Col xs={6} className='menu'>
               <MenuTabs
                 menuItems={menuItems}
-                handleAddToSeatOrder={() => {
-                      handleAddToSeatOrder(menuItem._id);
-                      setDecrement(menuItem._id);}
+                handleAddToSeatOrderAndDecrement={(id) => {
+                      handleAddToSeatOrder(id);
+                      setDecrement(id);}}
                 handleShow={handleShow}
               />
 
