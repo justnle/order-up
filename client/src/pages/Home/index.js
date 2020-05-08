@@ -187,7 +187,9 @@ function Home() {
 
   return (
     <div id='homeBackGround'>
-      <Greeting />
+      <Container id='greetingContainer'>
+        <Greeting />
+      </Container>
       {loggedIn.success ? permissionPages(loggedIn.permission) : null}
       <Container
         className='text-center mt-5'
