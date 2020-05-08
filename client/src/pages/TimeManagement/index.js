@@ -6,12 +6,15 @@ import Calendar from '../../components/Calendar/index';
 import API from '../../utils/timeAPI';
 import EditBar from '../../components/EditBar/index';
 import { FilterButton } from '../../components/Buttons/index';
+import InputModal from '../../components/InputModal';
 
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
   const [filterShifts, setFilterShifts] = useState([]);
   const [shiftDisplay, setShiftDisplay] = useState([]);
+  const [times, setTimes] = useState({});
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     loadShifts();
@@ -71,6 +74,34 @@ function TimeManagement() {
     }
   };
 
+  const updateInputState = event => {
+    const { name, value } = event.target;
+    setTimes(times => ({ ...times, [name]: value }));
+    console.log(name, value);
+    console.log(times)
+  };
+
+  const editButtonPressed = () => {
+    console.log(`Edit button pressed.`);
+    setShowAddModal(true);
+  }
+
+  const saveButtonPressed = () => {
+    console.log(`Save button pressed`);
+    API.updateManyShifts(selectedShifts, times).then(res => {
+      console.log(`Status code ${res.status}`);
+      console.log(`Affected records: ${res.data.n}`);
+      if (res.data.n > 0) {
+        setShowAddModal(false);
+        loadShifts();
+      } else {
+        alert(
+          `Something's wrong, we couldn't update the menu item at this time...`
+        );
+      }
+    })
+  }
+
   const deleteButtonPressed = () => {
     console.log(selectedShifts);
     if (selectedShifts.length === 1) {
@@ -88,6 +119,26 @@ function TimeManagement() {
     }
   };
 
+  const timeArr = [
+    {
+      name: `clockIn`,
+      label: `Clock In`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter clock in time`,
+      onChange: updateInputState
+    },
+
+    {
+      name: `clockOut`,
+      label: `Clock Out`,
+      text: `Required`,
+      type: `text`,
+      placeholder: `Enter clock out time`,
+      onChange: updateInputState
+    }
+  ];
+
   return (
     <div>
       <h1 className='d-flex justify-content-center display-4 mt-5'>
@@ -99,22 +150,35 @@ function TimeManagement() {
           onChange={handleInput}
         />
       </Container>
-      <div className='d-flex justify-content-center mt-'>
-        <span className='text-white mr-5 lead'>Filter by date</span>
-      </div>
+
       <Container className='d-flex justify-content-center'>
         <Calendar className='mt-1' name='clockIn' onChange={handleInput} />
         <Calendar className='mt-1' name='clockOut' onChange={handleInput} />
       </Container>
+
       <div className='d-flex justify-content-center mt-5'>
         <FilterButton onClick={() => setShiftDisplay(shifts)} />
       </div>
+
+      <InputModal
+        show={showAddModal}
+        cancel={() => {
+          setShowAddModal(!showAddModal);
+        }}
+        title='Edit time'
+        submit={saveButtonPressed}
+        submitButtonLabel='SAVE'
+        inputs={timeArr}
+        value={times}
+      />
+
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
             <EditBar
               hideAddButton={true}
               noneSelected={selectedShifts.length ? false : true}
+              edit={editButtonPressed}
               delete={deleteButtonPressed}
             />
             <DataTable
@@ -126,6 +190,7 @@ function TimeManagement() {
           </Row>
         </Col>
       </Container>
+
     </div>
   );
 }
