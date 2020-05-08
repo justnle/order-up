@@ -1,5 +1,7 @@
 h4 {
-  color: #80eeff;
+  color: white;
+  font-variant: small-caps;
+  font-weight: 300;
 }
 
 .left,
@@ -49,5 +51,6 @@ li {
   list-style: none;
   color: white;
   font-variant: caps;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 300;
 }
