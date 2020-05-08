@@ -7,35 +7,39 @@ function Sidebar() {
     <div>
       <nav className='sidebar bg-dark'>
         <Link to='/home'>
-          <h3 className='home'>Order Up</h3>
+          <h3>Order Up</h3>
         </Link>
-
-        <Link to='/menu' className='menu'>
+        <hr className='sidebar-divider'></hr>
+        <Link to='/menu'>
           <i className='fas fa-book-open fa-2x fa-fw'></i>
           <span>Menu</span>
         </Link>
-        <Link to='/inventory' className='inventory'>
+        <Link to='/manager'>
+          <i className='fas fa-chalkboard-teacher fa-2x fa-fw'></i>
+          <span>Manager</span>
+        </Link>
+        <Link to='/inventory'>
           <i className='fas fa-cubes fa-2x fa-fw'></i>
           <span>Inventory</span>
         </Link>
-        <Link to='/employees' className='employees'>
+        <Link to='/employees'>
           <i className='fas fa-user-friends fa-2x fa-fw'></i>
           <span>Employees</span>
         </Link>
-        <Link to='/shifts' className='shifts'>
+        <Link to='/shifts'>
           <i className='fas fa-clock fa-2x fa-fw'></i>
           <span>Shifts</span>
         </Link>
-        <Link to='/FOH' className='FOH'>
+        <Link to='/FOH'>
           <i className='fas fa-user-tie fa-2x fa-fw'></i>
           <span>FOH</span>
         </Link>
-        <Link to='/BOH' className='BOH'>
+        <Link to='/BOH'>
           <i className='fas fa-utensils fa-2x fa-fw'></i>
           <span>BOH</span>
         </Link>
-        <Link to='/floorplans' className='floorplans'>
-          <i className='fas fa-chair fa-2x fa-fw'></i>
+        <Link to='/floorplans'>
+          <i className='fas fa-utensils fa-2x fa-fw'></i>
           <span>Floor Plans</span>
         </Link>
       </nav>

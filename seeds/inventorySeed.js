@@ -2,7 +2,7 @@
 
 const inventorySeed = [
   {
-    productName: `Romaine Lettuce`,
+    productName: `romaine lettuce`,
     quantity: 36,
     vendorName: `Charlie's Produce`,
     vendorContactName: `Tom`,
@@ -11,106 +11,7 @@ const inventorySeed = [
     productCost: `3.85`
   },
   {
-    productName: `Potatoes`,
-    quantity: 25,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `2.25`
-  },
-  {
-    productName: `Baby Red Potatoes`,
-    quantity: 25,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `2.25`
-  },
-  {
-    productName: `Asparagus`,
-    quantity: 25,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `2.25`
-  },
-  {
-    productName: `Broccoli`,
-    quantity: 30,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `1.00`
-  },
-  {
-    productName: `Carrots`,
-    quantity: 20,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `0.50`
-  },
-  {
-    productName: `Onions`,
-    quantity: 30,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `1.50`
-  },
-  {
-    productName: `Mushrooms`,
-    quantity: 50,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `0.75`
-  },
-  {
-    productName: `Feta`,
-    quantity: 30,
-    vendorName: `Tillamook`,
-    vendorContactName: `John Dairy`,
-    vendorPhoneNumber: `208-667-1212`,
-    vendorEmail: `john@tillamook.com`,
-    productCost: `1.35`
-  },
-  {
-    productName: `Pepper Jack`,
-    quantity: 30,
-    vendorName: `Tillamook`,
-    vendorContactName: `John Dairy`,
-    vendorPhoneNumber: `208-667-1212`,
-    vendorEmail: `john@tillamook.com`,
-    productCost: `1.25`
-  },
-  {
-    productName: `Spinach`,
-    quantity: 35,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-625-1412`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `0.25`
-  },
-  {
-    productName: `Oysters`,
-    quantity: 18,
-    vendorName: `Seattle Fish Co`,
-    vendorContactName: `Jake`,
-    vendorPhoneNumber: `202-925-1212`,
-    vendorEmail: `jake@seattlefishco.com`,
-    productCost: `2.00`
-  },
-  {
-    productName: `Tomato`,
+    productName: `tomato`,
     quantity: 15,
     vendorName: `Charlie's Produce`,
     vendorContactName: `Tom`,
@@ -119,16 +20,7 @@ const inventorySeed = [
     productCost: `7.25`
   },
   {
-    productName: `Grapes`,
-    quantity: 15,
-    vendorName: `Charlie's Produce`,
-    vendorContactName: `Tom`,
-    vendorPhoneNumber: `206-763-1488`,
-    vendorEmail: `charliesproduce@gmail.com`,
-    productCost: `4.35`
-  },
-  {
-    productName: `Flour Tortilla`,
+    productName: `flour tortilla`,
     quantity: 60,
     vendorName: `La Mexicana`,
     vendorContactName: `José Cifuentes`,
@@ -191,15 +83,6 @@ const inventorySeed = [
     productCost: `12.45`
   },
   {
-    productName: `Prosciutto`,
-    quantity: 20,
-    vendorName: `Salumi`,
-    vendorContactName: `Connie Draft`,
-    vendorPhoneNumber: `206-770-8780`,
-    vendorEmail: `sales@salumi.com`,
-    productCost: `8.00`
-  },
-  {
     productName: `Tim's Chips`,
     quantity: 36,
     vendorName: `Merlino Foods`,
@@ -207,168 +90,6 @@ const inventorySeed = [
     vendorPhoneNumber: `206-723-4700`,
     vendorEmail: `sales@merlino.com`,
     productCost: `7.95`
-  },
-  {
-    productName: `Ground Beef`,
-    quantity: 50,
-    vendorName: `Rain Shadow Meats`,
-    vendorContactName: `Rita Perry`,
-    vendorPhoneNumber: `206-789-4747`,
-    vendorEmail: `rita@rainshadowmeats.com`,
-    productCost: `4.85`
-  },
-  {
-    productName: `Chicken`,
-    quantity: 50,
-    vendorName: `Rain Shadow Meats`,
-    vendorContactName: `Rita Perry`,
-    vendorPhoneNumber: `206-789-4747`,
-    vendorEmail: `rita@rainshadowmeats.com`,
-    productCost: `5.95`
-  },
-  {
-    productName: `NY Strip`,
-    quantity: 40,
-    vendorName: `Rain Shadow Meats`,
-    vendorContactName: `Rita Perry`,
-    vendorPhoneNumber: `206-789-4747`,
-    vendorEmail: `rita@rainshadowmeats.com`,
-    productCost: `9.50`
-  },
-  {
-    productName: `Pinot Grigio`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `9.50`
-  },
-  {
-    productName: `Malbec`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `9.50`
-  },
-  {
-    productName: `Pilsner`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `3.50`
-  },
-  {
-    productName: `Amber`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `3.50`
-  },
-  {
-    productName: `IPA`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `3.50`
-  },
-  {
-    productName: `Vodka`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `4.50`
-  },
-  {
-    productName: `Gin`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `4.50`
-  },
-  {
-    productName: `Whiskey`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `4.50`
-  },
-  {
-    productName: `Spiced Rum`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `4.50`
-  },
-  {
-    productName: `Silver Rum`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `4.50`
-  },
-  {
-    productName: `Coca Cola`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `1.00`
-  },
-  {
-    productName: `Sprite`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `1.00`
-  },
-  {
-    productName: `Root Beer`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `1.00`
-  },
-  {
-    productName: `Orange Juice`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `1.00`
-  },
-  {
-    productName: `Club Soda`,
-    quantity: 20,
-    vendorName: `American Northwest Distributors`,
-    vendorContactName: `Troy Miller`,
-    vendorPhoneNumber: `206-886-9696`,
-    vendorEmail: `troy@americannorthwestdistributors.com`,
-    productCost: `1.00`
   }
 ];
 
