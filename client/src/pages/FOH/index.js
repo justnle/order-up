@@ -143,7 +143,6 @@ function FOH() {
                     placeholder='Enter a number'
                     onChange={event => setTableNumber(event.target.value)}
                   />
-                  {/* <Button hidden={true}>Remove Item </Button> */}
                 </Form.Group>
               </Form>
               <Table bordered variant='dark'>
