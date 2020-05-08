@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { AddButton, SelectButton } from '../../components/Buttons';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import './style.css';
@@ -8,9 +7,9 @@ import { Container, Col, Row } from 'react-bootstrap';
 import MENU_API from '../../utils/menuAPI';
 import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
-import MenuItem from '../../components/MenuItem';
 import Form from 'react-bootstrap/Form';
 import ORDER_API from '../../utils/activeOrderAPI';
+import MenuTabs from '../../components/MenuTabs';
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
@@ -69,13 +68,14 @@ function FOH() {
   function submitOrder() {
     if (tableNumber) {
       ORDER_API.addActiveOrder({
+        orderInTime: Date.now(),
         tableNumber: tableNumber,
         seatOrders: seatOrders.map((seatOrder, index) => ({
           seatNumber: index + 1,
           menuItems: seatOrder.map((orderItem) => ({
             itemName: orderItem.name,
             itemPrepareTime: orderItem.prepareTime,
-            itemPrice: orderItem.price,
+            itemPrice: orderItem.price
           })),
         })),
         //   employeeName: 'some name',
@@ -156,19 +156,12 @@ function FOH() {
                 Submit Order
               </Button>
             </Col>
-            <Col xs={7} className='menu'>
-              <Row>
-                {menuItems.map((menuItem) => (
-                  <MenuItem
-                    key={menuItem._id}
-                    menuItem={menuItem}
-                    handleAddToSeatOrder={() =>
-                      handleAddToSeatOrder(menuItem._id)
-                    }
-                    handleShow={() => handleShow(menuItem._id)}
-                  />
-                ))}
-              </Row>
+            <Col xs={6} className='menu'>
+              <MenuTabs
+                menuItems={menuItems}
+                handleAddToSeatOrder={handleAddToSeatOrder}
+                handleShow={handleShow}
+              />
             </Col>
           </Row>
           {modalMenuItemId && (
