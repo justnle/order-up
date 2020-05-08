@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-// import { AddButton, SelectButton } from '../../components/Buttons';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import './style.css';
 
 import { Container, Col, Row } from 'react-bootstrap';
 import MENU_API from '../../utils/menuAPI';
 import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
-import MenuItem from '../../components/MenuItem';
 import Form from 'react-bootstrap/Form';
 import ORDER_API from '../../utils/activeOrderAPI';
+
+import MenuTabs from '../../components/MenuTabs';
+
 import Decrement_API from '../../utils/inventoryAPI';
+
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
@@ -65,24 +68,29 @@ function FOH() {
     : null;
 
   function submitOrder() {
-    ORDER_API.addActiveOrder({
-      orderInTime: Date.now(),
-      tableNumber: tableNumber,
-      seatOrders: seatOrders.map((seatOrder, index) => ({
-        seatNumber: index + 1,
-        menuItems: seatOrder.map((orderItem) => ({
-          itemName: orderItem.name,
-          itemPrepareTime: orderItem.prepareTime,
-          itemPrice: orderItem.price
-        }))
-      }))
-      //   employeeName: 'some name',
-    })
-      .then((res) => {
-        console.log(res.data);
-        alert('Order sent to the kitchen');
+
+    if (tableNumber) {
+      ORDER_API.addActiveOrder({
+        orderInTime: Date.now(),
+        tableNumber: tableNumber,
+        seatOrders: seatOrders.map((seatOrder, index) => ({
+          seatNumber: index + 1,
+          menuItems: seatOrder.map((orderItem) => ({
+            itemName: orderItem.name,
+            itemPrepareTime: orderItem.prepareTime,
+            itemPrice: orderItem.price
+          })),
+        })),
+        //   employeeName: 'some name',
       })
-      .catch((err) => console.error(err));
+        .then((res) => {
+          console.log(res.data);
+          alert('Order sent to the kitchen');
+        })
+        .catch((err) => console.error(err));
+    } else {
+      alert(`You must enter a table number to submit order`);
+    }
   }
   function setDecrement(id) {
     const item = menuItems.find((item) => item._id === id);
@@ -111,23 +119,39 @@ function FOH() {
       .catch((err) => console.error(err));
   }
 
+  const clickDeleteBtn = (event) => {
+    const selectedIndex = event.target.getAttribute(`data-id`);
+
+    const copyOfSeatOrder = [...seatOrders[selectedSeatOrderIndex]];
+
+    copyOfSeatOrder.splice(selectedIndex, 1);
+
+    setSeatOrders(
+      seatOrders.map((seatOrder, index) =>
+        selectedSeatOrderIndex === index ? copyOfSeatOrder : [...seatOrder]
+      )
+    );
+  };
+
   return (
     <>
       <div>
-        <Container className='d-flex mt-5'>
+        <Container fluid className='d-flex mt-5'>
           <Row>
-            <Col size='md-4'>
+            <Col></Col>
+            <Col xs={4}>
               <Form className='form-inline mb-3'>
                 <Form.Group controlId='formTableNumber'>
-                  <Form.Label>Table </Form.Label>
+                  <Form.Label className='mr-1'>Table #</Form.Label>
                   <Form.Control
                     type='number'
                     placeholder='Enter a number'
                     onChange={(event) => setTableNumber(event.target.value)}
                   />
+                  <Button hidden={true}>Remove Item </Button>
                 </Form.Group>
               </Form>
-              <Table striped bordered variant='dark'>
+              <Table bordered variant='dark'>
                 <thead>
                   <tr>
                     <th>Seat #</th>
@@ -144,6 +168,7 @@ function FOH() {
                       onClick={() => {
                         selectSeat(index);
                       }}
+                      clickDeleteBtn={clickDeleteBtn}
                     />
                   ))}
                 </tbody>
@@ -167,20 +192,17 @@ function FOH() {
                 Submit Order
               </Button>
             </Col>
-            <Col size='md-8'>
-              <Row>
-                {menuItems.map((menuItem) => (
-                  <MenuItem
-                    key={menuItem._id}
-                    menuItem={menuItem}
-                    handleAddToSeatOrder={() => {
+
+            <Col xs={6} className='menu'>
+              <MenuTabs
+                menuItems={menuItems}
+                handleAddToSeatOrder={() => {
                       handleAddToSeatOrder(menuItem._id);
-                      setDecrement(menuItem._id);
-                    }}
-                    handleShow={() => handleShow(menuItem._id)}
-                  />
-                ))}
-              </Row>
+                      setDecrement(menuItem._id);}
+                handleShow={handleShow}
+              />
+
+
             </Col>
           </Row>
           {modalMenuItemId && (
