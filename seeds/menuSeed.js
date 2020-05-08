@@ -62,6 +62,40 @@ const menuSeed = [
   },
   {
     category: `Food`,
+    name: `Potatoe Hash`,
+    price: `10.00`,
+    description: `Crispy potatoes served with veggies and melted Swiss`,
+    pairing: `IPA`,
+    prepareTime: 15,
+    ingredients: [
+      {
+        productName: `Potatoes`,
+        quantity: 1
+      },
+      {
+        productName: `Onions`,
+        quantity: 1
+      },
+      {
+        productName: `Gossner Sliced Natural Swiss`,
+        quantity: 1
+      },
+      {
+        productName: `Mushrooms`,
+        quantity: 1
+      },
+      {
+        productName: `Spinach`,
+        quantity: 1
+      },
+      {
+        productName: `Tomato`,
+        quantity: 1
+      }
+    ]
+  },
+  {
+    category: `Food`,
     name: `Grilled Veggie Sandwich`,
     price: `12.50`,
     description: `Grilled broccoli, carrots, spinach and feta on toasty naan`,
@@ -82,6 +116,66 @@ const menuSeed = [
       },
       {
         productName: `Feta`,
+        quantity: 1
+      }
+    ]
+  },
+  {
+    category: `Food`,
+    name: `Beef Tacos`,
+    price: `9.00`,
+    description: `Beef tacos wrapped in a flour tortila with cheddar cheese`,
+    pairing: `Spiced Rum`,
+    prepareTime: 15,
+    ingredients: [
+      {
+        productName: `Ground Beef`,
+        quantity: 1
+      },
+      {
+        productName: `Beecher's Flagship Cheddar`,
+        quantity: 1
+      },
+      {
+        productName: `Flour Tortilla`,
+        quantity: 1
+      }
+    ]
+  },
+  {
+    category: `Food`,
+    name: `Veggie Tacos`,
+    price: `9.00`,
+    description: `Veggie tacos wrapped in a flour tortila with pepper jack cheese`,
+    pairing: `Silver Rum`,
+    prepareTime: 15,
+    ingredients: [
+      {
+        productName: `Spinach`,
+        quantity: 1
+      },
+      {
+        productName: `Tomato`,
+        quantity: 1
+      },
+      {
+        productName: `Onions`,
+        quantity: 1
+      },
+      {
+        productName: `Broccoli`,
+        quantity: 1
+      },
+      {
+        productName: `Mushrooms`,
+        quantity: 1
+      },
+      {
+        productName: `Pepper Jack`,
+        quantity: 1
+      },
+      {
+        productName: `Flour Tortilla`,
         quantity: 1
       }
     ]
@@ -160,6 +254,33 @@ const menuSeed = [
       }
     ]
   },
+  {
+    category: `Food`,
+    name: `Prosciutto Wrapped Chicken with Mushrooms`,
+    price: `20.99`,
+    description: `Served with roasted baby red potatoes. `,
+    pairing: `Pinot Grigio`,
+    prepareTime: 25,
+    ingredients: [
+      {
+        productName: `Chicken`,
+        quantity: 1
+      },
+      {
+        productName: `Prosciutto`,
+        quantity: 1
+      },
+      {
+        productName: `Mushrooms`,
+        quantity: 1
+      },
+      {
+        productName: `Baby Red Potatoes`,
+        quantity: 1
+      }
+    ]
+  },
+
   {
     category: `Beverage`,
     name: `Pinot Grigio`,

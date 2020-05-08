@@ -279,6 +279,96 @@ const inventorySeed = [
     vendorPhoneNumber: `206-886-9696`,
     vendorEmail: `troy@americannorthwestdistributors.com`,
     productCost: `3.50`
+  },
+  {
+    productName: `Vodka`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `4.50`
+  },
+  {
+    productName: `Gin`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `4.50`
+  },
+  {
+    productName: `Whiskey`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `4.50`
+  },
+  {
+    productName: `Spiced Rum`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `4.50`
+  },
+  {
+    productName: `Silver Rum`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `4.50`
+  },
+  {
+    productName: `Coca Cola`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `1.00`
+  },
+  {
+    productName: `Sprite`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `1.00`
+  },
+  {
+    productName: `Root Beer`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `1.00`
+  },
+  {
+    productName: `Orange Juice`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `1.00`
+  },
+  {
+    productName: `Club Soda`,
+    quantity: 20,
+    vendorName: `American Northwest Distributors`,
+    vendorContactName: `Troy Miller`,
+    vendorPhoneNumber: `206-886-9696`,
+    vendorEmail: `troy@americannorthwestdistributors.com`,
+    productCost: `1.00`
   }
 ];
 

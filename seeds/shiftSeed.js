@@ -82,8 +82,8 @@ const shiftSeed = [
   {
     employeeId: `369979`,
     employeeName: `Salahuddin Haas`,
-    clockIn: `2020-05-08, 11:20:20 AM`,
-    clockOut: `2020-05-08, 09:14:20 PM`
+    clockIn: `2020/05/08, 11:20:20 AM`,
+    clockOut: `2020/05/08, 09:14:20 PM`
   },
   {
     employeeId: `782914`,
