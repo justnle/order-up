@@ -7,34 +7,22 @@ const ActiveOrderSchema = new Schema({
     type: Number,
     required: true
   },
-  seatOrders: [
+  order: [
     {
-      seatNumber: {
+      itemSeat: {
         type: Number,
         required: true
       },
-      menuItems: [
-        {
-          itemName: {
-            type: String,
-            required: true
-          },
-          itemPrepareTime: {
-            type: Number,
-            required: true
-          },
-          itemPrice: {
-            type: String,
-            required: true
-          }
-        }
-      ]
+      itemName: {
+        type: String,
+        required: true
+      },
+      itemPrepareTime: {
+        type: Number,
+        required: true
+      }
     }
   ],
-  // employeeName: {
-  //   type: String,
-  //   required: true
-  // },
   orderInTime: {
     type: Date,
     required: true,

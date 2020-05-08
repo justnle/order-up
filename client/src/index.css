@@ -1,5 +1,4 @@
 body {
-  height: 100%;
   background-color:#1E1C1B ;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,12 +11,4 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-html{
-  height:100%;
-}
-
-#root{
-  height: 100%;
 }

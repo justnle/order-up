@@ -1,12 +1,6 @@
 h4{
   color: white;
 }
-
-.left, 
-.right {
-  white-space: nowrap;
-}
-
 #seatsContainer {
   width: 600px;
   margin: auto;
