@@ -5,10 +5,6 @@ export default {
     return axios.get(`/api/employee`);
   },
 
-  getEmployee: function (id) {
-    return axios.get(`/api/employee/${id}`);
-  },
-
   addEmployee: function (employeeData) {
     console.log(employeeData);
     return axios.post(`/api/employee`, employeeData);
@@ -33,5 +29,5 @@ export default {
       data: { arr: idArr }
     });
   }
-
+  
 };

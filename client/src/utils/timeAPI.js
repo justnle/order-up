@@ -17,7 +17,21 @@ export default {
   updateEmployeeTimeClock: function (id, data) {
     return axios.put(`/api/time/${id}`, data);
   },
+
+  updateManyShifts: function (idArr, data) {
+    return axios.put(`/api/time/updateMany`, {
+      idArr: idArr,
+      updateData: data
+    });
+  },
+
   removeEmployeeTimeClock: function (id) {
     return axios.delete(`/api/time/${id}`);
+  },
+
+  removeManyEmployeeTimeClock: function (idArr) {
+    return axios.delete(`/api/time/deleteMany`, {
+      data: { arr: idArr }
+    });
   }
 };

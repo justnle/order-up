@@ -28,10 +28,34 @@ module.exports = {
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
+  updateMany: function (req, res) {
+    db.Time.updateMany(
+      {
+        _id: { $in: req.body.idArr }
+      },
+      {
+        $set: req.body.updateData
+      }
+    )
+      .then((result) => {
+        console.log(result);
+        res.json(result);
+      })
+      .catch((err) => res.json(err));
+  },
   remove: function (req, res) {
     db.Time.findById({ _id: req.params.id })
       .then((dbModel) => dbModel.remove())
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
+  },
+  removeMany: function (req, res) {
+    db.Time.deleteMany({
+      _id: {
+        $in: req.body.arr
+      }
+    })
+      .then(result => res.json(result))
+      .catch(err => res.json(err));
   }
 };

@@ -2,22 +2,22 @@ import axios from 'axios';
 
 export default {
   getActiveOrders: function () {
-    return axios.get(`/api/activedorders`);
+    return axios.get(`/api/activeorder`);
   },
 
   getActiveOrder: function (id) {
-    return axios.get(`/api/activedorders/${id}`);
+    return axios.get(`/api/activeorder/${id}`);
   },
 
   addActiveOrder: function (activeData) {
-    return axios.post(`/api/activedorders`, activeData);
+    return axios.post(`/api/activeorder`, activeData);
   },
 
   updateActiveOrder: function (id, data) {
-    return axios.put(`/api/activedorders/${id}`, data);
+    return axios.put(`/api/activeorder/${id}`, data);
   },
 
   deleteActiveOrder: function (id) {
-    return axios.delete(`/api/activedorders/${id}`);
+    return axios.delete(`/api/activeorder/${id}`);
   }
 };
