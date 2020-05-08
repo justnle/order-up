@@ -28,6 +28,15 @@ module.exports = {
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
+
+  updateMany: function (req, res) {
+    db.Inventory.updateMany(
+      {
+        _id: { $in: req.body.idArr }
+      },
+      {
+        $set: req.body.updateData
+
   updateManyQuantity: function (req, res) {
     db.Inventory.updateMany(
       {
@@ -35,6 +44,7 @@ module.exports = {
       },
       {
         $inc: { quantity: -1 }
+
       }
     )
       .then((result) => {
@@ -48,5 +58,15 @@ module.exports = {
       .then((dbModel) => dbModel.remove())
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
+  },
+  removeMany: function (req, res) {
+    console.log(req);
+    db.Inventory.deleteMany({
+      _id: {
+        $in: req.body.arr
+      }
+    })
+      .then((result) => res.json(result))
+      .catch((err) => res.json(err));
   }
 };

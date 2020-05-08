@@ -22,6 +22,7 @@ function Inventory() {
   }, []);
 
   const loadInventory = () => {
+    setSelectedInventoryItems([]);
     API.getInventory()
       .then(res => {
         setInventory(res.data);
@@ -240,7 +241,6 @@ function Inventory() {
         <Col>
           <Row className='mb-1'>
             <EditBar
-              hideAddButton={false}
               noneSelected={selectedInventoryItems.length ? false : true}
               delete={deleteButtonPressed}
               add={addButtonPressed}
