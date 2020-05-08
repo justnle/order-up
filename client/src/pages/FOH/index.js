@@ -10,6 +10,7 @@ import ModalMenuItem from '../../components/ModalMenuItem';
 import MenuItem from '../../components/MenuItem';
 import Form from 'react-bootstrap/Form';
 import ORDER_API from '../../utils/activeOrderAPI';
+import Decrement_API from '../../utils/inventoryAPI';
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
@@ -17,7 +18,7 @@ function FOH() {
   const [seatOrders, setSeatOrders] = useState([]);
   const [selectedSeatOrderIndex, setSelectedSeatOrderIndex] = useState(null);
   const [tableNumber, setTableNumber] = useState('');
-
+  const [ingredients, setIngredients] = useState([]);
   const handleClose = () => setModalMenuItemId(null);
   const handleShow = (id) => setModalMenuItemId(id);
 
@@ -37,11 +38,9 @@ function FOH() {
     if (selectedSeatOrderIndex === null) {
       return;
     }
-
     const selectedItem = menuItems.find((item) => item._id === id);
-
     const orderItem = {
-      ...selectedItem,
+      ...selectedItem
     };
 
     setSeatOrders(
@@ -74,14 +73,40 @@ function FOH() {
         menuItems: seatOrder.map((orderItem) => ({
           itemName: orderItem.name,
           itemPrepareTime: orderItem.prepareTime,
-          itemPrice: orderItem.price,
-        })),
-      })),
+          itemPrice: orderItem.price
+        }))
+      }))
       //   employeeName: 'some name',
     })
       .then((res) => {
         console.log(res.data);
         alert('Order sent to the kitchen');
+      })
+      .catch((err) => console.error(err));
+  }
+  function setDecrement(id) {
+    const item = menuItems.find((item) => item._id === id);
+    if (item === undefined) {
+      return;
+    } else {
+      const itemIngredients = [];
+      const ing = item.ingredients;
+      for (let i = 0; i < ing.length; ++i) {
+        itemIngredients.push(ing[i].productName);
+      }
+      setIngredients([...ingredients, itemIngredients]);
+    }
+  }
+  function decrementInventory() {
+    console.log(`Submitting order`);
+    const flatIng = Object.values(ingredients).flat();
+    console.log(flatIng);
+    Decrement_API.updateManyInventoryQuantity({
+      productName: flatIng
+    })
+      .then((res) => {
+        console.log(`${res.status}`);
+        console.log(`Affected records: ${res.data.n}`);
       })
       .catch((err) => console.error(err));
   }
@@ -123,13 +148,20 @@ function FOH() {
                   ))}
                 </tbody>
               </Table>
-              <Button variant='primary' onClick={addSeatOrder}>
+              <Button
+                variant='primary'
+                onClick={() => {
+                  addSeatOrder();
+                  setDecrement();
+                }}
+              >
                 Add Seat
               </Button>
               <Button
                 variant='danger'
                 onClick={() => {
                   submitOrder();
+                  decrementInventory();
                 }}
               >
                 Submit Order
@@ -141,9 +173,10 @@ function FOH() {
                   <MenuItem
                     key={menuItem._id}
                     menuItem={menuItem}
-                    handleAddToSeatOrder={() =>
-                      handleAddToSeatOrder(menuItem._id)
-                    }
+                    handleAddToSeatOrder={() => {
+                      handleAddToSeatOrder(menuItem._id);
+                      setDecrement(menuItem._id);
+                    }}
                     handleShow={() => handleShow(menuItem._id)}
                   />
                 ))}

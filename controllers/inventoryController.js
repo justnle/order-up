@@ -28,6 +28,21 @@ module.exports = {
       .then((dbModel) => res.json(dbModel))
       .catch((err) => res.status(422).json(err));
   },
+  updateManyQuantity: function (req, res) {
+    db.Inventory.updateMany(
+      {
+        productName: { $in: req.body.productName }
+      },
+      {
+        $inc: { quantity: -1 }
+      }
+    )
+      .then((result) => {
+        console.log(result);
+        res.json(result);
+      })
+      .catch((err) => res.json(err));
+  },
   remove: function (req, res) {
     db.Inventory.findById({ _id: req.params.id })
       .then((dbModel) => dbModel.remove())
