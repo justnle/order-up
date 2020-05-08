@@ -39,6 +39,7 @@ function FOH() {
 
   function handleAddToSeatOrder(id) {
     if (selectedSeatOrderIndex === null) {
+      alert(`You must click on a seat number before adding items to the order`);
       return;
     }
     const selectedItem = menuItems.find((item) => item._id === id);
@@ -136,10 +137,10 @@ function FOH() {
   return (
     <>
       <div>
-        <Container className='mt-5'>
+        <Container fluid className='mt-5'>
           <Row>
             <Col></Col>
-            <Col xs={4}>
+            <Col md={4}>
               <Form className='form-inline mb-3'>
                 <Form.Group controlId='formTableNumber'>
                   <Form.Label className='mr-1'>Table #</Form.Label>
@@ -148,7 +149,7 @@ function FOH() {
                     placeholder='Enter a number'
                     onChange={(event) => setTableNumber(event.target.value)}
                   />
-                  <Button hidden={true}>Remove Item </Button>
+                  {/* <Button hidden={true}>Remove Item </Button> */}
                 </Form.Group>
               </Form>
               <Table bordered variant='dark'>
@@ -194,7 +195,7 @@ function FOH() {
               </Button>
             </Col>
 
-            <Col xs={6} className='menuContainer'>
+            <Col md={6} className='menuContainer'>
               <MenuTabs
                 menuItems={menuItems}
                 handleAddToSeatOrderAndDecrement={(id) => {
