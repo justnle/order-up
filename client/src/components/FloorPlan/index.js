@@ -4,8 +4,18 @@ class Seats extends React.Component {
   constructor() {
     super();
     this.state = {
-      seat: ['#1', '#2', '#3', '#4', '#5', '#6', '#7', '#8', '#9'],
-      seatAvailable: ['#1', '#2', '#3', '#4', '#5', '#6', '#7', '#8', '#9'],
+      seat: ['# 1', '# 2', '# 3', '# 4', '# 5', '# 6', '# 7', '# 8', '# 9'],
+      seatAvailable: [
+        '# 1',
+        '# 2',
+        '# 3',
+        '# 4',
+        '# 5',
+        '# 6',
+        '# 7',
+        '# 8',
+        '# 9'
+      ],
       seatReserved: []
     };
   }
@@ -14,12 +24,12 @@ class Seats extends React.Component {
     if (this.state.seatReserved.indexOf(seat) > -1) {
       this.setState({
         seatAvailable: this.state.seatAvailable.concat(seat),
-        seatReserved: this.state.seatReserved.filter((res) => res !== seat)
+        seatReserved: this.state.seatReserved.filter(res => res !== seat)
       });
     } else {
       this.setState({
         seatReserved: this.state.seatReserved.concat(seat),
-        seatAvailable: this.state.seatAvailable.filter((res) => res !== seat)
+        seatAvailable: this.state.seatAvailable.filter(res => res !== seat)
       });
     }
   }
@@ -41,42 +51,44 @@ class Seats extends React.Component {
 class DrawGrid extends React.Component {
   render() {
     return (
-      <div
-        id='seatsContainer'
-        className='container d-flex row justify-content-center '
-      >
+      <>
         <h1 className='display-4 d-flex justify-content-center mt-5 mb-5'>
           Floor Plan
         </h1>
-        <table className='grid '>
-          <tbody>
-            <tr>
-              {this.props.seat.map((row) => (
-                <td
-                  className={
-                    this.props.reserved.indexOf(row) > -1
-                      ? 'reserved'
-                      : 'available'
-                  }
-                  key={row}
-                  onClick={(e) => this.onClickSeat(row)}
-                >
-                  {row}{' '}
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
+        <div
+          id='seatsContainer'
+          className='container d-flex column justify-content-center '
+        >
+          <table className='grid'>
+            <tbody>
+              <tr>
+                {this.props.seat.map(row => (
+                  <td
+                    className={
+                      this.props.reserved.indexOf(row) > -1
+                        ? 'reserved'
+                        : 'available'
+                    }
+                    key={row}
+                    onClick={e => this.onClickSeat(row)}
+                  >
+                    {row}{' '}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
 
-        <div className='row mt-5'>
-          <div className='col-sm'>
-            <AvailableList available={this.props.available} />
-          </div>
-          <div className='col-sm'>
-            <ReservedList reserved={this.props.reserved} />
+          <div className=' mt-5 ml-5'>
+            <div className='col-sm'>
+              <AvailableList available={this.props.available} />
+            </div>
+            <div className='col-sm'>
+              <ReservedList reserved={this.props.reserved} />
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -91,11 +103,11 @@ class AvailableList extends React.Component {
     return (
       <div className='left'>
         <h4>
-          Available Tables: ({seatCount === 0 ? 'No tables available' : seatCount}
-          )
+          Available Tables: (
+          {seatCount === 0 ? 'No tables available' : seatCount})
         </h4>
         <ul>
-          {this.props.available.map((res) => (
+          {this.props.available.map(res => (
             <li key={res}>{res}</li>
           ))}
         </ul>
@@ -110,7 +122,7 @@ class ReservedList extends React.Component {
       <div className='right'>
         <h4>Reserved Tables: ({this.props.reserved.length})</h4>
         <ul>
-          {this.props.reserved.map((res) => (
+          {this.props.reserved.map(res => (
             <li key={res}>{res}</li>
           ))}
         </ul>
@@ -119,4 +131,4 @@ class ReservedList extends React.Component {
   }
 }
 
-export { Seats };
+export {Seats};
