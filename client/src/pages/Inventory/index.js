@@ -70,7 +70,6 @@ function Inventory() {
       itemInfo.productCost
     ) {
       API.addInventoryItem(itemInfo).then(res => {
-        console.log(`status code: ${res.status}`);
         loadInventory();
         setShowAddModal(false);
       });
@@ -121,7 +120,9 @@ function Inventory() {
         }
       })
       .catch(err => console.error(err));
-  };
+
+  }
+
 
   const deleteButtonPressed = () => {
     API.deleteManyInventoryItem(selectedInventoryItems)

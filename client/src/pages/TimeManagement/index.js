@@ -55,7 +55,6 @@ function TimeManagement() {
   function handleInput(event) {
     const { name, value } = event.target;
     setFilterShifts((filterShifts) => ({ ...filterShifts, [name]: value }));
-    console.log(filterShifts);
   }
 
   const shiftsHeadingArr = [
@@ -77,20 +76,14 @@ function TimeManagement() {
   const updateInputState = event => {
     const { name, value } = event.target;
     setTimes(times => ({ ...times, [name]: value }));
-    console.log(name, value);
-    console.log(times)
   };
 
   const editButtonPressed = () => {
-    console.log(`Edit button pressed.`);
     setShowAddModal(true);
   }
 
   const saveButtonPressed = () => {
-    console.log(`Save button pressed`);
     API.updateManyShifts(selectedShifts, times).then(res => {
-      console.log(`Status code ${res.status}`);
-      console.log(`Affected records: ${res.data.n}`);
       if (res.data.n > 0) {
         setShowAddModal(false);
         loadShifts();
@@ -103,7 +96,6 @@ function TimeManagement() {
   }
 
   const deleteButtonPressed = () => {
-    console.log(selectedShifts);
     if (selectedShifts.length === 1) {
       API.removeEmployeeTimeClock(selectedShifts[0])
         .then(() => {

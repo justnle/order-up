@@ -9,11 +9,11 @@ import InputModal from '../../components/InputModal';
 function Employees() {
   const [cachedEmployees, setCachedEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [showModal, setShowModal] = useState(false); // using
-  const [employeeInfo, setEmployeeInfo] = useState({}); //using
-  const [inputs, setInputs] = useState([]); //using
-  const [selectedEmployees, setSelectedEmployees] = useState([]); //using
-  const [modalTitle, setModalTitle] = useState(); //using
+  const [showModal, setShowModal] = useState(false);
+  const [employeeInfo, setEmployeeInfo] = useState({});
+  const [inputs, setInputs] = useState([]);
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [modalTitle, setModalTitle] = useState();
   const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
 
   useEffect(() => {
@@ -47,8 +47,10 @@ function Employees() {
   };
 
   const updateEmployeeInfoState = event => {
-    const {name, value} = event.target;
-    setEmployeeInfo(info => ({...info, [name]: value}));
+
+    const { name, value } = event.target;
+    setEmployeeInfo(info => ({ ...info, [name]: value }));
+
   };
 
   const employeeNameInput = [
@@ -116,13 +118,15 @@ function Employees() {
 
   const editButtonPressed = () => {
     if (selectedEmployees.length > 1) {
-      console.log(`More than 1 employee selected`);
       setInputs(otherInput);
       setModalTitle(`Edit employees`);
     } else {
-      console.log(`Only 1 employee selected`);
       setEmployeeInfo(
-        cachedEmployees.find(employee => employee._id === selectedEmployees[0])
+
+        cachedEmployees.find(
+          employee => employee._id === selectedEmployees[0]
+        )
+
       );
       setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
@@ -132,10 +136,9 @@ function Employees() {
   };
 
   const deleteButtonPressed = () => {
-    console.log(`Delete button pressed`);
     API.deleteManyEmployee(selectedEmployees)
       .then(res => {
-        console.log(`status code: ${res.status}`);
+
         if (res.data.n > 0) {
           loadEmployees();
         }
@@ -151,7 +154,6 @@ function Employees() {
     } else {
       setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
     }
-    console.log(selectedEmployees);
   };
 
   const submitButtonPressed = event => {
@@ -163,9 +165,10 @@ function Employees() {
       employeeInfo.permission &&
       employeeInfo.rate
     ) {
-      console.log(`Making a POST call`);
-      API.addEmployee(employeeInfo).then(res => {
-        console.log(`status code: ${res.status}`);
+
+
+      API.addEmployee(employeeInfo).then(() => {
+
         closeEmployeeModal();
         loadEmployees();
       });
@@ -175,11 +178,8 @@ function Employees() {
   };
 
   const saveButtonPressed = () => {
-    console.log(`Save button pressed`);
     API.updateManyEmployees(selectedEmployees, employeeInfo)
       .then(res => {
-        console.log(`Status code ${res.status}`);
-        console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
           closeEmployeeModal();
           loadEmployees();
@@ -206,7 +206,7 @@ function Employees() {
       </Container>
 
       <InputModal
-        show={showModal} // bool
+        show={showModal}
         cancel={closeEmployeeModal}
         title={modalTitle}
         submit={
@@ -215,7 +215,7 @@ function Employees() {
             : saveButtonPressed
         }
         submitButtonLabel={submitButtonLabel}
-        inputs={inputs} // array of input objs
+        inputs={inputs}
         value={employeeInfo ? employeeInfo : undefined}
       />
 

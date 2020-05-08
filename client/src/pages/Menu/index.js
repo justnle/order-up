@@ -64,8 +64,9 @@ function Menu() {
       itemInfo.pairing &&
       itemInfo.prepareTime
     ) {
-      API.addMenuItem(itemInfo).then(res => {
-        console.log(`status code: ${res.status}`);
+
+      API.addMenuItem(itemInfo).then((res) => {
+
         loadMenu();
         setShowAddModal(false);
       });
@@ -89,13 +90,10 @@ function Menu() {
   };
 
   const editButtonPressed = () => {
-    console.log(`Edit button pressed!`);
     if (selectedMenuItems.length > 1) {
-      console.log(`More than 1 menu selected`);
       setInputs(otherItemArr);
       setModalTitle(`Edit menu items`);
     } else {
-      console.log(`Only 1 menu selected`);
       setItemInfo(menu.find(menu => menu._id === selectedMenuItems[0]));
       setInputs([...uniqueItemArr, ...otherItemArr]);
       setModalTitle(`Edit a menu item`);
@@ -105,11 +103,8 @@ function Menu() {
   };
 
   const saveButtonPressed = () => {
-    console.log(`Save button pressed`);
     API.updateManyMenuItem(selectedMenuItems, itemInfo)
       .then(res => {
-        console.log(`Status code ${res.status}`);
-        console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
           setShowAddModal(false);
           loadMenu();
@@ -124,8 +119,6 @@ function Menu() {
   const deleteButtonPressed = () => {
     API.deleteManyMenuItems(selectedMenuItems)
       .then(res => {
-        console.log(`status code: ${res.status}`);
-        console.log(res.data.n);
         if (res.data.n > 0) {
           loadMenu();
         }
