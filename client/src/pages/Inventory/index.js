@@ -73,7 +73,6 @@ function Inventory() {
       itemInfo.productCost
     ) {
       API.addInventoryItem(itemInfo).then(res => {
-        console.log(`status code: ${res.status}`);
         loadInventory();
         setShowAddModal(false);
       });
@@ -119,7 +118,7 @@ function Inventory() {
           alert(`Something's wrong, we couldn't update inventory item at this time...`)
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
   const deleteButtonPressed = () => {
@@ -129,7 +128,7 @@ function Inventory() {
           loadInventory();
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
 
