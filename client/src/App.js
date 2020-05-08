@@ -3,7 +3,6 @@ import './App.css';
 import Sidebar from './components/Sidebar';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
-import Manager from './pages/Manager';
 import Menu from './pages/Menu';
 import Employees from './pages/Employees';
 import FOH from './pages/FOH';
