@@ -13,7 +13,7 @@ function TimeManagement() {
   const [selectedShifts, setSelectedShifts] = useState([]);
   const [filterShifts, setFilterShifts] = useState([]);
   const [shiftDisplay, setShiftDisplay] = useState([]);
-  const [inputs, setInputs] = useState([]);
+  const [times, setTimes] = useState({});
   const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
@@ -76,17 +76,30 @@ function TimeManagement() {
 
   const updateInputState = event => {
     const { name, value } = event.target;
-    setInputs(info => ({ ...info, [name]: value }));
+    setTimes(times => ({ ...times, [name]: value }));
+    console.log(name, value);
+    console.log(times)
   };
 
   const editButtonPressed = () => {
     console.log(`Edit button pressed.`);
-    setInputs(timeArr);
     setShowAddModal(true);
   }
 
   const saveButtonPressed = () => {
     console.log(`Save button pressed`);
+    API.updateManyShifts(selectedShifts, times).then(res => {
+      console.log(`Status code ${res.status}`);
+      console.log(`Affected records: ${res.data.n}`);
+      if (res.data.n > 0) {
+        setShowAddModal(false);
+        loadShifts();
+      } else {
+        alert(
+          `Something's wrong, we couldn't update the menu item at this time...`
+        );
+      }
+    })
   }
 
   const deleteButtonPressed = () => {
@@ -156,6 +169,7 @@ function TimeManagement() {
         submit={saveButtonPressed}
         submitButtonLabel='SAVE'
         inputs={timeArr}
+        value={times}
       />
 
       <Container className='d-flex justify-content-center mt-5'>
