@@ -79,6 +79,12 @@ function TimeManagement() {
           loadShifts();
           setSelectedShifts([]);
         });
+    } else {
+      API.removeManyEmployeeTimeClock(selectedShifts)
+        .then(() => {
+          loadShifts();
+          setSelectedShifts([]);
+        })
     }
   };
 
