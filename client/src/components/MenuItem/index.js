@@ -19,7 +19,7 @@ function MenuItem(props) {
           <Button
             className='mx-1'
             size='sm'
-            variant='primary'
+            variant='outline-primary'
             onClick={props.handleAddToSeatOrder}
           >
             Select
@@ -27,7 +27,7 @@ function MenuItem(props) {
           <Button
             className='mx-1'
             size='sm'
-            variant='success'
+            variant='outline-info'
             onClick={props.handleShow}
           >
             View
