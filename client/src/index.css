@@ -1,6 +1,5 @@
 body {
   height: 100%;
-  background-color:#1E1C1B ;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -14,10 +13,10 @@ code {
     monospace;
 }
 
-html{
-  height:100%;
+html {
+  height: 100%;
 }
 
-#root{
+#root {
   height: 100%;
 }
