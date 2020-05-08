@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import EditBar from '../../components/EditBar';
-import { Container, Col, Row } from 'react-bootstrap';
-import DropDownInput from '../../components/DropDownInput/index';
+import {Container, Col, Row} from 'react-bootstrap';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
@@ -24,20 +23,20 @@ function Employees() {
   const loadEmployees = () => {
     setSelectedEmployees([]);
     API.getEmployees()
-      .then((res) => {
+      .then(res => {
         setCachedEmployees(res.data);
         setFilteredEmployees(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
-  const updateFilteredEmployeesState = (event) => {
+  const updateFilteredEmployeesState = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
-      cachedEmployees.filter((employee) => {
+      cachedEmployees.filter(employee => {
         const words = employee.name.split(' ');
         let isMatch = false;
-        words.forEach((word) => {
+        words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
             isMatch = word.toLowerCase().startsWith(inputText.toLowerCase());
           }
@@ -47,9 +46,9 @@ function Employees() {
     );
   };
 
-  const updateEmployeeInfoState = (event) => {
-    const { name, value } = event.target;
-    setEmployeeInfo((info) => ({ ...info, [name]: value }));
+  const updateEmployeeInfoState = event => {
+    const {name, value} = event.target;
+    setEmployeeInfo(info => ({...info, [name]: value}));
   };
 
   const employeeNameInput = [
@@ -99,11 +98,11 @@ function Employees() {
   ];
 
   const employeeTableHeadingArr = [
-    { key: `name`, heading: `Employee Name` },
-    { key: `id`, heading: `Employee PIN` },
-    { key: `position`, heading: `Position` },
-    { key: `rate`, heading: `Hourly Rate` },
-    { key: `permission`, heading: `Permission Level` }
+    {key: `name`, heading: `Employee Name`},
+    {key: `id`, heading: `Employee PIN`},
+    {key: `position`, heading: `Position`},
+    {key: `rate`, heading: `Hourly Rate`},
+    {key: `permission`, heading: `Permission Level`}
   ];
 
   const addButtonPressed = () => {
@@ -123,9 +122,7 @@ function Employees() {
     } else {
       console.log(`Only 1 employee selected`);
       setEmployeeInfo(
-        cachedEmployees.find(
-          (employee) => employee._id === selectedEmployees[0]
-        )
+        cachedEmployees.find(employee => employee._id === selectedEmployees[0])
       );
       setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
@@ -137,27 +134,27 @@ function Employees() {
   const deleteButtonPressed = () => {
     console.log(`Delete button pressed`);
     API.deleteManyEmployee(selectedEmployees)
-      .then((res) => {
+      .then(res => {
         console.log(`status code: ${res.status}`);
         if (res.data.n > 0) {
           loadEmployees();
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
-  const checkboxClicked = (event) => {
+  const checkboxClicked = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
       setSelectedEmployees([...selectedEmployees, selectedId]);
     } else {
-      setSelectedEmployees(selectedEmployees.filter((id) => id !== selectedId));
+      setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
     }
     console.log(selectedEmployees);
   };
 
-  const submitButtonPressed = (event) => {
+  const submitButtonPressed = event => {
     event.preventDefault();
     if (
       employeeInfo.name &&
@@ -167,7 +164,7 @@ function Employees() {
       employeeInfo.rate
     ) {
       console.log(`Making a POST call`);
-      API.addEmployee(employeeInfo).then((res) => {
+      API.addEmployee(employeeInfo).then(res => {
         console.log(`status code: ${res.status}`);
         closeEmployeeModal();
         loadEmployees();
@@ -180,7 +177,7 @@ function Employees() {
   const saveButtonPressed = () => {
     console.log(`Save button pressed`);
     API.updateManyEmployees(selectedEmployees, employeeInfo)
-      .then((res) => {
+      .then(res => {
         console.log(`Status code ${res.status}`);
         console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
@@ -192,7 +189,7 @@ function Employees() {
           );
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
   return (
@@ -207,17 +204,6 @@ function Employees() {
           onChange={updateFilteredEmployeesState}
         />
       </Container>
-
-      <div
-        className=' d-flex row justify-content-center align-items-center text-white'
-        id='buttonsDiv'
-      >
-        <div className='m-1'>
-          <DropDownInput className='d-flex justify-content-center'>
-            Sort by vendor
-          </DropDownInput>
-        </div>
-      </div>
 
       <InputModal
         show={showModal} // bool
