@@ -14,7 +14,6 @@ import MenuTabs from '../../components/MenuTabs';
 
 import Decrement_API from '../../utils/inventoryAPI';
 
-
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
   const [modalMenuItemId, setModalMenuItemId] = useState(null);
@@ -23,7 +22,7 @@ function FOH() {
   const [tableNumber, setTableNumber] = useState('');
   const [ingredients, setIngredients] = useState([]);
   const handleClose = () => setModalMenuItemId(null);
-  const handleShow = (id) => setModalMenuItemId(id);
+  const handleShow = id => setModalMenuItemId(id);
 
   useEffect(() => {
     loadMenu();
@@ -31,10 +30,10 @@ function FOH() {
 
   const loadMenu = () => {
     MENU_API.getMenu()
-      .then((res) => {
+      .then(res => {
         setMenuItems(res.data);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
   function handleAddToSeatOrder(id) {
@@ -42,7 +41,7 @@ function FOH() {
       alert(`You must click on a seat number before adding items to the order`);
       return;
     }
-    const selectedItem = menuItems.find((item) => item._id === id);
+    const selectedItem = menuItems.find(item => item._id === id);
     const orderItem = {
       ...selectedItem
     };
@@ -65,36 +64,34 @@ function FOH() {
   }
 
   const modalMenuItem = modalMenuItemId
-    ? menuItems.find((item) => item._id === modalMenuItemId)
+    ? menuItems.find(item => item._id === modalMenuItemId)
     : null;
 
   function submitOrder() {
-
     if (tableNumber) {
       ORDER_API.addActiveOrder({
         orderInTime: Date.now(),
         tableNumber: tableNumber,
         seatOrders: seatOrders.map((seatOrder, index) => ({
           seatNumber: index + 1,
-          menuItems: seatOrder.map((orderItem) => ({
+          menuItems: seatOrder.map(orderItem => ({
             itemName: orderItem.name,
             itemPrepareTime: orderItem.prepareTime,
             itemPrice: orderItem.price
-          })),
-        })),
+          }))
+        }))
         //   employeeName: 'some name',
       })
-        .then((res) => {
-          console.log(res.data);
+        .then(res => {
           alert('Order sent to the kitchen');
         })
-        .catch((err) => console.error(err));
+        .catch(err => console.error(err));
     } else {
       alert(`You must enter a table number to submit order`);
     }
   }
   function setDecrement(id) {
-    const item = menuItems.find((item) => item._id === id);
+    const item = menuItems.find(item => item._id === id);
     if (item === undefined) {
       return;
     } else {
@@ -107,20 +104,17 @@ function FOH() {
     }
   }
   function decrementInventory() {
-    console.log(`Submitting order`);
     const flatIng = Object.values(ingredients).flat();
-    console.log(flatIng);
     Decrement_API.updateManyInventoryQuantity({
       productName: flatIng
     })
-      .then((res) => {
+      .then(res => {
         console.log(`${res.status}`);
-        console.log(`Affected records: ${res.data.n}`);
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   }
 
-  const clickDeleteBtn = (event) => {
+  const clickDeleteBtn = event => {
     const selectedIndex = event.target.getAttribute(`data-id`);
 
     const copyOfSeatOrder = [...seatOrders[selectedSeatOrderIndex]];
@@ -139,7 +133,7 @@ function FOH() {
       <div>
         <Container fluid className='mt-5'>
           <Row>
-            <Col></Col>
+            <Col md={2}></Col>
             <Col md={4}>
               <Form className='form-inline mb-3'>
                 <Form.Group controlId='formTableNumber'>
@@ -147,7 +141,7 @@ function FOH() {
                   <Form.Control
                     type='number'
                     placeholder='Enter a number'
-                    onChange={(event) => setTableNumber(event.target.value)}
+                    onChange={event => setTableNumber(event.target.value)}
                   />
                   {/* <Button hidden={true}>Remove Item </Button> */}
                 </Form.Group>
@@ -174,7 +168,7 @@ function FOH() {
                   ))}
                 </tbody>
               </Table>
-              <Button 
+              <Button
                 id='FOHbtn'
                 variant='outline-success'
                 onClick={() => {
@@ -198,13 +192,12 @@ function FOH() {
             <Col md={6} className='menuContainer'>
               <MenuTabs
                 menuItems={menuItems}
-                handleAddToSeatOrderAndDecrement={(id) => {
-                      handleAddToSeatOrder(id);
-                      setDecrement(id);}}
+                handleAddToSeatOrderAndDecrement={id => {
+                  handleAddToSeatOrder(id);
+                  setDecrement(id);
+                }}
                 handleShow={handleShow}
               />
-
-
             </Col>
           </Row>
           {modalMenuItemId && (
