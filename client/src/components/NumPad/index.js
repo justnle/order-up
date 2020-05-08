@@ -15,8 +15,8 @@ export default function NumPad(props) {
             type='password'
             placeholder='Enter PIN'
             value={props.pin}
-            onChange={(e) => props.setPin(e.target.value)}
-            onKeyDown={(e) => props.formInput(e)}
+            onChange={e => props.setPin(e.target.value)}
+            onKeyDown={e => props.formInput(e)}
           />
         </Form.Group>
       </Form>
@@ -32,7 +32,7 @@ export default function NumPad(props) {
                   ? props.delete
                   : button.value === `login`
                   ? props.submit
-                  : (e) => props.buttonInput(e)
+                  : e => props.buttonInput(e)
               }
             >
               {button.name}

@@ -20,13 +20,13 @@ function Home() {
   const [showModal, setShowModal] = useState(false);
   const [modalBody, setModalBody] = useState(``);
 
-  const handleBtnInput = (event) => {
+  const handleBtnInput = event => {
     event.preventDefault();
     const { value } = event.target;
     setPin(pin + value);
   };
 
-  const handleFormInput = (event) => {
+  const handleFormInput = event => {
     if (event.key === `Enter`) {
       event.preventDefault();
       handleSubmit();
@@ -36,7 +36,7 @@ function Home() {
   const handleSubmit = () => {
     if (pin.length > 0) {
       EMPLOYEE_API.getEmployees()
-        .then((res) => {
+        .then(res => {
           const search = res.data.find(({ id }) => id === pin);
 
           if (search !== undefined) {
@@ -47,7 +47,7 @@ function Home() {
             setShowModal(true);
           }
         })
-        .catch((err) => console.error(err));
+        .catch(err => console.error(err));
     }
   };
 
@@ -59,16 +59,16 @@ function Home() {
     }
   };
 
-  const clockIn = (employee) => {
+  const clockIn = employee => {
     TIME_API.getTimeClock()
-      .then((res) => {
+      .then(res => {
         const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
         switch (searchId.onTheClock) {
           case false:
           case null:
             TIME_API.updateEmployeeTimeClock(searchId._id, {
-              clockIn: format(Date.now(), "MM-dd-yyyy, hh:mm:ss a"),
+              clockIn: format(Date.now(), 'MM-dd-yyyy, hh:mm:ss a'),
               onTheClock: true
             });
             setLoggedIn({ success: true, permission: employee.permission });
@@ -82,19 +82,19 @@ function Home() {
             console.error(`Error, shouldn't be logging!`);
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
   const clockOut = () => {
     TIME_API.getTimeClock()
-      .then((res) => {
+      .then(res => {
         const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
         if (searchId.onTheClock) {
           TIME_API.updateEmployeeTimeClock(searchId._id, {
-            clockOut: format(Date.now(), "MM-dd-yyyy, hh:mm:ss a"),
+            clockOut: format(Date.now(), 'MM-dd-yyyy, hh:mm:ss a'),
             onTheClock: false
-          }).catch((err) => console.error(err));
+          }).catch(err => console.error(err));
           setLoggedIn({ success: false, permission: 0 });
           setPin(``);
           setModalBody(`${searchId.employeeName} successfully clocked out`);
@@ -105,7 +105,7 @@ function Home() {
           setShowModal(true);
         }
       })
-      .catch((err) => console.error(err));
+      .catch(err => console.error(err));
   };
 
   const closeModal = () => {
@@ -115,7 +115,7 @@ function Home() {
   function permissionPages(checkPermission) {
     switch (checkPermission) {
       case 1:
-        return <Redirect to='/manager' />;
+        return <Redirect to='/employees' />;
       case 2:
         return <Redirect to='/foh' />;
       case 3:
@@ -184,17 +184,13 @@ function Home() {
     buttons: buttons
   };
 
-
   return (
     <div id='homeBackGround'>
       <Container id='greetingContainer'>
         <Greeting />
       </Container>
       {loggedIn.success ? permissionPages(loggedIn.permission) : null}
-      <Container
-        className='text-center mt-5'
-        id='home-container'
-      >
+      <Container className='text-center mt-5' id='home-container'>
         <Row>
           <Col className='py-3'>
             <NumPad {...props} />
@@ -207,7 +203,7 @@ function Home() {
           </Col>
         </Row>
 
-        <Modal show={showModal} onHide={closeModal}>
+        <Modal animation={false} show={showModal} onHide={closeModal}>
           <Modal.Header closeButton>
             <Modal.Title></Modal.Title>
           </Modal.Header>
