@@ -48,6 +48,27 @@ function TimeManagement() {
       ) {
         return true;
       }
+      if (
+        !filterShifts.employeeName &&
+        !filterShifts.clockIn &&
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
+      ) {
+        return true;
+      }
+      if (
+        !filterShifts.employeeName &&
+        !shift.clockIn &&
+        filterShifts.clockOut
+      ) {
+        return true;
+      }
+      if (
+        !filterShifts.employeeName &&
+        shift.clockIn.slice(0, 10) >= filterShifts.clockIn &&
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
+      ) {
+        return true;
+      }
     });
     setShiftDisplay(filtered);
   }, [filterShifts]);
