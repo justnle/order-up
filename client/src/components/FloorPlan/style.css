@@ -1,8 +1,15 @@
-h4{
+h4 {
   color: white;
+  font-variant: small-caps;
+  font-weight: 300;
 }
+
+.left,
+.right {
+  white-space: nowrap;
+}
+
 #seatsContainer {
-  width: 600px;
   margin: auto;
 }
 
@@ -18,7 +25,7 @@ h4{
 }
 
 .grid td:hover {
-  opacity: .7;
+  opacity: 0.7;
   cursor: pointer;
 }
 
@@ -29,11 +36,11 @@ h4{
 }
 
 .reserved::after {
-  content: 'RESERVED'
+  content: 'RESERVED';
 }
 
 .available::after {
-  content: 'AVAILABLE'
+  content: 'AVAILABLE';
 }
 
 .available {
@@ -42,6 +49,8 @@ h4{
 
 li {
   list-style: none;
-  color:white;
+  color: white;
+  font-variant: caps;
+  font-size: 18px;
+  font-weight: 300;
 }
-
