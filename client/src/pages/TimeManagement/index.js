@@ -71,6 +71,13 @@ function TimeManagement() {
         shift.clockOut.slice(0, 10) <= filterShifts.clockOut
       ) {
         return true;
+      }
+      if (
+        shift.employeeName.startsWith(filterShifts.employeeName) &&
+        !filterShifts.clockIn &&
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
+      ) {
+        return true;
       } else {
         return false;
       }
