@@ -23,7 +23,9 @@ function Boh() {
 
   const loadOrders = () => {
     ACTIVE_ORDER_API.getActiveOrders()
-      .then(res => setActiveOrders(res.data))
+      .then(res => {
+        setActiveOrders(res.data);
+      })
       .catch(err => console.error(err));
   };
 
@@ -33,6 +35,7 @@ function Boh() {
 
     ACTIVE_ORDER_API.getActiveOrder(value)
       .then(res => {
+        console.log(res.data);
         setArchivedOrder([res.data]);
       })
       .catch(err => console.error(err));
@@ -53,7 +56,7 @@ function Boh() {
               className='my-auto text-center'
               key={`table-col-${index + 1}`}
             >
-              <span>Table #{data.tableNumber}</span>
+              <span>#{data.tableNumber}</span>
             </Col>
             <Col
               xs={6}
@@ -66,15 +69,20 @@ function Boh() {
                     className='d-flex flex-column'
                     key={`order-item-${index + 1}`}
                   >
-                    {order.menuItems.map((items, index) => (
+                    {order.menuItems.map((item, index) => (
                       <Row
                         className='text-center'
                         key={`menu-items-${index + 1}`}
                       >
-                        <Col className='text-center my-auto' xs={1}>
+                        <Col className='text-center my-auto ml-2' xs={1}>
                           {order.seatNumber}
                         </Col>
-                        <Col>{items.itemName}</Col>
+                        <Col className='text-center my-auto'>
+                          {item.itemName}
+                        </Col>
+                        <Col className='text-center my-auto' xs={2}>
+                          {item.itemPrepareTime}
+                        </Col>
                       </Row>
                     ))}
                   </Row>
