@@ -24,19 +24,26 @@ function TimeManagement() {
     const filtered = shifts.filter(shift => {
       if (
         shift.employeeName === filterShifts.employeeName &&
-        shift.clockIn >= filterShifts.clockIn &&
-        shift.clockOut <= filterShifts.clockOut
+        shift.clockIn.slice(0, 10) >= filterShifts.clockIn &&
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
       ) {
         return true;
       }
       if (
         shift.employeeName === filterShifts.employeeName &&
-        !filterShifts.clockIn
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
       ) {
         return true;
       }
       if (
         shift.employeeName === filterShifts.employeeName &&
+        shift.clockIn.slice(0, 10) >= filterShifts.clockIn
+      ) {
+        return true;
+      }
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        !filterShifts.clockIn &&
         !filterShifts.clockOut
       ) {
         return true;
