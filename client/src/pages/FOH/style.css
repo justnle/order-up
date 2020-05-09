@@ -10,3 +10,7 @@
 .tab-content .active {
   background-color: transparent;
 }
+
+.menuContainer .nav-tabs {
+  border: 0;
+}
