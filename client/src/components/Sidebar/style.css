@@ -11,11 +11,12 @@
   padding: 0;
   width: 130px;
   top: 0;
-  bottom:0;
+  bottom: 0;
   left: 0;
   background-color: #f1f1f1;
   position: fixed;
   overflow: auto;
+  z-index: 100;
 }
 
 .sidebar a {
@@ -51,33 +52,31 @@
   }
 }
 
-
 .sidebar .fas {
   margin-right: 5px;
 }
 
-
-a{
-  font-size:12pt;
-  display:block;
+a {
+  font-size: 12pt;
+  display: block;
   float: right;
-  height:80px;
-  width: 130px; 
-  text-align: center; 
+  height: 80px;
+  width: 130px;
+  text-align: center;
   transition: all 0.2s ease-in-out;
 }
 
 nav a {
-  color:#d2d45b;
-  font-size:16pt;
+  color: #d2d45b;
+  font-size: 16pt;
   text-decoration: none;
   display: block;
-  padding:8px;
+  padding: 8px;
 }
 
 nav i {
-  color:#d2d45b;
-  padding:0 8px;
+  color: #d2d45b;
+  padding: 0 8px;
 }
 nav span {
   padding: 15px 0;
