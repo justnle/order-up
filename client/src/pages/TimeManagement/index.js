@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/index';
-import { Container, Col, Row } from 'react-bootstrap';
+import {Container, Col, Row} from 'react-bootstrap';
 import DataTable from '../../components/DataTable';
 import Calendar from '../../components/Calendar/index';
 import API from '../../utils/timeAPI';
 import EditBar from '../../components/EditBar/index';
-import { FilterButton } from '../../components/Buttons/index';
+import {FilterButton} from '../../components/Buttons/index';
+import InputModal from '../../components/InputModal';
+
 function TimeManagement() {
   const [shifts, setShifts] = useState([]);
   const [selectedShifts, setSelectedShifts] = useState([]);
@@ -19,8 +21,27 @@ function TimeManagement() {
     const filtered = shifts.filter((shift) => {
       if (
         shift.employeeName === filterShifts.employeeName &&
-        shift.clockIn >= filterShifts.clockIn &&
-        shift.clockOut <= filterShifts.clockOut
+        shift.clockIn.slice(0, 10) >= filterShifts.clockIn &&
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
+      ) {
+        return true;
+      }
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        shift.clockOut.slice(0, 10) <= filterShifts.clockOut
+      ) {
+        return true;
+      }
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        shift.clockIn.slice(0, 10) >= filterShifts.clockIn
+      ) {
+        return true;
+      }
+      if (
+        shift.employeeName === filterShifts.employeeName &&
+        !filterShifts.clockIn &&
+        !filterShifts.clockOut
       ) {
         return true;
       }
@@ -28,22 +49,21 @@ function TimeManagement() {
     setShiftDisplay(filtered);
   }, [filterShifts]);
 
-  function loadShifts() {
-    API.getTimeClock().then((res) => {
+  const loadShifts = () => {
+    API.getTimeClock().then(res => {
       setShifts(res.data);
       setShiftDisplay(res.data);
     });
-  }
+  };
   function handleInput(event) {
-    const { name, value } = event.target;
-    setFilterShifts((filterShifts) => ({ ...filterShifts, [name]: value }));
-    console.log(filterShifts);
+    const {name, value} = event.target;
+    setFilterShifts(filterShifts => ({...filterShifts, [name]: value}));
   }
 
   const shiftsHeadingArr = [
-    { key: `employeeName`, heading: `Employee` },
-    { key: `clockIn`, heading: `Clock In` },
-    { key: `clockOut`, heading: `Clock Out` }
+    {key: `employeeName`, heading: `Employee`},
+    {key: `clockIn`, heading: `Clock In`},
+    {key: `clockOut`, heading: `Clock Out`}
   ];
   const clickCheckbox = (event) => {
     const checked = event.target.checked;
@@ -55,9 +75,41 @@ function TimeManagement() {
     }
     console.log(selectedShifts);
   };
-  const deleteButtonPressed = (event) => {
-    const shiftId = event.target.id;
-    API.removeEmployeeTimeClock(shiftId).then(loadShifts());
+
+  const updateInputState = event => {
+    const {name, value} = event.target;
+    setTimes(times => ({...times, [name]: value}));
+  };
+
+  const editButtonPressed = () => {
+    setShowAddModal(true);
+  };
+
+  const saveButtonPressed = () => {
+    API.updateManyShifts(selectedShifts, times).then(res => {
+      if (res.data.n > 0) {
+        setShowAddModal(false);
+        loadShifts();
+      } else {
+        alert(
+          `Something's wrong, we couldn't update the menu item at this time...`
+        );
+      }
+    });
+  };
+
+  const deleteButtonPressed = () => {
+    if (selectedShifts.length === 1) {
+      API.removeEmployeeTimeClock(selectedShifts[0]).then(() => {
+        loadShifts();
+        setSelectedShifts([]);
+      });
+    } else {
+      API.removeManyEmployeeTimeClock(selectedShifts).then(() => {
+        loadShifts();
+        setSelectedShifts([]);
+      });
+    }
   };
   return (
     <div>
@@ -67,7 +119,6 @@ function TimeManagement() {
       <Container className='mb-3 mt-5'>
         <SearchBar
           placeholder='Search employees'
-          className='col-12 rounded-sm'
           name='employeeName'
           onChange={handleInput}
         />
