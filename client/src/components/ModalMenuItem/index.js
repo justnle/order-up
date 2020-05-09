@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 
 function ModalMenuItem(props) {
   return (
-    <Modal style={{ backgroundColor: 'dark'}}
+    <Modal
       key={props.modalMenuItem._id}
       show={props.show}
       onHide={props.handleClose}
@@ -23,11 +23,11 @@ function ModalMenuItem(props) {
         <p>{props.modalMenuItem.price}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant='outline-secondary' onClick={props.handleClose}>
+        <Button variant='secondary' onClick={props.handleClose}>
           Close
         </Button>
         <Button
-          variant='outline-primary'
+          variant='primary'
           onClick={props.handleAddToSeatOrder}
         >
           Select

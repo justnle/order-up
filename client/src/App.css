@@ -37,10 +37,6 @@
   }
 }
 
-.App-body {
-  background-color: #232424;
-}
-
-#App {
-  height: 100%;
+.App-body{
+  background-color: black;
 }

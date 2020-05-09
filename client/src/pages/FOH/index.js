@@ -7,12 +7,8 @@ import { Container, Col, Row } from 'react-bootstrap';
 import API from '../../utils/menuAPI';
 import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
-import Form from 'react-bootstrap/Form';
-import ORDER_API from '../../utils/activeOrderAPI';
-
-import MenuTabs from '../../components/MenuTabs';
-
-import Decrement_API from '../../utils/inventoryAPI';
+import MenuItem from '../../components/MenuItem';
+// import API2 from '../../utils/activeOrderAPI';
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
@@ -21,26 +17,27 @@ function FOH() {
   const [selectedSeatOrder, setSelectedSeatOrder] = useState(null);
 
   const handleClose = () => setModalMenuItemId(null);
-  const handleShow = id => setModalMenuItemId(id);
+  const handleShow = (id) => setModalMenuItemId(id);
 
   useEffect(() => {
     loadMenu();
   }, []);
 
   const loadMenu = () => {
-    MENU_API.getMenu()
-      .then(res => {
+    API.getMenu()
+      .then((res) => {
         setMenuItems(res.data);
       })
-      .catch(err => console.error(err));
+      .catch((err) => console.error(err));
   };
 
   function handleAddToSeatOrder(id) {
-    if (selectedSeatOrderIndex === null) {
-      alert(`You must click on a seat number before adding items to the order`);
+    if (selectedSeatOrder === null) {
       return;
     }
-    const selectedItem = menuItems.find(item => item._id === id);
+
+    const selectedItem = menuItems.find((item) => item._id === id);
+
     const orderItem = {
       ...selectedItem,
     };
@@ -61,88 +58,16 @@ function FOH() {
   }
 
   const modalMenuItem = modalMenuItemId
-    ? menuItems.find(item => item._id === modalMenuItemId)
+    ? menuItems.find((item) => item._id === modalMenuItemId)
     : null;
-
-  function submitOrder() {
-    if (tableNumber) {
-      ORDER_API.addActiveOrder({
-        orderInTime: Date.now(),
-        tableNumber: tableNumber,
-        seatOrders: seatOrders.map((seatOrder, index) => ({
-          seatNumber: index + 1,
-          menuItems: seatOrder.map(orderItem => ({
-            itemName: orderItem.name,
-            itemPrepareTime: orderItem.prepareTime,
-            itemPrice: orderItem.price
-          }))
-        }))
-        //   employeeName: 'some name',
-      })
-        .then(res => {
-          alert('Order sent to the kitchen');
-        })
-        .catch(err => console.error(err));
-    } else {
-      alert(`You must enter a table number to submit order`);
-    }
-  }
-  function setDecrement(id) {
-    const item = menuItems.find(item => item._id === id);
-    if (item === undefined) {
-      return;
-    } else {
-      const itemIngredients = [];
-      const ing = item.ingredients;
-      for (let i = 0; i < ing.length; ++i) {
-        itemIngredients.push(ing[i].productName);
-      }
-      setIngredients([...ingredients, itemIngredients]);
-    }
-  }
-  function decrementInventory() {
-    const flatIng = Object.values(ingredients).flat();
-    Decrement_API.updateManyInventoryQuantity({
-      productName: flatIng
-    })
-      .then(res => {
-        console.log(`${res.status}`);
-      })
-      .catch(err => console.error(err));
-  }
-
-  const clickDeleteBtn = event => {
-    const selectedIndex = event.target.getAttribute(`data-id`);
-
-    const copyOfSeatOrder = [...seatOrders[selectedSeatOrderIndex]];
-
-    copyOfSeatOrder.splice(selectedIndex, 1);
-
-    setSeatOrders(
-      seatOrders.map((seatOrder, index) =>
-        selectedSeatOrderIndex === index ? copyOfSeatOrder : [...seatOrder]
-      )
-    );
-  };
 
   return (
     <>
       <div>
-        <Container fluid className='mt-5'>
+        <Container className='d-flex mt-5'>
           <Row>
-            <Col md={2}></Col>
-            <Col md={4} className='pb-5'>
-              <Form className='form-inline mb-3'>
-                <Form.Group controlId='formTableNumber'>
-                  <Form.Label className='mr-1'>Table #</Form.Label>
-                  <Form.Control
-                    type='number'
-                    placeholder='Enter a number'
-                    onChange={event => setTableNumber(event.target.value)}
-                  />
-                </Form.Group>
-              </Form>
-              <Table bordered variant='dark'>
+            <Col size='md-4'>
+              <Table striped bordered variant='dark'>
                 <thead>
                   <tr>
                     <th>Seat #</th>
@@ -163,36 +88,23 @@ function FOH() {
                   ))}
                 </tbody>
               </Table>
-              <Button
-                id='FOHbtn'
-                variant='outline-success'
-                onClick={() => {
-                  addSeatOrder();
-                  setDecrement();
-                }}
-              >
+              <Button variant='primary' onClick={addSeatOrder}>
                 Add Seat
               </Button>
-              <Button
-                variant='outline-danger'
-                onClick={() => {
-                  submitOrder();
-                  decrementInventory();
-                }}
-              >
-                Submit Order
-              </Button>
             </Col>
-
-            <Col md={6} className='menuContainer'>
-              <MenuTabs
-                menuItems={menuItems}
-                handleAddToSeatOrderAndDecrement={id => {
-                  handleAddToSeatOrder(id);
-                  setDecrement(id);
-                }}
-                handleShow={handleShow}
-              />
+            <Col size='md-8'>
+              <Row>
+                {menuItems.map((menuItem) => (
+                  <MenuItem
+                    key={menuItem._id}
+                    menuItem={menuItem}
+                    handleAddToSeatOrder={() =>
+                      handleAddToSeatOrder(menuItem._id)
+                    }
+                    handleShow={() => handleShow(menuItem._id)}
+                  />
+                ))}
+              </Row>
             </Col>
           </Row>
           {modalMenuItemId && (

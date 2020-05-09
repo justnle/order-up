@@ -1,16 +1,3 @@
-.menuItems {
-  background-color: transparent;
-}
-
-  #menuItem {
-    height: 150px;
-    border: solid #6c757d 1px;
-  }
-
-  .scroll {
-    overflow-y: scroll;
-  }
-
-  button {
-    position: relative;
+.grid-container {
+    display: grid;
   }
