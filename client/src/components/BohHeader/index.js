@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 function BohHeader() {
   const titles = [
     {
-      name: `Ticket Info`,
+      name: `Table`,
       size: 2
     },
     {
@@ -13,7 +13,11 @@ function BohHeader() {
     },
     {
       name: `Items`,
-      size: 5
+      size: 4
+    },
+    {
+      name: `Prep (min)`,
+      size: 1
     },
     {
       name: `Time`,
