@@ -22,27 +22,30 @@ function TimeManagement() {
 
   useEffect(() => {
     const filtered = shifts.filter(shift => {
+      const name = shift.employeeName
+        .toLowerCase()
+        .startsWith(filterShifts.employeeName);
       if (
-        shift.employeeName === filterShifts.employeeName &&
+        shift.employeeName.startsWith(filterShifts.employeeName) &&
         shift.clockIn.slice(0, 10) >= filterShifts.clockIn &&
         shift.clockOut.slice(0, 10) <= filterShifts.clockOut
       ) {
         return true;
       }
       if (
-        shift.employeeName === filterShifts.employeeName &&
+        shift.employeeName.startsWith(filterShifts.employeeName) &&
         shift.clockOut.slice(0, 10) <= filterShifts.clockOut
       ) {
         return true;
       }
       if (
-        shift.employeeName === filterShifts.employeeName &&
+        shift.employeeName.startsWith(filterShifts.employeeName) &&
         shift.clockIn.slice(0, 10) >= filterShifts.clockIn
       ) {
         return true;
       }
       if (
-        shift.employeeName === filterShifts.employeeName &&
+        shift.employeeName.startsWith(filterShifts.employeeName) &&
         !filterShifts.clockIn &&
         !filterShifts.clockOut
       ) {
