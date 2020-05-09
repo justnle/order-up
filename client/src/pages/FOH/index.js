@@ -134,7 +134,7 @@ function FOH() {
         <Container fluid className='mt-5'>
           <Row>
             <Col md={2}></Col>
-            <Col md={4}>
+            <Col md={4} className='pb-5'>
               <Form className='form-inline mb-3'>
                 <Form.Group controlId='formTableNumber'>
                   <Form.Label className='mr-1'>Table #</Form.Label>
