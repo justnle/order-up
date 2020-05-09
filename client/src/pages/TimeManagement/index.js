@@ -68,6 +68,8 @@ function TimeManagement() {
         shift.clockOut.slice(0, 10) <= filterShifts.clockOut
       ) {
         return true;
+      } else {
+        return false;
       }
     });
     setShiftDisplay(filtered);
