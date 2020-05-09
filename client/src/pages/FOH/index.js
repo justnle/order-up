@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Modal from 'react-bootstrap/Modal';
 import './style.css';
 
 import { Container, Col, Row } from 'react-bootstrap';
@@ -16,6 +17,8 @@ import Decrement_API from '../../utils/inventoryAPI';
 
 function FOH() {
   const [menuItems, setMenuItems] = useState([]);
+  const [showInfoModal, setShowInfoModal] = useState(false);
+  const [infoModalBody, setInfoModalBody] = useState(``);
   const [modalMenuItemId, setModalMenuItemId] = useState(null);
   const [seatOrders, setSeatOrders] = useState([]);
   const [selectedSeatOrderIndex, setSelectedSeatOrderIndex] = useState(null);
@@ -38,7 +41,10 @@ function FOH() {
 
   function handleAddToSeatOrder(id) {
     if (selectedSeatOrderIndex === null) {
-      alert(`You must click on a seat number before adding items to the order`);
+      setInfoModalBody(
+        `You must click on a seat number before adding items to the order`
+      );
+      setShowInfoModal(true);
       return;
     }
     const selectedItem = menuItems.find(item => item._id === id);
@@ -83,13 +89,23 @@ function FOH() {
         //   employeeName: 'some name',
       })
         .then(res => {
-          alert('Order sent to the kitchen');
+          setInfoModalBody(`Order sent to the kitchen`);
+          setShowInfoModal(true);
+          setSeatOrders([]);
+          clearTable();
         })
         .catch(err => console.error(err));
     } else {
-      alert(`You must enter a table number to submit order`);
+      setInfoModalBody(`You must enter a table number to submit order`);
+      setShowInfoModal(true);
     }
   }
+
+  function clearTable() {
+    const one = document.querySelector(`#formTableNumber`);
+    one.value = '';
+  }
+
   function setDecrement(id) {
     const item = menuItems.find(item => item._id === id);
     if (item === undefined) {
@@ -103,15 +119,12 @@ function FOH() {
       setIngredients([...ingredients, itemIngredients]);
     }
   }
+
   function decrementInventory() {
     const flatIng = Object.values(ingredients).flat();
     Decrement_API.updateManyInventoryQuantity({
       productName: flatIng
-    })
-      .then(res => {
-        console.log(`${res.status}`);
-      })
-      .catch(err => console.error(err));
+    }).catch(err => console.error(err));
   }
 
   const clickDeleteBtn = event => {
@@ -126,6 +139,10 @@ function FOH() {
         selectedSeatOrderIndex === index ? copyOfSeatOrder : [...seatOrder]
       )
     );
+  };
+
+  const closeModal = () => {
+    setShowInfoModal(false);
   };
 
   return (
@@ -208,6 +225,18 @@ function FOH() {
             />
           )}
         </Container>
+
+        <Modal animation={false} show={showInfoModal} onHide={closeModal}>
+          <Modal.Header closeButton>
+            <Modal.Title></Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{infoModalBody}</Modal.Body>
+          <Modal.Footer>
+            <Button variant='secondary' onClick={closeModal}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     </>
   );
