@@ -1,7 +1,10 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import { format } from 'date-fns';
 import BohHeader from '../../components/BohHeader';
-import BohBody from '../../components/BohBody';
+import ACTIVE_ORDER_API from '../../utils/activeOrderAPI';
+import ARCHIVED_ORDER_API from '../../utils/archivedOrderAPI';
 import './style.css';
 
 function Boh() {
@@ -43,7 +46,7 @@ function Boh() {
   };
 
   return (
-    <Container>
+    <Container className='h-100 pt-5'>
       <BohHeader />
       {activeOrders.length > 0 ? (
         activeOrders.map((data, index) => (

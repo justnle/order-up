@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-// import { AddButton, SelectButton } from '../../components/Buttons';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import './style.css';
 
 import { Container, Col, Row } from 'react-bootstrap';
-import API from '../../utils/menuAPI';
+import MENU_API from '../../utils/menuAPI';
 import SeatOrder from '../../components/SeatOrder';
 import ModalMenuItem from '../../components/ModalMenuItem';
 import Form from 'react-bootstrap/Form';
@@ -18,8 +18,9 @@ function FOH() {
   const [menuItems, setMenuItems] = useState([]);
   const [modalMenuItemId, setModalMenuItemId] = useState(null);
   const [seatOrders, setSeatOrders] = useState([]);
-  const [selectedSeatOrder, setSelectedSeatOrder] = useState(null);
-
+  const [selectedSeatOrderIndex, setSelectedSeatOrderIndex] = useState(null);
+  const [tableNumber, setTableNumber] = useState('');
+  const [ingredients, setIngredients] = useState([]);
   const handleClose = () => setModalMenuItemId(null);
   const handleShow = id => setModalMenuItemId(id);
 
@@ -42,12 +43,14 @@ function FOH() {
     }
     const selectedItem = menuItems.find(item => item._id === id);
     const orderItem = {
-      ...selectedItem,
+      ...selectedItem
     };
 
     setSeatOrders(
       seatOrders.map((seatOrder, index) =>
-        selectedSeatOrder === index ? [...seatOrder, orderItem] : [...seatOrder]
+        selectedSeatOrderIndex === index
+          ? [...seatOrder, orderItem]
+          : [...seatOrder]
       )
     );
   }
@@ -57,7 +60,7 @@ function FOH() {
   }
 
   function selectSeat(index) {
-    setSelectedSeatOrder(index);
+    setSelectedSeatOrderIndex(index);
   }
 
   const modalMenuItem = modalMenuItemId
@@ -153,12 +156,13 @@ function FOH() {
                   {seatOrders.map((seatOrder, index) => (
                     <SeatOrder
                       key={'seat-order-' + index}
-                      seatOrderNumberIndex={index}
+                      seatOrderNumber={index + 1}
                       seatOrder={seatOrder}
-                      isActiveRow={selectedSeatOrder === index}
+                      isActiveRow={selectedSeatOrderIndex === index}
                       onClick={() => {
                         selectSeat(index);
                       }}
+                      clickDeleteBtn={clickDeleteBtn}
                     />
                   ))}
                 </tbody>

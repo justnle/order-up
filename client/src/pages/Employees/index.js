@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import SearchBar from '../../components/SearchBar/index';
 import EditBar from '../../components/EditBar';
-import { Container, Col, Row } from 'react-bootstrap';
-import DropDownInput from '../../components/DropDownInput/index';
+import {Container, Col, Row} from 'react-bootstrap';
 import DataTable from '../../components/DataTable';
 import API from '../../utils/employeesAPI';
 import InputModal from '../../components/InputModal';
 
 function Employees() {
-  const [employees, setEmployees] = useState([]);
+  const [cachedEmployees, setCachedEmployees] = useState([]);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
-  const [showModal, setShowModal] = useState(false); // using
-  const [employeeInfo, setEmployeeInfo] = useState({}); //using
-  const [inputs, setInputs] = useState([]); //using
-  const [selectedEmployees, setSelectedEmployees] = useState([]) //using
-  const [modalTitle, setModalTitle] = useState(); //using
+  const [showModal, setShowModal] = useState(false);
+  const [employeeInfo, setEmployeeInfo] = useState({});
+  const [inputs, setInputs] = useState([]);
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [modalTitle, setModalTitle] = useState();
   const [submitButtonLabel, setSubmitButtonLabel] = useState(`Submit`);
 
   useEffect(() => {
@@ -22,34 +21,37 @@ function Employees() {
   }, []);
 
   const loadEmployees = () => {
+    setSelectedEmployees([]);
     API.getEmployees()
       .then(res => {
-        setEmployees(res.data);
+        setCachedEmployees(res.data);
         setFilteredEmployees(res.data);
       })
       .catch(err => console.error(err));
-  }
+  };
 
   const updateFilteredEmployeesState = event => {
     const inputText = event.target.value;
     setFilteredEmployees(
-      employees.filter(employee => {
+      cachedEmployees.filter(employee => {
         const words = employee.name.split(' ');
         let isMatch = false;
         words.forEach(word => {
           if (word.toLowerCase().startsWith(inputText.toLowerCase())) {
-            isMatch = true;
+            isMatch = word.toLowerCase().startsWith(inputText.toLowerCase());
           }
         });
         return isMatch;
       })
     );
-  }
+  };
 
   const updateEmployeeInfoState = event => {
+
     const { name, value } = event.target;
     setEmployeeInfo(info => ({ ...info, [name]: value }));
-  }
+
+  };
 
   const employeeNameInput = [
     {
@@ -68,7 +70,7 @@ function Employees() {
       placeholder: `Enter PIN`,
       onChange: updateEmployeeInfoState
     }
-  ]
+  ];
 
   const otherInput = [
     {
@@ -95,63 +97,64 @@ function Employees() {
       placeholder: `Set permission level`,
       onChange: updateEmployeeInfoState
     }
-  ]
-
-  const employeeTableHeadingArr = [
-    { key: `name`, heading: `Employee Name` },
-    { key: `id`, heading: `Employee PIN` },
-    { key: `position`, heading: `Position` },
-    { key: `rate`, heading: `Hourly Rate` },
-    { key: `permission`, heading: `Permission Level` }
   ];
 
+  const employeeTableHeadingArr = [
+    {key: `name`, heading: `Employee Name`},
+    {key: `id`, heading: `Employee PIN`},
+    {key: `position`, heading: `Position`},
+    {key: `rate`, heading: `Hourly Rate`},
+    {key: `permission`, heading: `Permission Level`}
+  ];
 
   const addButtonPressed = () => {
     setInputs([...employeeNameInput, ...otherInput]);
     setModalTitle(`Add a new employee`);
     setSubmitButtonLabel(`Submit`);
     setShowModal(true);
-  }
+  };
 
   const closeEmployeeModal = () => setShowModal(false);
 
   const editButtonPressed = () => {
-    console.log(`Edit button pressed!`)
     if (selectedEmployees.length > 1) {
-      console.log(`More than 1 employee selected`)
       setInputs(otherInput);
       setModalTitle(`Edit employees`);
     } else {
-      console.log(`Only 1 employee selected`)
-      setEmployeeInfo(employees.find(employee => employee._id === selectedEmployees[0]))
+      setEmployeeInfo(
+
+        cachedEmployees.find(
+          employee => employee._id === selectedEmployees[0]
+        )
+
+      );
       setInputs([...employeeNameInput, ...otherInput]);
       setModalTitle(`Edit an employee`);
     }
     setSubmitButtonLabel(`Save`);
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
   const deleteButtonPressed = () => {
-    console.log(`Delete button pressed`)
     API.deleteManyEmployee(selectedEmployees)
       .then(res => {
-        console.log(`status code: ${res.status}`);
+
         if (res.data.n > 0) {
           loadEmployees();
         }
       })
       .catch(err => console.error(err));
-  }
+  };
 
   const checkboxClicked = event => {
     const checked = event.target.checked;
     const selectedId = event.target.getAttribute(`data-id`);
     if (checked) {
-      setSelectedEmployees([...selectedEmployees, selectedId])
+      setSelectedEmployees([...selectedEmployees, selectedId]);
     } else {
       setSelectedEmployees(selectedEmployees.filter(id => id !== selectedId));
     }
-  }
+  };
 
   const submitButtonPressed = event => {
     event.preventDefault();
@@ -162,38 +165,36 @@ function Employees() {
       employeeInfo.permission &&
       employeeInfo.rate
     ) {
-      console.log(`Making a POST call`)
-      API.addEmployee(employeeInfo).then(res => {
-        console.log(`status code: ${res.status}`);
+
+
+      API.addEmployee(employeeInfo).then(() => {
+
         closeEmployeeModal();
         loadEmployees();
       });
     } else {
-      alert(
-        'Please fill in all required fields to add an employee'
-      );
+      alert('Please fill in all required fields to add an employee');
     }
-  }
+  };
 
   const saveButtonPressed = () => {
-    console.log(`Save button pressed`);
     API.updateManyEmployees(selectedEmployees, employeeInfo)
       .then(res => {
-        console.log(`Status code ${res.status}`)
-        console.log(`Affected records: ${res.data.n}`);
         if (res.data.n > 0) {
           closeEmployeeModal();
           loadEmployees();
         } else {
-          alert(`Something's wrong, we couldn't update employee info at this time...`)
+          alert(
+            `Something's wrong, we couldn't update employee info at this time...`
+          );
         }
       })
       .catch(err => console.error(err));
-  }
+  };
 
   return (
-    <div>
-      <h1 className='d-flex justify-content-center display-4 text-white mt-5'>
+    <Container>
+      <h1 className='d-flex justify-content-center display-4 mt-5'>
         Employees
       </h1>
       <Container className='mb-3 mt-5'>
@@ -204,30 +205,26 @@ function Employees() {
         />
       </Container>
 
-      <div
-        className=' d-flex row justify-content-center align-items-center text-white'
-        id='buttonsDiv'>
-        <div className='m-1'>
-          <DropDownInput className='d-flex justify-content-center'>
-            Sort by vendor
-          </DropDownInput>
-        </div>
-      </div>
-
       <InputModal
-        show={showModal} // bool
+        show={showModal}
         cancel={closeEmployeeModal}
         title={modalTitle}
-        submit={submitButtonLabel === `Submit` ? submitButtonPressed : saveButtonPressed}
+        submit={
+          submitButtonLabel === `Submit`
+            ? submitButtonPressed
+            : saveButtonPressed
+        }
         submitButtonLabel={submitButtonLabel}
-        inputs={inputs} // array of input objs
+        inputs={inputs}
         value={employeeInfo ? employeeInfo : undefined}
       />
 
       <Container className='d-flex justify-content-center mt-5'>
         <Col>
           <Row className='mb-1'>
-            <EditBar noneSelected={selectedEmployees.length ? false : true}
+            <EditBar
+              hideAddButton={false}
+              noneSelected={selectedEmployees.length ? false : true}
               add={addButtonPressed}
               edit={editButtonPressed}
               delete={deleteButtonPressed}
@@ -243,8 +240,7 @@ function Employees() {
           </Row>
         </Col>
       </Container>
-
-    </div>
+    </Container>
   );
 }
 

@@ -32,33 +32,20 @@ class Seats extends React.Component {
         seatAvailable: this.state.seatAvailable.filter(res => res !== seat)
       });
     }
+  }
 
-    onClickData(seat) {
-        if (this.state.seatReserved.indexOf(seat) > -1) {
-            this.setState({
-                seatAvailable: this.state.seatAvailable.concat(seat),
-                seatReserved: this.state.seatReserved.filter(res => res != seat)
-            })
-        } else {
-            this.setState({
-                seatReserved: this.state.seatReserved.concat(seat),
-                seatAvailable: this.state.seatAvailable.filter(res => res != seat)
-            })
-        }
-    }
-
-    render() {
-        return (
-            <div>
-                <DrawGrid
-                    seat={this.state.seat}
-                    available={this.state.seatAvailable}
-                    reserved={this.state.seatReserved}
-                    onClickData={this.onClickData.bind(this)}
-                />
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div>
+        <DrawGrid
+          seat={this.state.seat}
+          available={this.state.seatAvailable}
+          reserved={this.state.seatReserved}
+          onClickData={this.onClickData.bind(this)}
+        />
+      </div>
+    );
+  }
 }
 
 class DrawGrid extends React.Component {
@@ -105,9 +92,9 @@ class DrawGrid extends React.Component {
     );
   }
 
-    onClickSeat(seat) {
-        this.props.onClickData(seat);
-    }
+  onClickSeat(seat) {
+    this.props.onClickData(seat);
+  }
 }
 
 class AvailableList extends React.Component {

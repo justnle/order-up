@@ -3,68 +3,112 @@
 const orderSeed = [
   {
     tableNumber: 1,
-    order: [
+    seatOrders: [
       {
-        itemSeat: 1,
-        itemName: `some food`,
-        itemPrepareTime: 100
+        seatNumber: 1,
+        menuItems: [
+          {
+            itemName: `Charcuterie Board`,
+            itemPrepareTime: 10,
+            itemPrice: `10.00`
+          }
+        ]
       }
     ]
+    // employeeName: `Wyatt Ventura`
   },
   {
     tableNumber: 2,
-    order: [
+    seatOrders: [
       {
-        itemSeat: 1,
-        itemName: `some stuff`,
-        itemPrepareTime: 1
+        seatNumber: 1,
+        menuItems: [
+          {
+            itemName: `Oysters 6`,
+            itemPrepareTime: 15,
+            itemPrice: `18.00`
+          }
+        ]
       },
       {
-        itemSeat: 2,
-        itemName: `some chow`,
-        itemPrepareTime: 2
+        seatNumber: 2,
+        menuItems: [
+          {
+            itemName: `Grilled Veggie Sandwich`,
+            itemPrepareTime: 20,
+            itemPrice: `12.00`
+          },
+          {
+            itemName: `Pinot Grigio`,
+            itemPrepareTime: 5,
+            itemPrice: `7.00`
+          }
+        ]
       },
       {
-        itemSeat: 3,
-        itemName: `some food`,
-        itemPrepareTime: 3
+        seatNumber: 3,
+        menuItems: [
+          {
+            itemName: `Malbec`,
+            itemPrepareTime: 5,
+            itemPrice: `7.00`
+          }
+        ]
       }
     ]
+    // employeeName: `Paris Molloy`
   },
   {
     tableNumber: 3,
-    order: [
+    seatOrders: [
       {
-        itemSeat: 4,
-        itemName: `food`,
-        itemPrepareTime: 10
+        seatNumber: 4,
+        menuItems: [
+          {
+            itemName: `Pinot Grigio`,
+            itemPrepareTime: 5,
+            itemPrice: `7.00`
+          }
+        ]
       },
       {
-        itemSeat: 6,
-        itemName: `things`,
-        itemPrepareTime: 11
+        seatNumber: 6,
+        menuItems: [
+          {
+            itemName: `Pilsner`,
+            itemPrepareTime: 5,
+            itemPrice: `6.00`
+          }
+        ]
       }
     ]
+    // employeeName: `Wyatt Ventura`
   },
   {
-    tableNumber: 4,
-    order: [
+    tableNumber: 3,
+    seatOrders: [
       {
-        itemSeat: 10,
-        itemName: `whatever`,
-        itemPrepareTime: 100
+        seatNumber: 4,
+        menuItems: [
+          {
+            itemName: `Pinot Grigio`,
+            itemPrepareTime: 5,
+            itemPrice: `7.00`
+          }
+        ]
       },
       {
-        itemSeat: 11,
-        itemName: `water`,
-        itemPrepareTime: 60
-      },
-      {
-        itemSeat: 2,
-        itemName: `some food`,
-        itemPrepareTime: 120
+        seatNumber: 6,
+        menuItems: [
+          {
+            itemName: `Pilsner`,
+            itemPrepareTime: 5,
+            itemPrice: `6.00`
+          }
+        ]
       }
     ]
+    // employeeName: `Fahima Ayers`
   }
 ];
 

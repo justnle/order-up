@@ -23,7 +23,9 @@ export default {
       updateData: data
     });
   },
-
+  updateManyInventoryQuantity: function (productName) {
+    return axios.put(`/api/inventory/updateManyDecrement`, productName );
+  },
   deleteInventoryItem: function (id) {
     return axios.delete(`/api/inventory/${id}`);
   },
