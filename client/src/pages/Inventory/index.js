@@ -53,7 +53,7 @@ function Inventory() {
 
   const addButtonPressed = () => {
     setInputs([...inventoryItemInput, ...otherInput]);
-    setModalTitle(`Add Iventory Item`);
+    setModalTitle(`Add Inventory Item`);
     setSubmitButtonLabel(`Submit`);
     setShowAddModal(true);
   };
@@ -72,6 +72,7 @@ function Inventory() {
       API.addInventoryItem(itemInfo).then(res => {
         loadInventory();
         setShowAddModal(false);
+        setItemInfo({});
       });
     } else {
       alert(

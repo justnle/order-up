@@ -168,8 +168,8 @@ function Employees() {
 
 
       API.addEmployee(employeeInfo).then(() => {
-
         closeEmployeeModal();
+        setEmployeeInfo({});
         loadEmployees();
       });
     } else {

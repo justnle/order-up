@@ -66,9 +66,9 @@ function Menu() {
     ) {
 
       API.addMenuItem(itemInfo).then((res) => {
-
         loadMenu();
         setShowAddModal(false);
+        setItemInfo({});
       });
     } else {
       alert(`Please fill out all required fields of the menu item.`);
