@@ -101,7 +101,7 @@ function Boh() {
               className='text-center my-auto'
               key={`sold-col-${index + 1}`}
             >
-              <Button variant='success' value={data._id} onClick={removeActive}>
+              <Button variant='outline-success' value={data._id} onClick={removeActive}>
                 Done
               </Button>
             </Col>
