@@ -50,7 +50,7 @@ function Boh() {
       <BohHeader />
       {activeOrders.length > 0 ? (
         activeOrders.map((data, index) => (
-          <Row className='py-2 border' key={`table-row-${index + 1}`}>
+          <Row className='py-2 my-2 border bg-dark' key={`table-row-${index + 1}`}>
             <Col
               xs={2}
               className='my-auto text-center'
