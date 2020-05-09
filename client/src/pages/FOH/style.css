@@ -3,7 +3,10 @@
     height: 100%;
 } */
 
-#FOHbtn{
-    margin-right: 10px;
+#FOHbtn {
+  margin-right: 10px;
 }
 
+.tab-content .active {
+  background-color: transparent;
+}
