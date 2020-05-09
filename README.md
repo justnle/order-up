@@ -42,24 +42,63 @@ Our restaurant ordering system is a platform for point of digital ordering, empl
 
 ## Deployment
 
-- Github: https://github.com/twopcz/order-up
-- Deployed to Heroku: https://order-up-jkrtr.herokuapp.com/
+To install and use locally,
 
+1. `git clone` this repository to a local directory
+2. In the terminal, `cd` to the repository directory and run
+
+```bash
+npm i
+```
+
+3. Then run the application with:
+
+```bash
+npm start
+```
+
+4. Your browser will open to [http://localhost:3000/](http://localhost:3000/)
+5. The deployed application can be found on Heroku at https://order-up-jkrtr.herokuapp.com/
+
+- Github: https://github.com/twopcz/order-up
 
 ## Technologies Used
 
-* Axios
-* React.js
-* Bootstrap CSS Framework
-* Node and Express
-* MongoDB
-* Heroku
+* [Axios](https://github.com/axios/axios) - Promise based HTTP client
+* [Bootstrap](https://getbootstrap.com/) - CSS library
+* [JavaScript](https://www.javascript.com/)
+* [MongoDB](https://www.mongodb.com/) - Document-oriented database program
+* [Express.js](https://expressjs.com/) - Web application framework for Node.js
+* [React.js](https://reactjs.org/) - Frontend JavaScript library
+* [Node.js](https://nodejs.org/en/) - JavaScript runtime
 
+Dependencies:
+```
+  "dependencies": {
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "date-fns": "^2.12.0",
+    "express": "^4.17.1",
+    "if-env": "^1.0.4",
+    "mongoose": "^5.9.10"
+    "react": "^16.13.1",
+    "react-bootstrap": "^1.0.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1"
+  }
+```
+
+* [date-fns](https://date-fns.org/) - JavaScript date utility library
+* [if-env](https://github.com/ericclemmons/if-env#readme) - dev & production script handler
+* [mongoose](https://github.com/Automattic/mongoose) - MongoDB object modeling tool
+* [react-bootstrap](https://react-bootstrap.github.io/) - Bootstrap built as React Components
+* [react-router-dom](https://github.com/ReactTraining/react-router#readme) - Declarative routing for React
 
 ## Authors
 
-- Justin
-- Kaitlyn
-- Rachel
-- Richard 
-- Teresa
+- [Justin Le](https://github.com/twopcz)
+- [Kaitlyn Carlson](https://github.com/KaitlynCarlson)
+- [Rachel Rohrbach](https://github.com/rachelrohrbach)
+- [Richard Wang](https://github.com/phaggio)
+- [Teresa Liu](https://github.com/teresaliuu)
