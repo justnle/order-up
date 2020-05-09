@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {Redirect} from 'react-router-dom';
-import {Col, Container, Row} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {format} from 'date-fns';
-import {ClockInButton, ClockOutButton} from '../../components/Buttons';
+import { format } from 'date-fns';
+import { ClockInButton, ClockOutButton } from '../../components/Buttons';
 import NumPad from '../../components/NumPad';
 import EMPLOYEE_API from '../../utils/employeesAPI';
 import TIME_API from '../../utils/timeAPI';
@@ -22,7 +22,7 @@ function Home() {
 
   const handleBtnInput = event => {
     event.preventDefault();
-    const {value} = event.target;
+    const { value } = event.target;
     setPin(pin + value);
   };
 
@@ -37,7 +37,7 @@ function Home() {
     if (pin.length > 0) {
       EMPLOYEE_API.getEmployees()
         .then(res => {
-          const search = res.data.find(({id}) => id === pin);
+          const search = res.data.find(({ id }) => id === pin);
 
           if (search !== undefined) {
             clockIn(search);
@@ -62,7 +62,7 @@ function Home() {
   const clockIn = employee => {
     TIME_API.getTimeClock()
       .then(res => {
-        const searchId = res.data.find(({employeeId}) => employeeId === pin);
+        const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
         switch (searchId.onTheClock) {
           case false:
@@ -71,7 +71,7 @@ function Home() {
               clockIn: format(Date.now(), 'MM/dd/yyyy, hh:mm:ss a'),
               onTheClock: true
             });
-            setLoggedIn({success: true, permission: employee.permission});
+            setLoggedIn({ success: true, permission: employee.permission });
             break;
           case true:
             setPin(``);
@@ -88,14 +88,14 @@ function Home() {
   const clockOut = () => {
     TIME_API.getTimeClock()
       .then(res => {
-        const searchId = res.data.find(({employeeId}) => employeeId === pin);
+        const searchId = res.data.find(({ employeeId }) => employeeId === pin);
 
         if (searchId.onTheClock) {
           TIME_API.updateEmployeeTimeClock(searchId._id, {
             clockOut: format(Date.now(), 'MM/dd/yyyy, hh:mm:ss a'),
             onTheClock: false
           }).catch(err => console.error(err));
-          setLoggedIn({success: false, permission: 0});
+          setLoggedIn({ success: false, permission: 0 });
           setPin(``);
           setModalBody(`${searchId.employeeName} successfully clocked out`);
           setShowModal(true);
