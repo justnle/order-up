@@ -1,5 +1,8 @@
 .btn-group-vertical button {
   width: 100%;
+  border: 1.5px solid #BFA690;
+  font-size: 25px;
+  color:#D9AA81;
 }
 
 .clock-btns .row .btn {
@@ -9,5 +12,16 @@
 
 #home-container {
   padding: 10px 0px;
-  background: black;
+}
+
+#homeBackGround{
+  background-image: url('../../images/restaurant4.jpg');
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#greetingContainer {
+  padding-top: 70px;
 }

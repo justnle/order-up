@@ -7,19 +7,35 @@ const ArchivedOrderSchema = new Schema({
     type: Number,
     required: true
   },
-  order: [
+  seatOrders: [
     {
-      itemSeat: {
+      seatNumber: {
         type: Number,
         required: true
       },
-      itemName: {
-        type: String,
-        required: true
-      }
+      menuItems: [
+        {
+          itemName: {
+            type: String,
+            required: true
+          },
+          itemPrepareTime: {
+            type: Number,
+            required: true
+          },
+          itemPrice: {
+            type: String,
+            required: true
+          }
+        }
+      ]
     }
   ],
-  orderPrepareTime: {
+  // employeeName: {
+  //   type: String,
+  //   required: true
+  // },
+  orderInTime: {
     type: Date,
     required: true,
     default: Date.now()

@@ -4,7 +4,8 @@ const express = require(`express`);
 const mongoose = require(`mongoose`);
 const routes = require(`./routes`);
 const app = express();
-const PORT = process.env.PORT || 3001;
+const localport = 3001;
+const PORT = process.env.PORT || localport;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -15,7 +16,7 @@ if (process.env.NODE_ENV === `production`) {
 
 app.use(routes);
 
-mongoose.connect(process.env.MONGODB_URI || `mongodb://jkrtr:project3@ds231228.mlab.com:31228/heroku_12rd66jg`, {
+mongoose.connect(process.env.MONGODB_URI || `mongodb://localhost/orderup`, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   useCreateIndex: true
