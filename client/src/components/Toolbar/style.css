@@ -1,0 +1,40 @@
+.toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: gray;
+  height: 56px;
+}
+
+.toolbar-navigation {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.toolbar-logo {
+  margin-left: 1rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.toolbar-nav-items ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.toolbar-nav-items a {
+  color: white;
+  text-decoration: none;
+}
+
+.toolbar-nav-items a:hover, 
+.toolbar-nav-items a:active {
+  color: orange;
+}
