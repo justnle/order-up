@@ -10,7 +10,9 @@ import BOH from './pages/BOH';
 import Inventory from './pages/Inventory/index';
 import TimeManagement from './pages/TimeManagement/index';
 import FloorPlans from './pages/FloorPlans';
+
 import Toolbar from './components/Toolbar';
+import SideDrawer from './components/SideDrawer';
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
       <Router>
         {/* <Sidebar /> */}
         <Toolbar />
+        <SideDrawer />
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/home' component={Home} />
