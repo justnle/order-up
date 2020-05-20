@@ -41,7 +41,6 @@ function App() {
         {backdrop}
         <Switch>
           <Route exact path='/' component={Home} />
-          <Route exact path='/home' component={Home} />
           <Route exact path='/menu' component={Menu} />
           <Route exact path='/employees' component={Employees} />
           <Route exact path='/inventory' component={Inventory} />

@@ -24,13 +24,14 @@
 }
 
 .side-drawer li {
-  margin: 0.5rem 0;
+  max-height: 60px;
+  margin: 0.2rem 0;
 }
 
 .side-drawer a {
   text-decoration: none;
   color: orange;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .side-drawer a:hover,
