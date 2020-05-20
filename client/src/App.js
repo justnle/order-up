@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import { Switch, Route, HashRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Employees from './pages/Employees';

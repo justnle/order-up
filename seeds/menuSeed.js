@@ -62,7 +62,7 @@ const menuSeed = [
   },
   {
     category: `Food`,
-    name: `Potatoe Hash`,
+    name: `Potato Hash`,
     price: `10.00`,
     description: `Crispy potatoes served with veggies and melted Swiss`,
     pairing: `IPA`,
