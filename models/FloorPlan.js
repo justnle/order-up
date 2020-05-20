@@ -11,6 +11,7 @@ const FloorPlanSchema = new Schema({
   },
   available: {
     type: Boolean,
+    default: true,
     required: true
   }
 });
