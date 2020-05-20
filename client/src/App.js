@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar';
 import { Switch, Route, HashRouter as Router } from 'react-router-dom';
@@ -13,14 +13,32 @@ import FloorPlans from './pages/FloorPlans';
 
 import Toolbar from './components/Toolbar';
 import SideDrawer from './components/SideDrawer';
+import Backdrop from './components/Backdrop';
 
 function App() {
+  const [openSideDrawer, setOpenSideDrawer] = useState(false);
+
+  const clickDrawerButton = () => {
+    setOpenSideDrawer(!openSideDrawer);
+  }
+
+  const clickBackdrop = () => {
+    setOpenSideDrawer(false);
+  }
+
+  let backdrop;
+
+  if (openSideDrawer) {
+    backdrop = <Backdrop clickBackdrop={clickBackdrop} />;
+  }
+
   return (
     <div id='App'>
       <Router>
         {/* <Sidebar /> */}
-        <Toolbar />
-        <SideDrawer />
+        <Toolbar clickDrawerButton={clickDrawerButton} />
+        <SideDrawer show={openSideDrawer}/>
+        {backdrop}
         <Switch>
           <Route exact path='/' component={Home} />
           <Route exact path='/home' component={Home} />
