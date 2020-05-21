@@ -35,7 +35,7 @@ function App() {
     <div id='App'>
       <Router>
         <Toolbar clickDrawerButton={clickDrawerButton} />
-        <SideDrawer show={openSideDrawer}/>
+        <SideDrawer show={openSideDrawer} clickBackdrop={clickBackdrop} />
         {backdrop}
         <Switch>
           <Route exact path='/' component={Home} />
