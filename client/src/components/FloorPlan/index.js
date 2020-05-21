@@ -1,48 +1,46 @@
 import React from 'react';
+import API from '../../utils/floorPlanAPI';
 import './style.css';
 class Seats extends React.Component {
   constructor() {
     super();
     this.state = {
-      seat: ['# 1', '# 2', '# 3', '# 4', '# 5', '# 6', '# 7', '# 8', '# 9'],
-      seatAvailable: [
-        '# 1',
-        '# 2',
-        '# 3',
-        '# 4',
-        '# 5',
-        '# 6',
-        '# 7',
-        '# 8',
-        '# 9'
-      ],
-      seatReserved: []
+      tables: []
     };
   }
 
-  onClickData(seat) {
-    if (this.state.seatReserved.indexOf(seat) > -1) {
+  componentDidMount() {
+    API.getTables().then(response => {
       this.setState({
-        seatAvailable: this.state.seatAvailable.concat(seat),
-        seatReserved: this.state.seatReserved.filter(res => res !== seat)
+        tables: response.data
       });
-    } else {
-      this.setState({
-        seatReserved: this.state.seatReserved.concat(seat),
-        seatAvailable: this.state.seatAvailable.filter(res => res !== seat)
-      });
-    }
+    });
   }
+
+  onClickData = selectedTable => {
+    if (selectedTable.isAvailable) {
+      selectedTable.isAvailable = false;
+    } else {
+      selectedTable.isAvailable = true;
+    }
+
+    const { tables } = this.state;
+
+    const updatedTables = tables.map(table =>
+      selectedTable._id === table._id ? selectedTable : table
+    );
+
+    this.setState({
+      tables: updatedTables
+    }, () => {
+      API.updateTables(selectedTable._id, selectedTable);
+    });
+  };
 
   render() {
     return (
       <div>
-        <DrawGrid
-          seat={this.state.seat}
-          available={this.state.seatAvailable}
-          reserved={this.state.seatReserved}
-          onClickData={this.onClickData.bind(this)}
-        />
+        <DrawGrid tables={this.state.tables} onClickData={this.onClickData} />
       </div>
     );
   }
@@ -62,17 +60,13 @@ class DrawGrid extends React.Component {
           <table className='grid'>
             <tbody>
               <tr>
-                {this.props.seat.map(row => (
+                {this.props.tables.map(table => (
                   <td
-                    className={
-                      this.props.reserved.indexOf(row) > -1
-                        ? 'reserved'
-                        : 'available'
-                    }
-                    key={row}
-                    onClick={e => this.onClickSeat(row)}
+                    className={table.isAvailable ? 'available' : 'reserved'}
+                    key={table.tableNumber}
+                    onClick={e => this.onClickSeat(table)}
                   >
-                    {row}{' '}
+                    {table.tableNumber}{' '}
                   </td>
                 ))}
               </tr>
@@ -81,10 +75,10 @@ class DrawGrid extends React.Component {
 
           <div className=' mt-5 ml-5'>
             <div className='col-sm'>
-              <AvailableList available={this.props.available} />
+              <AvailableList available={this.props.tables.filter(table => table.isAvailable).map(table => table.tableNumber)} />
             </div>
             <div className='col-sm'>
-              <ReservedList reserved={this.props.reserved} />
+              <ReservedList reserved={this.props.tables.filter(table => !table.isAvailable).map(table => table.tableNumber)} />
             </div>
           </div>
         </div>
@@ -131,4 +125,4 @@ class ReservedList extends React.Component {
   }
 }
 
-export {Seats};
+export { Seats };
