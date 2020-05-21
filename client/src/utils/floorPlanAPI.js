@@ -14,6 +14,6 @@ export default {
   },
 
   removeTables: function (id) {
-    return axios.delete(`/api/floorplan/${id}`);
+    return axios.delete(`/api/floorpla/${id}`);
   }
 };
