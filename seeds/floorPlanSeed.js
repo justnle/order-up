@@ -2,40 +2,31 @@
 
 const floorPlanSeed = [
   {
-    tableNumber: 1,
-    available: true
+    tableNumber: 1
   },
   {
-    tableNumber: 2,
-    available: true
+    tableNumber: 2
   },
   {
-    tableNumber: 3,
-    available: true
+    tableNumber: 3
   },
   {
-    tableNumber: 4,
-    available: true
+    tableNumber: 4
   },
   {
-    tableNumber: 5,
-    available: true
+    tableNumber: 5
   },
   {
-    tableNumber: 6,
-    available: true
+    tableNumber: 6
   },
   {
-    tableNumber: 7,
-    available: true
+    tableNumber: 7
   },
   {
-    tableNumber: 8,
-    available: true
+    tableNumber: 8
   },
   {
-    tableNumber: 9,
-    available: true
+    tableNumber: 9
   }
 ];
 

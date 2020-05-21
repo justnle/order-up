@@ -9,7 +9,7 @@ const FloorPlanSchema = new Schema({
     type: String,
     required: true
   },
-  available: {
+  isAvailable: {
     type: Boolean,
     default: true,
     required: true
