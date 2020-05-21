@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-import Sidebar from './components/Sidebar';
 import { Switch, Route, HashRouter as Router } from 'react-router-dom';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
@@ -35,9 +34,8 @@ function App() {
   return (
     <div id='App'>
       <Router>
-        {/* <Sidebar /> */}
         <Toolbar clickDrawerButton={clickDrawerButton} />
-        <SideDrawer show={openSideDrawer}/>
+        <SideDrawer show={openSideDrawer} clickBackdrop={clickBackdrop} />
         {backdrop}
         <Switch>
           <Route exact path='/' component={Home} />
@@ -45,8 +43,8 @@ function App() {
           <Route exact path='/employees' component={Employees} />
           <Route exact path='/inventory' component={Inventory} />
           <Route exact path='/shifts' component={TimeManagement} />
-          <Route exact path='/FOH' component={FOH} />
-          <Route exact path='/BOH' component={BOH} />
+          <Route exact path='/foh' component={FOH} />
+          <Route exact path='/boh' component={BOH} />
           <Route exact path='/floorplans' component={FloorPlans} />
         </Switch>
       </Router>
